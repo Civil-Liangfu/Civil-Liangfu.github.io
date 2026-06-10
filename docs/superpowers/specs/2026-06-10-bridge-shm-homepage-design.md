@@ -2,7 +2,13 @@
 
 **Date:** 2026-06-10
 **Owner:** Liangfu Ge (geliangfu@gmail.com)
-**Status:** Approved design, pending spec review
+**Status:** Approved
+
+## Inputs (provided)
+
+- **GitHub username:** `Civil-Liangfu`
+- **Repository / live URL:** `Civil-Liangfu.github.io` → `https://civil-liangfu.github.io`
+- **Initial content:** placeholders, to be edited later via the GitHub web UI
 
 ## Goal
 
@@ -38,8 +44,10 @@ GitHub Actions: build Jekyll (al-folio)
 GitHub Pages  →  https://<username>.github.io   (live in ~1–2 min)
 ```
 
-- Repository name: `<username>.github.io` (a GitHub *user site*).
-- `<username>` is a required input collected from the owner at build time.
+- Repository name: `Civil-Liangfu.github.io` (a GitHub *user site*).
+- Live URL: `https://civil-liangfu.github.io` (GitHub serves the host in lower
+  case; the repo name keeps the original casing).
+- Initial content: **placeholders** the owner edits later via the web UI.
 - GitHub Pages "Source" must be set to **GitHub Actions** (not "Deploy from a
   branch"), which is how al-folio's workflow publishes.
 
