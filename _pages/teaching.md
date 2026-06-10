@@ -2,14 +2,21 @@
 layout: page
 permalink: /teaching/
 title: teaching
-description: Course materials, schedules, and resources for classes taught.
+description: Courses, materials, and student supervision.
 nav: true
-nav_order: 6
-calendar: true
+nav_order: 3
 ---
 
-This page displays a collection of courses with detailed schedules, materials, and resources. You can organize your courses by years, terms, or topics.
+*(Placeholder. Edit `_pages/teaching.md` to list your real courses.)*
 
-{% include calendar.liquid calendar_id='test@gmail.com' timezone='Asia/Shanghai' %}
+## Courses
 
-{% include courses.liquid %}
+- **Structural Health Monitoring** — graduate course. Sensors, signal processing,
+  damage detection, and case studies on bridges.
+- **Structural Dynamics** — undergraduate/graduate. Vibration theory and its
+  applications to civil structures.
+
+## Student supervision
+
+I supervise students working on bridge SHM topics. Prospective students are welcome
+to get in touch.
