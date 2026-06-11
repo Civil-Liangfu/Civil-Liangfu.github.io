@@ -1,10 +1,10 @@
 # Social media links shown on the about page, displayed in the order defined here.
 # Uncomment / fill a line to show that icon. Plugin docs:
 # https://github.com/george-gca/jekyll-socials
-email: geliangfu@gmail.com # your email address
+email: liangfu4work@gmail.com # your email address
 github_username: Civil-Liangfu # your GitHub username
-# scholar_userid: # your Google Scholar ID
-# orcid_id: # your ORCID id (e.g. 0000-0000-0000-0000)
+scholar_userid: https://scholar.google.com/citations?user=Jx-_4dwAAAAJ&hl=zh-CN # your Google Scholar ID
+orcid_id:0000-0003-0877-1734 # your ORCID id (e.g. 0000-0000-0000-0000)
 # researchgate_profile: # your ResearchGate profile name
-# linkedin_username: # your LinkedIn username
-rss_icon: false # set to true to show the RSS icon
+linkedin_username: Liangfu Ge# your LinkedIn username
+#rss_icon: false # set to true to show the RSS icon
