@@ -1,6 +1,6 @@
 ---
 layout: page
-title: Research Projects
+title: Research
 permalink: /projects/
 description: Research projects in bridge structural health monitoring.
 nav: true
