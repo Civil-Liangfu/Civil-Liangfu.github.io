@@ -33,6 +33,7 @@
 ### Task 1: Scaffold al-folio into the project folder
 
 **Files:**
+
 - Create: entire al-folio tree under `C:/001LiangfuGe/001Research/Research_Page/`
 - Keep: existing `docs/` and `.git/`
 
@@ -42,6 +43,7 @@
 cd "C:/001LiangfuGe/001Research/Research_Page"
 git clone --depth 1 https://github.com/alshedivat/al-folio.git /tmp/al-folio
 ```
+
 Expected: clone completes, `/tmp/al-folio` populated.
 
 - [ ] **Step 2: Delete the upstream `.git`, then copy al-folio files into the project**
@@ -52,6 +54,7 @@ rm -rf /tmp/al-folio/.git
 # Now copy everything (including dotfiles like .github) into our repo
 cp -r /tmp/al-folio/. "C:/001LiangfuGe/001Research/Research_Page/"
 ```
+
 This preserves the existing `C:/001LiangfuGe/001Research/Research_Page/.git` (our spec/plan history) and our `docs/` folder. `cp` only adds al-folio's files alongside them.
 
 - [ ] **Step 3: Inspect the actual structure (confirms exact filenames for later tasks)**
@@ -61,6 +64,7 @@ cd "C:/001LiangfuGe/001Research/Research_Page"
 ls -1 _pages/ _projects/ _news/ _data/ _posts/ _bibliography/ 2>/dev/null
 echo "--- workflow ---"; ls -1 .github/workflows/
 ```
+
 Record: confirm `_pages/about.md`, `_pages/teaching.md`, `_pages/cv.md`, `_pages/publications.md`, `_pages/projects.md` exist; note the deploy workflow filename (e.g. `deploy.yml`) and which branch it triggers on, and whether it uses `actions/deploy-pages` (→ Pages Source = GitHub Actions) or pushes a `gh-pages` branch.
 
 - [ ] **Step 4: Verify key files are present**
@@ -71,6 +75,7 @@ test -f .github/workflows/deploy.yml && echo "workflow OK"
 test -f _pages/about.md && echo "about OK"
 test -f _pages/teaching.md && echo "teaching OK"
 ```
+
 Expected: four "OK" lines (if the workflow filename differs, use the name found in Step 3).
 
 - [ ] **Step 5: Commit the scaffold**
@@ -85,6 +90,7 @@ git -c user.name="Liangfu Ge" -c user.email="geliangfu@gmail.com" commit -m "cho
 ### Task 2: Configure site identity (`_config.yml`)
 
 **Files:**
+
 - Modify: `_config.yml`
 
 - [ ] **Step 1: Set the site/owner fields**
@@ -92,7 +98,7 @@ git -c user.name="Liangfu Ge" -c user.email="geliangfu@gmail.com" commit -m "cho
 Find each key in `_config.yml` and set these exact values (keys exist in al-folio; replace the value after the colon):
 
 ```yaml
-title: blank                       # leave navbar brand blank; name shows via first/last
+title: blank # leave navbar brand blank; name shows via first/last
 first_name: Liangfu
 middle_name:
 last_name: Ge
@@ -107,24 +113,28 @@ keywords: bridge, structural health monitoring, SHM, damage detection, sensors, 
 url: https://civil-liangfu.github.io
 baseurl: ""
 ```
+
 (`baseurl` MUST be empty string for a `*.github.io` user site, otherwise CSS/links break.)
 
 - [ ] **Step 3: Set social/profile links (placeholders the owner edits later)**
 
 In the social section set:
+
 ```yaml
 github_username: Civil-Liangfu
 ```
+
 Leave `scholar_userid`, `orcid_id`, `researchgate`, etc. blank (empty value) so no broken icons appear until the owner fills them.
 
 - [ ] **Step 4: Disable analytics/comments for v1**
 
 Set any of these that exist to false/blank:
+
 ```yaml
 enable_google_analytics: false
 enable_google_analytics_gtag: false
 disqus_shortname:
-giscus:                            # leave subkeys blank if present
+giscus: # leave subkeys blank if present
 ```
 
 - [ ] **Step 5: Verify the edits**
@@ -132,6 +142,7 @@ giscus:                            # leave subkeys blank if present
 ```bash
 grep -E "^(url|baseurl|first_name|last_name|email|github_username):" _config.yml
 ```
+
 Expected: shows `url: https://civil-liangfu.github.io`, `baseurl: ""`, `first_name: Liangfu`, `last_name: Ge`, `email: geliangfu@gmail.com`, `github_username: Civil-Liangfu`.
 
 - [ ] **Step 6: Commit**
@@ -146,6 +157,7 @@ git -c user.name="Liangfu Ge" -c user.email="geliangfu@gmail.com" commit -m "fea
 ### Task 3: Customize the About / Home page
 
 **Files:**
+
 - Modify: `_pages/about.md`
 
 - [ ] **Step 1: Replace `_pages/about.md` with bridge-SHM placeholder content**
@@ -175,8 +187,8 @@ I am a researcher working on **bridge structural health monitoring (SHM)** — u
 sensor networks, data-driven methods, and digital twins to detect damage and assess
 the condition of bridges throughout their service life.
 
-*(This is placeholder text. Edit `_pages/about.md` on GitHub to add your real bio,
-photo (`assets/img/prof_pic.jpg`), and contact details.)*
+_(This is placeholder text. Edit `_pages/about.md` on GitHub to add your real bio,
+photo (`assets/img/prof_pic.jpg`), and contact details.)_
 
 My research interests include:
 
@@ -191,6 +203,7 @@ My research interests include:
 ```bash
 grep -E "permalink: /|Bridge Structural Health Monitoring" _pages/about.md
 ```
+
 Expected: both lines present.
 
 - [ ] **Step 3: Commit**
@@ -205,6 +218,7 @@ git -c user.name="Liangfu Ge" -c user.email="geliangfu@gmail.com" commit -m "fea
 ### Task 4: Customize the Teaching page
 
 **Files:**
+
 - Modify: `_pages/teaching.md`
 
 - [ ] **Step 1: Replace `_pages/teaching.md` with placeholder content (keep it in the navbar)**
@@ -219,7 +233,7 @@ nav: true
 nav_order: 5
 ---
 
-*(Placeholder. Edit `_pages/teaching.md` on GitHub to list your real courses.)*
+_(Placeholder. Edit `_pages/teaching.md` on GitHub to list your real courses.)_
 
 ## Courses
 
@@ -239,6 +253,7 @@ to get in touch.
 ```bash
 grep -E "nav: true|title: teaching" _pages/teaching.md
 ```
+
 Expected: both lines present.
 
 - [ ] **Step 3: Commit**
@@ -253,6 +268,7 @@ git -c user.name="Liangfu Ge" -c user.email="geliangfu@gmail.com" commit -m "fea
 ### Task 5: Seed Publications with a placeholder
 
 **Files:**
+
 - Replace: `_bibliography/papers.bib`
 
 - [ ] **Step 1: Overwrite `_bibliography/papers.bib` with one placeholder entry**
@@ -270,6 +286,7 @@ git -c user.name="Liangfu Ge" -c user.email="geliangfu@gmail.com" commit -m "fea
   selected = {true}
 }
 ```
+
 (The leading `---`/`---` block is required by jekyll-scholar — keep it.)
 
 - [ ] **Step 2: Verify**
@@ -277,6 +294,7 @@ git -c user.name="Liangfu Ge" -c user.email="geliangfu@gmail.com" commit -m "fea
 ```bash
 grep -E "ge2026shm|selected = \{true\}" _bibliography/papers.bib
 ```
+
 Expected: both present.
 
 - [ ] **Step 3: Commit**
@@ -291,6 +309,7 @@ git -c user.name="Liangfu Ge" -c user.email="geliangfu@gmail.com" commit -m "fea
 ### Task 6: Seed Research / Projects and remove demo projects
 
 **Files:**
+
 - Remove: existing demo files in `_projects/`
 - Create: `_projects/1_bridge_shm.md`
 
@@ -312,8 +331,8 @@ importance: 1
 category: research
 ---
 
-*(Placeholder project. Copy this file in `_projects/` on GitHub to add more, and put
-images in `assets/img/`.)*
+_(Placeholder project. Copy this file in `_projects/` on GitHub to add more, and put
+images in `assets/img/`.)_
 
 A wireless sensor network continuously measures acceleration and strain on a highway
 bridge. Data are streamed to a server where damage-detection algorithms flag anomalies
@@ -321,6 +340,7 @@ in near real time.
 
 Replace this text with a description of your real project, methods, and results.
 ```
+
 (`img:` reuses an image al-folio already ships in `assets/img/`. Confirm `assets/img/12.jpg` exists from Task 1 Step 3; if not, point `img:` at any file that does.)
 
 - [ ] **Step 3: Verify**
@@ -328,6 +348,7 @@ Replace this text with a description of your real project, methods, and results.
 ```bash
 ls _projects/ && grep "Bridge SHM Sensor Network" _projects/1_bridge_shm.md
 ```
+
 Expected: only `1_bridge_shm.md` listed; title line present.
 
 - [ ] **Step 4: Commit**
@@ -342,6 +363,7 @@ git -c user.name="Liangfu Ge" -c user.email="geliangfu@gmail.com" commit -m "fea
 ### Task 7: Clean remaining demo content and hide the blog
 
 **Files:**
+
 - Remove: `_posts/` demo posts; sample files in `_data/`
 - Replace: `_news/` with one placeholder
 - Modify: blog nav visibility
@@ -351,7 +373,9 @@ git -c user.name="Liangfu Ge" -c user.email="geliangfu@gmail.com" commit -m "fea
 ```bash
 rm -f _news/*.md
 ```
+
 Create `_news/announcement_1.md`:
+
 ```markdown
 ---
 layout: post
@@ -360,7 +384,7 @@ inline: true
 related_posts: false
 ---
 
-New personal homepage is live. *(Placeholder — add news items in `_news/`.)*
+New personal homepage is live. _(Placeholder — add news items in `_news/`.)_
 ```
 
 - [ ] **Step 2: Remove demo blog posts (blog is a non-goal for v1)**
@@ -372,9 +396,11 @@ rm -f _posts/*.md _posts/*.markdown 2>/dev/null; true
 - [ ] **Step 3: Hide the blog tab from the navbar**
 
 In `_config.yml`, find the blog navbar setting. al-folio shows blog via the `_pages/blog/index.html` front matter `nav: true`. Set it to `nav: false`:
+
 ```bash
 grep -rn "nav:" _pages/blog/ 2>/dev/null
 ```
+
 Edit the blog index page's front matter to `nav: false` (file path from the grep above, typically `_pages/blog/index.html`). If no blog index exists, skip.
 
 - [ ] **Step 4: Remove sample data and clean the CV so no demo person renders**
@@ -384,7 +410,9 @@ Edit the blog index page's front matter to `nav: false` (file path from the grep
 rm -f _data/coauthors.yml 2>/dev/null; true
 ls _data/                       # see what CV/data files actually exist (cv.yml / cv.json / repositories.yml)
 ```
+
 Then handle the CV page so it shows a clean placeholder instead of al-folio's demo CV:
+
 - If `_data/cv.yml` exists, open it and **keep its key structure** (so the schema stays valid) but replace the sample values with placeholders — e.g. set the name to `Liangfu Ge`, basics to "Bridge Structural Health Monitoring researcher", and delete all but one example entry per section. (Exact keys come from the file inspected above; do not invent new keys.)
 - Also remove demo `_data/repositories.yml` GitHub-user/repo samples if present: `rm -f _data/repositories.yml 2>/dev/null; true`.
 - Leave `_pages/cv.md` in the navbar; it will now render the trimmed placeholder CV.
@@ -394,6 +422,7 @@ Then handle the CV page so it shows a clean placeholder instead of al-folio's de
 ```bash
 ls _news/; echo "--- posts ---"; ls _posts/ 2>/dev/null | head
 ```
+
 Expected: `_news/` has only `announcement_1.md`; `_posts/` is empty or absent.
 
 - [ ] **Step 6: Commit**
@@ -408,6 +437,7 @@ git -c user.name="Liangfu Ge" -c user.email="geliangfu@gmail.com" commit -m "cho
 ### Task 8: Write the owner guide and CLAUDE.md
 
 **Files:**
+
 - Create: `HOW-TO-UPDATE.md`
 - Create: `CLAUDE.md`
 
@@ -422,22 +452,24 @@ github.com and the site rebuilds itself in 1–2 minutes.
 
 ## Where to edit (all at github.com/Civil-Liangfu/Civil-Liangfu.github.io)
 
-| I want to… | Edit this file | How |
-|------------|----------------|-----|
-| Change my bio / photo info | `_pages/about.md` | Edit text; replace photo at `assets/img/prof_pic.jpg` |
-| Add a publication | `_bibliography/papers.bib` | Paste the paper's BibTeX entry at the top |
-| Add a news item | `_news/` | Click "Add file" → copy the format of `announcement_1.md` |
-| Add a project | `_projects/` | Copy `1_bridge_shm.md`, rename, edit; image → `assets/img/` |
-| Edit teaching | `_pages/teaching.md` | Edit text |
-| Edit my name / links | `_config.yml` | Edit values (e.g. `scholar_userid`, `orcid_id`) |
+| I want to…                 | Edit this file             | How                                                         |
+| -------------------------- | -------------------------- | ----------------------------------------------------------- |
+| Change my bio / photo info | `_pages/about.md`          | Edit text; replace photo at `assets/img/prof_pic.jpg`       |
+| Add a publication          | `_bibliography/papers.bib` | Paste the paper's BibTeX entry at the top                   |
+| Add a news item            | `_news/`                   | Click "Add file" → copy the format of `announcement_1.md`   |
+| Add a project              | `_projects/`               | Copy `1_bridge_shm.md`, rename, edit; image → `assets/img/` |
+| Edit teaching              | `_pages/teaching.md`       | Edit text                                                   |
+| Edit my name / links       | `_config.yml`              | Edit values (e.g. `scholar_userid`, `orcid_id`)             |
 
 ## The editing loop
+
 1. Open the file on GitHub and click the ✏️ pencil ("Edit this file").
 2. Make changes.
 3. Scroll down, click **Commit changes**.
 4. Wait ~1–2 minutes, then refresh the live site.
 
 ## If something looks broken
+
 Go to the repo's **Actions** tab. A red ✗ means the last build failed — click it to
 see the error (usually a typo in `_config.yml` or a `.bib` entry). Fix the file and
 commit again.
@@ -451,17 +483,20 @@ commit again.
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
 ## What this is
+
 A personal academic homepage for Liangfu Ge (bridge structural health monitoring),
 built on the **al-folio** Jekyll theme and hosted on **GitHub Pages** at
 https://civil-liangfu.github.io (repo: `Civil-Liangfu.github.io`, a GitHub user site).
 
 ## Build & deploy
+
 - **No local build is configured** (no Ruby/Docker/Node on the owner's machine).
 - Pushing to the default branch triggers `.github/workflows/deploy.yml`, which builds
   the Jekyll site on GitHub's servers and deploys to GitHub Pages.
 - To preview locally one would need Jekyll/Docker (see al-folio README) — not set up here.
 
 ## Where content lives (edit these, not the theme internals)
+
 - Site identity & links: `_config.yml` (`url` must stay `https://civil-liangfu.github.io`, `baseurl` must stay `""`).
 - Home/bio: `_pages/about.md`; profile photo `assets/img/prof_pic.jpg`.
 - Publications: `_bibliography/papers.bib` (BibTeX; jekyll-scholar renders it).
@@ -470,6 +505,7 @@ https://civil-liangfu.github.io (repo: `Civil-Liangfu.github.io`, a GitHub user 
 - Navbar visibility is the `nav:`/`nav_order:` front matter on each `_pages/*` file.
 
 ## Conventions
+
 - Owner edits primarily via the GitHub web UI; keep changes simple and well-commented.
 - Don't set `baseurl` to a non-empty value — it breaks asset paths on a user site.
 - Theme upgrades follow al-folio's upstream; avoid editing `_layouts`/`_includes` unless necessary.
@@ -480,6 +516,7 @@ https://civil-liangfu.github.io (repo: `Civil-Liangfu.github.io`, a GitHub user 
 ```bash
 test -f HOW-TO-UPDATE.md && test -f CLAUDE.md && echo "guides OK"
 ```
+
 Expected: `guides OK`.
 
 - [ ] **Step 4: Commit**
@@ -507,6 +544,7 @@ git branch -M main
 git remote add origin https://github.com/Civil-Liangfu/Civil-Liangfu.github.io.git
 git remote -v
 ```
+
 Expected: `origin` shows the fetch/push URLs.
 NOTE: the branch name MUST match the branch al-folio's `deploy.yml` triggers on (found in Task 1 Step 3). Modern al-folio uses `main`. If the workflow only triggers on `master`, use `git branch -M master` and push that instead.
 
@@ -515,6 +553,7 @@ NOTE: the branch name MUST match the branch al-folio's `deploy.yml` triggers on 
 ```bash
 git push -u origin main
 ```
+
 Git Credential Manager will open a browser window for the owner to sign in to GitHub the first time. Expected: branch pushed, upstream set.
 
 - [ ] **Step 4: Verify the push**
@@ -522,6 +561,7 @@ Git Credential Manager will open a browser window for the owner to sign in to Gi
 ```bash
 git ls-remote --heads origin
 ```
+
 Expected: lists `refs/heads/main`.
 
 ---
@@ -548,6 +588,7 @@ If it fails, open the run log, fix the reported file (commonly `_config.yml` YAM
 ```bash
 curl -sSI https://civil-liangfu.github.io | head -1
 ```
+
 Expected: `HTTP/2 200` (may take a few minutes after the first successful build while DNS/Pages warm up).
 
 - [ ] **Step 4: Verify on-topic content rendered**
@@ -555,6 +596,7 @@ Expected: `HTTP/2 200` (may take a few minutes after the first successful build 
 ```bash
 curl -s https://civil-liangfu.github.io | grep -iE "structural health monitoring|Liangfu" | head -1
 ```
+
 Expected: a matching line, confirming the customized content (not al-folio demo text) is live.
 
 - [ ] **Step 5: Final confirmation**

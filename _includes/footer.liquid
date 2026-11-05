@@ -1,0 +1,32 @@
+{% comment %}
+  Local copy of the al-folio footer: cleaner layout and no stray space before
+  the full stop when last_name is empty. The credit text is footer_text in
+  _config.yml. Styling: _sass/_design.scss (section 9).
+{% endcomment %}
+{% capture owner_name %}{{ site.first_name }}{% if site.middle_name %} {{ site.middle_name }}{% endif %}{% if site.last_name %} {{ site.last_name }}{% endif %}{% endcapture %}
+
+<footer class="{% if site.footer_fixed %}fixed-bottom{% else %}sticky-bottom{% endif %} site-footer" role="contentinfo">
+  {% if site.newsletter.enabled and site.footer_fixed == false %}
+    {% if site.plugins contains 'al_newsletter' %}
+      {% include plugins/al_newsletter_form_center.liquid %}
+    {% else %}
+      {% include newsletter.liquid %}
+    {% endif %}
+  {% endif %}
+
+  <div class="container site-footer__inner">
+    <span class="site-footer__owner"
+      >&copy; {{ site.time | date: '%Y' }}
+      {{ owner_name | strip -}}
+    </span>
+    <span class="site-footer__meta">
+      {{ site.footer_text }}
+      {% if site.impressum_path %}
+        <a href="{{ site.url }}{{ site.baseurl }}{{ site.impressum_path }}">Impressum</a>.
+      {% endif %}
+      {% if site.last_updated %}
+        Last updated: {{ 'now' | date: '%B %d, %Y' }}.
+      {% endif %}
+    </span>
+  </div>
+</footer>

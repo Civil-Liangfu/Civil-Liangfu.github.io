@@ -1,0 +1,399 @@
+# =============================================================================
+# EDITING PANEL SETTINGS (Sveltia CMS) — https://civil-liangfu.github.io/admin/
+# -----------------------------------------------------------------------------
+# Each "collection" below is a section of the panel. Each "field" is one box
+# in a form, and "name" is the key it is saved under in the file.
+# Docs: https://sveltiacms.app/en/docs
+# =============================================================================
+
+backend:
+  name: github
+  repo: Civil-Liangfu/Civil-Liangfu.github.io
+  branch: main
+  # Sign in with a GitHub personal access token (see HOW-TO-UPDATE.md).
+  auth_methods: [token]
+  commit_messages:
+    create: "Add {{collection}} “{{slug}}” (via editing panel)"
+    update: "Update {{collection}} “{{slug}}” (via editing panel)"
+    delete: "Delete {{collection}} “{{slug}}” (via editing panel)"
+    uploadMedia: "Upload “{{path}}” (via editing panel)"
+    deleteMedia: "Delete “{{path}}” (via editing panel)"
+
+site_url: https://civil-liangfu.github.io
+display_url: https://civil-liangfu.github.io
+logo:
+  src: /assets/img/prof_pic.jpg
+
+# Pictures uploaded in the panel go to assets/img/ in the repository.
+media_folder: assets/img
+public_folder: /assets/img
+
+output:
+  omit_empty_optional_fields: true # leave empty optional boxes out of the files
+
+collections:
+  # ---------------------------------------------------------------------------
+  # HOME PAGE
+  # ---------------------------------------------------------------------------
+  - name: home
+    label: Home page
+    icon: home
+    files:
+      - name: about
+        label: Home page
+        file: _pages/about.md
+        format: yaml-frontmatter
+        fields:
+          - { name: layout, widget: hidden, default: about }
+          - { name: title, widget: hidden, default: About }
+          - { name: permalink, widget: hidden, default: / }
+          - label: Small line above your name
+            name: eyebrow
+            widget: string
+            required: false
+            hint: Shown in small orange capitals, e.g. “Bridge Engineering · Smart Cities”.
+          - label: Role (line under your name)
+            name: subtitle
+            widget: string
+          - label: Photo and affiliation
+            name: profile
+            widget: object
+            collapsed: false
+            fields:
+              - label: Photo
+                name: image
+                widget: image
+                hint: A portrait works best (it is cropped to 4:5). Upload a new one or pick one already in the library.
+              - label: Photo description
+                name: image_alt
+                widget: string
+                required: false
+                hint: Read aloud by screen readers, e.g. “Portrait of Liangfu Ge”.
+              - { label: Department, name: department, widget: string, required: false }
+              - { label: University or institution, name: institution, widget: string, required: false }
+              - { label: City and country, name: location, widget: string, required: false }
+          - label: Short biography
+            name: body
+            widget: markdown
+            buttons: [bold, italic, link]
+            editor_components: []
+            hint: Two or three sentences work best. Use the “B” button for bold.
+          - label: Heading of the research section
+            name: research_heading
+            widget: string
+            default: Research
+            hint: The research cards themselves come from the “Research topics” section of this panel.
+          - label: Show selected publications
+            name: selected_papers
+            widget: boolean
+            default: true
+            hint: Shows the papers marked “selected” in Publications.
+          - label: News on the home page
+            name: announcements
+            widget: object
+            fields:
+              - { label: Show news, name: enabled, widget: boolean, default: true }
+              - { label: How many news items to show, name: limit, widget: number, value_type: int, min: 1, max: 20, default: 5 }
+          - label: Show the “Get in touch” section
+            name: social
+            widget: boolean
+            default: true
+          - { label: Heading of the contact section, name: contact_heading, widget: string, default: Get in touch }
+          - label: Text of the contact section
+            name: contact_note
+            widget: text
+            required: false
+
+  # ---------------------------------------------------------------------------
+  # CONTACT LINKS (buttons on the home page)
+  # ---------------------------------------------------------------------------
+  - name: links
+    label: Contact links
+    icon: link
+    files:
+      - name: socials
+        label: Email and profile links
+        file: _data/socials.yml
+        format: yml
+        fields:
+          - { label: Email address, name: email, widget: string, required: false }
+          - label: Google Scholar user ID
+            name: scholar_userid
+            widget: string
+            required: false
+            hint: Only the part after “user=” in your Scholar link, e.g. Jx-_4dwAAAAJ.
+          - label: ORCID iD
+            name: orcid_id
+            widget: string
+            required: false
+            hint: e.g. 0000-0003-0877-1734
+          - label: ResearchGate profile name
+            name: research_gate_profile
+            widget: string
+            required: false
+            hint: Only the part after “researchgate.net/profile/”, e.g. Liangfu-Ge.
+          - label: LinkedIn profile name
+            name: linkedin_username
+            widget: string
+            required: false
+            hint: Only the part after “linkedin.com/in/”.
+          - { label: GitHub username, name: github_username, widget: string, required: false }
+
+  # ---------------------------------------------------------------------------
+  # RESEARCH TOPICS (cards on the home page and the Research page)
+  # ---------------------------------------------------------------------------
+  - name: research
+    label: Research topics
+    label_singular: Research topic
+    icon: science
+    folder: _projects
+    extension: md
+    format: yaml-frontmatter
+    create: true
+    delete: true
+    slug: "{{fields.importance}}_{{slug}}"
+    identifier_field: title
+    summary: "{{importance}} · {{title}}"
+    sortable_fields:
+      fields: [importance, title]
+      default: { field: importance, direction: ascending }
+    fields:
+      - { name: layout, widget: hidden, default: page }
+      - { name: category, widget: hidden, default: research }
+      - { name: related_publications, widget: hidden, default: true }
+      - { label: Title, name: title, widget: string }
+      - label: One-sentence summary
+        name: description
+        widget: text
+        hint: Shown on the card and under the page title.
+      - label: Position
+        name: importance
+        widget: number
+        value_type: int
+        min: 1
+        default: 5
+        hint: Order of the topics. 1 = first.
+      - label: Card picture
+        name: img
+        widget: image
+        required: false
+        hint: Optional. A wide figure from one of your papers works well.
+      - label: Page text
+        name: body
+        widget: markdown
+        modes: [raw, rich_text]
+        hint: >-
+          To cite a paper, write {% cite key %}, where key is the paper’s key in
+          Publications (e.g. ge2020accurate). Cited papers are listed at the bottom of
+          the page automatically.
+
+  # ---------------------------------------------------------------------------
+  # NEWS
+  # ---------------------------------------------------------------------------
+  - name: news
+    label: News
+    label_singular: News item
+    icon: campaign
+    folder: _news
+    extension: md
+    format: yaml-frontmatter
+    create: true
+    delete: true
+    slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
+    identifier_field: title
+    summary: "{{date | date('YYYY-MM-DD')}} · {{title}}"
+    sortable_fields:
+      fields: [date, title]
+      default: { field: date, direction: descending }
+    fields:
+      - { name: layout, widget: hidden, default: post }
+      - { name: inline, widget: hidden, default: true }
+      - { name: related_posts, widget: hidden, default: false }
+      - label: Short title
+        name: title
+        widget: string
+        hint: Only used to name the file and in this list; the text below is what visitors see.
+      - { label: Date, name: date, widget: datetime, type: date, default: "{{now}}" }
+      - label: News text
+        name: body
+        widget: markdown
+        buttons: [bold, italic, link]
+        editor_components: []
+        hint: One or two sentences.
+
+  # ---------------------------------------------------------------------------
+  # PUBLICATIONS (BibTeX file)
+  # ---------------------------------------------------------------------------
+  - name: publications
+    label: Publications
+    icon: menu_book
+    files:
+      - name: papers
+        label: Publication list (BibTeX)
+        file: _bibliography/papers.bib
+        format: raw
+        fields:
+          - label: BibTeX entries
+            name: body
+            widget: text
+            hint: >-
+              Paste each new paper’s BibTeX entry at the top (copy it from Google Scholar:
+              “Cite” → “BibTeX”). Extra lines you can add inside an entry:
+              abbr={JBE}, (short journal label), selected={true}, (show on the home page),
+              doi={10.xxxx/xxxxx}, (adds a DOI button). Keep the braces and commas exactly.
+
+  # ---------------------------------------------------------------------------
+  # CV
+  # ---------------------------------------------------------------------------
+  - name: cv
+    label: CV
+    icon: badge
+    files:
+      - name: cv
+        label: CV
+        file: _data/cv.yml
+        format: yml
+        fields:
+          - label: CV
+            name: cv
+            widget: object
+            collapsed: false
+            fields:
+              - { label: Name, name: name, widget: string }
+              - { label: Location, name: location, widget: string, required: false }
+              - { label: Email, name: email, widget: string, required: false }
+              - { label: Website, name: website, widget: string, required: false }
+              - label: Profiles
+                name: social_networks
+                widget: list
+                required: false
+                summary: "{{network}}: {{username}}"
+                fields:
+                  - label: Network
+                    name: network
+                    widget: select
+                    options: [ORCID, Google Scholar, ResearchGate, LinkedIn, GitHub, X]
+                  - label: Username or ID
+                    name: username
+                    widget: string
+              - label: Sections
+                name: sections
+                widget: object
+                collapsed: false
+                fields:
+                  - label: Current position
+                    name: current_position
+                    widget: list
+                    required: false
+                    summary: "{{label}}: {{details}}"
+                    fields:
+                      - { label: Role, name: label, widget: string }
+                      - { label: Where, name: details, widget: string }
+                  - label: Experience
+                    name: Experience
+                    widget: list
+                    required: false
+                    summary: "{{start_date}}–{{end_date}} · {{position}}, {{company}}"
+                    fields:
+                      - { label: Job title, name: position, widget: string }
+                      - { label: Organization, name: company, widget: string }
+                      - { label: City and country, name: location, widget: string, required: false }
+                      - &start_date
+                        label: Start
+                        name: start_date
+                        widget: string
+                        required: false
+                        pattern: ['^\d{4}(-\d{2})?$', "Use a year (2024) or year-month (2024-09)."]
+                      - &end_date
+                        label: End
+                        name: end_date
+                        widget: string
+                        required: false
+                        pattern: ['^(\d{4}(-\d{2})?|present)$', "Use a year (2024), year-month (2024-09) or the word present."]
+                      - { label: One-line summary, name: summary, widget: string, required: false }
+                      - { label: Highlights, name: highlights, widget: list, required: false }
+                  - label: Education
+                    name: Education
+                    widget: list
+                    required: false
+                    summary: "{{start_date}}–{{end_date}} · {{degree}}, {{institution}}"
+                    fields:
+                      - { label: University, name: institution, widget: string }
+                      - { label: Degree (e.g. PhD), name: degree, widget: string, required: false }
+                      - { label: Field of study, name: area, widget: string }
+                      - { label: City and country, name: location, widget: string, required: false }
+                      - *start_date
+                      - *end_date
+                      - { label: Highlights (e.g. thesis title), name: highlights, widget: list, required: false }
+                  - label: Awards and honours
+                    name: awards_and_honours
+                    widget: list
+                    required: false
+                    summary: "{{label}} · {{details}}"
+                    fields:
+                      - { label: Year, name: label, widget: string }
+                      - { label: Award and who gave it, name: details, widget: string }
+                  - label: Research interests
+                    name: research_interests
+                    widget: list
+                    required: false
+                    summary: "{{bullet}}"
+                    fields:
+                      - { label: Interest, name: bullet, widget: string }
+                  - label: Methods and tools
+                    name: methods_and_tools
+                    widget: list
+                    required: false
+                    summary: "{{label}}"
+                    fields:
+                      - { label: Area, name: label, widget: string }
+                      - { label: Methods (comma-separated), name: details, widget: string }
+                  - label: Selected publications
+                    name: Publications
+                    widget: list
+                    required: false
+                    summary: "{{date}} · {{title}}"
+                    fields:
+                      - { label: Title, name: title, widget: string }
+                      - label: Authors
+                        name: authors
+                        widget: list
+                        hint: One name per item. Write your own name as **Liangfu Ge** to make it bold in the PDF.
+                      - { label: Journal or conference, name: journal, widget: string }
+                      - label: Year
+                        name: date
+                        widget: string
+                        pattern: ['^\d{4}(-\d{2})?$', "Use a year, e.g. 2024."]
+
+  # ---------------------------------------------------------------------------
+  # TEACHING (hidden page until switched on)
+  # ---------------------------------------------------------------------------
+  - name: teaching
+    label: Teaching
+    icon: school
+    files:
+      - name: teaching
+        label: Teaching page
+        file: _pages/teaching.md
+        format: yaml-frontmatter
+        fields:
+          - { name: layout, widget: hidden, default: page }
+          - { name: permalink, widget: hidden, default: /teaching/ }
+          - { name: nav_order, widget: hidden, default: 3 }
+          - { label: Page title, name: title, widget: string }
+          - { label: Line under the title, name: description, widget: string, required: false }
+          - label: Show this page in the menu
+            name: nav
+            widget: boolean
+            default: false
+            hint: Switch on once the page text below is ready.
+          - label: Let search engines list this page
+            name: sitemap
+            widget: boolean
+            default: false
+            hint: Switch on together with the menu option above.
+          - label: Page text
+            name: body
+            widget: markdown
+            modes: [raw, rich_text]
+            hint: Use “## Courses” and “## Student supervision” as headings, with one “- ” line per item.

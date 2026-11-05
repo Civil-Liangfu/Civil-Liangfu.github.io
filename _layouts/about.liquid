@@ -1,0 +1,187 @@
+---
+layout: default
+---
+{% comment %}
+  HOME PAGE LAYOUT (local override of the al-folio "about" layout).
+  The text shown here comes from _pages/about.md (front matter + body),
+  the research cards from _projects/*.md, the news from _news/*.md, the
+  selected papers from _bibliography/papers.bib (selected={true}) and the
+  contact buttons from _data/socials.yml. Styling: _sass/_design.scss.
+{% endcomment %}
+
+{% assign socials = site.data.socials %}
+{% assign profile = page.profile %}
+
+{% comment %} Photo path: accepts "prof_pic.jpg" or "/assets/img/prof_pic.jpg" {% endcomment %}
+{% assign photo = profile.image | default: 'prof_pic.jpg' %}
+{% unless photo contains '/' %}
+  {% assign photo = photo | prepend: 'assets/img/' %}
+{% endunless %}
+{% assign photo_first_char = photo | slice: 0 %}
+{% if photo_first_char == '/' %}
+  {% assign photo = photo | remove_first: '/' %}
+{% endif %}
+
+{% comment %} Contact buttons, reused in the hero and the contact band {% endcomment %}
+{% capture profile_links %}
+  {% if socials.scholar_userid %}
+    <a class="btn-site" href="https://scholar.google.com/citations?user={{ socials.scholar_userid }}"><i class="ai ai-google-scholar"></i> Google Scholar</a>
+  {% endif %}
+  {% if socials.orcid_id %}
+    <a class="btn-site" href="https://orcid.org/{{ socials.orcid_id }}"><i class="ai ai-orcid"></i> ORCID</a>
+  {% endif %}
+  {% if socials.research_gate_profile %}
+    <a class="btn-site" href="https://www.researchgate.net/profile/{{ socials.research_gate_profile }}/"><i class="ai ai-researchgate"></i> ResearchGate</a>
+  {% endif %}
+  {% if socials.linkedin_username %}
+    <a class="btn-site" href="https://www.linkedin.com/in/{{ socials.linkedin_username }}"><i class="fa-brands fa-linkedin"></i> LinkedIn</a>
+  {% endif %}
+  {% if socials.github_username %}
+    <a class="btn-site" href="https://github.com/{{ socials.github_username }}"><i class="fa-brands fa-github"></i> GitHub</a>
+  {% endif %}
+{% endcapture %}
+
+<div class="home">
+  <!-- Introduction -->
+  <section class="home-hero">
+    <div class="home-intro">
+      {% if page.eyebrow %}
+        <p class="home-eyebrow">{{ page.eyebrow }}</p>
+      {% endif %}
+      <h1 class="home-name">
+        {% if site.title == 'blank' %}
+          {{- site.first_name }}
+          {% if site.middle_name %}{{ site.middle_name }} {% endif %}
+          {{- site.last_name -}}
+        {% else %}
+          {{- site.title -}}
+        {% endif %}
+      </h1>
+      {% if page.subtitle %}
+        <p class="home-role">{{ page.subtitle }}</p>
+      {% endif %}
+
+      {% if profile.department or profile.institution or profile.location %}
+        <p class="home-affiliation">
+          {% if profile.department -%}
+            <span>{{ profile.department }}</span>
+          {%- endif %}
+          {% if profile.institution -%}
+            <strong>{{ profile.institution }}</strong>
+          {%- endif %}
+          {% if profile.location -%}
+            <span>{{ profile.location }}</span>
+          {%- endif %}
+        </p>
+      {% endif %}
+
+      <div class="home-bio">{{ content }}</div>
+
+      <div class="home-actions">
+        {% if socials.email %}
+          <a class="btn-site btn-site--primary" href="mailto:{{ socials.email }}"><i class="fa-solid fa-envelope"></i> Email me</a>
+        {% endif %}
+        {{ profile_links }}
+        <a class="btn-site" href="{{ '/cv/' | relative_url }}"><i class="fa-solid fa-file-lines"></i> CV</a>
+      </div>
+    </div>
+
+    <div class="home-portrait">
+      {%
+        include figure.liquid
+        loading="eager"
+        path=photo
+        sizes="(min-width: 768px) 360px, 62vw"
+        alt=page.profile.image_alt
+        cache_bust=true
+      %}
+    </div>
+  </section>
+
+  <!-- Research themes (one card per file in _projects/) -->
+  {% assign themes = site.projects | sort: 'importance' %}
+  {% if themes.size > 0 %}
+    <section class="home-section" id="research">
+      <div class="section-head">
+        <span class="section-index">01</span>
+        <h2>{{ page.research_heading | default: 'Research' }}</h2>
+        <a class="section-link" href="{{ '/projects/' | relative_url }}">All research</a>
+      </div>
+      <div class="theme-grid">
+        {% for project in themes %}
+          <a class="theme-card" href="{% if project.redirect %}{{ project.redirect }}{% else %}{{ project.url | relative_url }}{% endif %}">
+            {% if project.img %}
+              <div class="theme-card__img">
+                {% include figure.liquid loading="lazy" path=project.img sizes="(min-width: 768px) 520px, 95vw" alt=project.title %}
+              </div>
+            {% endif %}
+            <span class="theme-card__num">
+              {%- if forloop.index < 10 %}0{% endif -%}
+              {{- forloop.index -}}
+            </span>
+            <h3 class="theme-card__title">{{ project.title }}</h3>
+            <p class="theme-card__desc">{{ project.description }}</p>
+            <span class="theme-card__more">Read more</span>
+          </a>
+        {% endfor %}
+      </div>
+    </section>
+  {% endif %}
+
+  <!-- Selected publications (entries in papers.bib with selected={true}) -->
+  {% if page.selected_papers %}
+    <section class="home-section" id="selected-publications">
+      <div class="section-head">
+        <span class="section-index">02</span>
+        <h2>Selected publications</h2>
+        <a class="section-link" href="{{ '/publications/' | relative_url }}">All publications</a>
+      </div>
+      {% include selected_papers.liquid %}
+    </section>
+  {% endif %}
+
+  <!-- News (files in _news/) -->
+  {% if page.announcements and page.announcements.enabled and site.news.size > 0 %}
+    <section class="home-section" id="news">
+      <div class="section-head">
+        <span class="section-index">03</span>
+        <h2>News</h2>
+        <a class="section-link" href="{{ '/news/' | relative_url }}">All news</a>
+      </div>
+      {% assign news = site.news | sort: 'date' | reverse %}
+      <ul class="news-list">
+        {% for item in news limit: page.announcements.limit %}
+          <li>
+            <time datetime="{{ item.date | date_to_xmlschema }}">{{ item.date | date: '%b %d, %Y' }}</time>
+            <div class="news-text">
+              {% if item.inline %}
+                {{ item.content | emojify }}
+              {% else %}
+                <p>
+                  <a href="{{ item.url | relative_url }}">{{ item.title }}</a>
+                </p>
+              {% endif %}
+            </div>
+          </li>
+        {% endfor %}
+      </ul>
+    </section>
+  {% endif %}
+
+  <!-- Contact -->
+  {% if page.social %}
+    <section class="contact-band" id="contact">
+      <div>
+        <p class="home-eyebrow">Contact</p>
+        <h2>{{ page.contact_heading | default: 'Get in touch' }}</h2>
+        <p>{{ page.contact_note | default: site.contact_note }}</p>
+      </div>
+      <div class="home-actions">
+        {% if socials.email %}
+          <a class="btn-site btn-site--primary" href="mailto:{{ socials.email }}"><i class="fa-solid fa-envelope"></i> {{ socials.email }}</a>
+        {% endif %}
+        {{ profile_links }}
+      </div>
+    </section>
+  {% endif %}
+</div>

@@ -1,10 +1,22 @@
 # Social media links shown on the about page, displayed in the order defined here.
-# Uncomment / fill a line to show that icon. Plugin docs:
-# https://github.com/george-gca/jekyll-socials
+# Plugin docs: https://github.com/george-gca/jekyll-socials
+#
+# IMPORTANT formatting rules (a mistake here stops the whole site from building):
+#   - Always put ONE SPACE after the colon:   orcid_id: 0000-...   (not orcid_id:0000-...)
+#   - Put a SPACE before any "#" comment at the end of a line.
+#   - Give only the ID / username, NOT the full web address. The site adds the
+#     rest of the address for you.
+
 email: liangfu4work@gmail.com # your email address
+scholar_userid: Jx-_4dwAAAAJ # the part after "user=" in your Google Scholar link
+orcid_id: 0000-0003-0877-1734 # your ORCID iD
 github_username: Civil-Liangfu # your GitHub username
-scholar_userid: https://scholar.google.com/citations?user=Jx-_4dwAAAAJ&hl=zh-CN # your Google Scholar ID
-orcid_id:0000-0003-0877-1734 # your ORCID id (e.g. 0000-0000-0000-0000)
-# researchgate_profile: # your ResearchGate profile name
-linkedin_username: Liangfu Ge# your LinkedIn username
-#rss_icon: false # set to true to show the RSS icon
+
+
+# LinkedIn: open your LinkedIn profile and copy the part after "linkedin.com/in/"
+# (for example "liangfu-ge-1a2b3c"). Then remove the "#" at the start of the line
+# below and replace the example with your own.
+# linkedin_username: liangfu-ge-1a2b3c
+
+# research_gate_profile: Your-Name # the part after "researchgate.net/profile/"
+# rss_icon: false # set to true to show the RSS icon

@@ -1,40 +1,32 @@
 ---
+# HOME PAGE. Easiest to edit in the editing panel (/admin/ on the website).
+# The page design lives in _layouts/about.liquid; this file only holds the text.
 layout: about
 title: About
 permalink: /
-subtitle: Researcher in Structural Health Monitoring
+
+eyebrow: Bridge Engineering · Smart Cities # small orange line above the name
+subtitle: Researcher in Structural Health Monitoring # line under the name
 
 profile:
-  align: right
-  image: prof_pic.jpg
-  image_circular: false
-  more_info: >
-    <div class="profile-card-info">
-      <div class="profile-affiliation">Department of Civil and Environmental Engineering</div>
-      <div class="profile-university">The Hong Kong Polytechnic University</div>
-      <div class="profile-location">Hong Kong, China</div>
-    </div>
+  image: /assets/img/prof_pic.jpg # a picture in assets/img/
+  image_alt: Portrait of Liangfu Ge
+  department: Department of Civil and Environmental Engineering
+  institution: The Hong Kong Polytechnic University
+  location: Hong Kong, China
 
-selected_papers: true # includes a list of papers marked as "selected={true}"
-social: true # includes social icons at the bottom of the page
-
+research_heading: Research # heading of the research cards section
+selected_papers: true # show papers marked selected={true} in papers.bib
 announcements:
-  enabled: true # includes a list of news items
-  scrollable: true # adds a vertical scroll bar if there are more than 3 news items
-  limit: 5 # leave blank to include all the news in the `_news` folder
+  enabled: true # show the latest news
+  limit: 5 # how many news items to show
 
-latest_posts:
-  enabled: false
-  scrollable: true
-  limit: 5
+social: true # show the "Get in touch" section at the bottom
+contact_heading: Get in touch
+contact_note: >-
+  If you are interested in these areas, please feel free to reach out. I'm eager
+  to explore collaborative opportunities and share my insights.
 ---
 
 I'm a researcher at Hong Kong Polytechnic University, specializing in **Structural Health Monitoring (SHM)** and **Smart Cities** research.
-My research interests include:
-
-- Traffic Load Identification
-- Structural Damage Detection
-- Application of Robotics in SHM
-- Digital Twinning of Bridge Structures
-
-If you are interested in these areas, please feel free to reach out. I'm eager to explore collaborative opportunities and share my insights.
+My research interests include traffic load identification, structural damage detection, the application of robotics in SHM, and digital twinning of bridge structures.
