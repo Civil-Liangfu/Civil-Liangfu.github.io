@@ -1,0 +1,81 @@
+---
+layout: default
+---
+{% comment %}
+  Local copy of the al-folio "page" layout. Additions for research pages
+  (files in _projects/): a "Research · Theme 0N" label above the title, a
+  comfortable reading width, and previous/next links at the bottom.
+{% endcomment %}
+
+{% if page._styles %}
+  <!-- Page/Post style -->
+  <style type="text/css">
+    {{ page._styles }}
+  </style>
+{% endif %}
+
+{% assign is_theme = false %}
+{% if page.collection == 'projects' %}
+  {% assign is_theme = true %}
+  {% assign themes = site.projects | sort: 'importance' %}
+  {% for p in themes %}
+    {% if p.url == page.url %}
+      {% assign theme_number = forloop.index %}
+      {% assign prev_index = forloop.index0 | minus: 1 %}
+      {% assign next_index = forloop.index0 | plus: 1 %}
+    {% endif %}
+  {% endfor %}
+  {% if prev_index >= 0 %}{% assign prev_theme = themes[prev_index] %}{% endif %}
+  {% assign next_theme = themes[next_index] %}
+{% endif %}
+
+<div class="post">
+  <header class="post-header">
+    {% if is_theme %}
+      <p class="page-eyebrow">
+        <a href="{{ '/projects/' | relative_url }}">Research</a>
+        <span aria-hidden="true">·</span>
+        Theme {% if theme_number < 10 %}0{% endif -%}
+        {{- theme_number }}
+      </p>
+    {% endif %}
+    <h1 class="post-title">{{ page.title }}</h1>
+    {% if page.description %}
+      <p class="post-description">{{ page.description }}</p>
+    {% endif %}
+  </header>
+
+  <article
+    {% if is_theme %}
+      class="prose"
+    {% endif %}
+  >
+    {{ content }}
+  </article>
+
+  {% if page.related_publications %}
+    <h2>References</h2>
+    <div class="publications">
+      {% bibliography --cited_in_order %}
+    </div>
+  {% endif %}
+
+  {% if is_theme and themes.size > 1 %}
+    <nav class="page-pager" aria-label="Other research themes">
+      {% if prev_theme %}
+        <a class="pager-prev" href="{{ prev_theme.url | relative_url }}"
+          ><small>← Previous theme</small><span>{{ prev_theme.title }}</span></a
+        >
+      {% endif %}
+      {% if next_theme %}
+        <a class="pager-next" href="{{ next_theme.url | relative_url }}"
+          ><small>Next theme →</small><span>{{ next_theme.title }}</span></a
+        >
+      {% endif %}
+    </nav>
+  {% endif %}
+
+  {% if site.plugins contains 'al_comments' %}
+    {% include plugins/al_comments.liquid %}
+  {% endif %}
+</div>
