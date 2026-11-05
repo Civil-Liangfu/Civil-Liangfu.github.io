@@ -5,4 +5,4 @@ inline: true
 related_posts: false
 ---
 
-My new personal homepage is live. *(Placeholder — add news items as files in `_news/`.)*
+My new personal homepage is live.

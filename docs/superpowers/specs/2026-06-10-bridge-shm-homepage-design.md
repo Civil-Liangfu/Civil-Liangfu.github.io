@@ -44,7 +44,7 @@ GitHub Actions: build Jekyll (al-folio)
 GitHub Pages  →  https://<username>.github.io   (live in ~1–2 min)
 ```
 
-- Repository name: `Civil-Liangfu.github.io` (a GitHub *user site*).
+- Repository name: `Civil-Liangfu.github.io` (a GitHub _user site_).
 - Live URL: `https://civil-liangfu.github.io` (GitHub serves the host in lower
   case; the repo name keeps the original casing).
 - Initial content: **placeholders** the owner edits later via the web UI.
@@ -53,14 +53,14 @@ GitHub Pages  →  https://<username>.github.io   (live in ~1–2 min)
 
 ## Site structure (pages)
 
-| Page | Source file(s) | Purpose |
-|------|----------------|---------|
-| Home / About | `_pages/about.md`, `_config.yml` | Photo, short bio, research focus (bridge SHM), affiliation, profile links (Google Scholar, ORCID, GitHub, email). |
-| Publications | `_bibliography/papers.bib` | Auto-generated list; add a paper by pasting its BibTeX entry. |
-| Research / Projects | `_projects/*.md` + images in `assets/img/` | Cards for SHM projects (e.g. sensor networks, damage detection, digital twins). |
-| Teaching | `_pages/teaching.md` | Courses taught, materials, supervision. |
-| News | `_news/*.md` | Short dated updates (new paper, award, talk). |
-| CV | `_pages/cv.md` + `assets/pdf/` | PDF link and/or structured entries. |
+| Page                | Source file(s)                             | Purpose                                                                                                           |
+| ------------------- | ------------------------------------------ | ----------------------------------------------------------------------------------------------------------------- |
+| Home / About        | `_pages/about.md`, `_config.yml`           | Photo, short bio, research focus (bridge SHM), affiliation, profile links (Google Scholar, ORCID, GitHub, email). |
+| Publications        | `_bibliography/papers.bib`                 | Auto-generated list; add a paper by pasting its BibTeX entry.                                                     |
+| Research / Projects | `_projects/*.md` + images in `assets/img/` | Cards for SHM projects (e.g. sensor networks, damage detection, digital twins).                                   |
+| Teaching            | `_pages/teaching.md`                       | Courses taught, materials, supervision.                                                                           |
+| News                | `_news/*.md`                               | Short dated updates (new paper, award, talk).                                                                     |
+| CV                  | `_pages/cv.md` + `assets/pdf/`             | PDF link and/or structured entries.                                                                               |
 
 Demo content shipped with al-folio (sample posts, unrelated projects, example
 people/profile) will be removed so the site starts clean and on-topic.
@@ -106,4 +106,7 @@ owner, plus a `CLAUDE.md` documenting build/deploy and content locations.
 3. Owner can add a publication and a news item via the GitHub web editor and see
    the live site update without touching a local machine.
 4. `HOW-TO-UPDATE.md` and `CLAUDE.md` are present in the repo.
+
+```
+
 ```

@@ -5,8 +5,8 @@ permalink: /projects/
 description: Research projects in bridge structural health monitoring.
 nav: true
 nav_order: 2
-display_categories: [research]
-horizontal: false
+# display_categories: [research] # uncomment to group the cards under category headings
+horizontal: true # true = two cards per row; false = three smaller cards per row
 ---
 
 <!-- pages/projects.md -->

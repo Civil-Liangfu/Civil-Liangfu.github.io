@@ -32,9 +32,9 @@ latest_posts:
 I'm a researcher at Hong Kong Polytechnic University, specializing in **Structural Health Monitoring (SHM)** and **Smart Cities** research.
 My research interests include:
 
-- Traffic Load Identification
-- Structural Damage Detection
-- Application of Robotics in SHM
-- Digital Twinning of Bridge Structures
+- [Traffic Load Identification](/projects/1_traffic_load_identification/)
+- [Structural Damage Detection](/projects/2_damage_detection/)
+- [Application of Robotics in SHM](/projects/3_robotics_inspection/)
+- [Digital Twinning of Bridge Structures](/projects/4_digital_twins/)
 
 If you are interested in these areas, please feel free to reach out. I'm eager to explore collaborative opportunities and share my insights.

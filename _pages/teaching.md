@@ -2,21 +2,24 @@
 layout: page
 permalink: /teaching/
 title: Teaching
-description: Courses, materials, and student supervision.
-nav: true
+description: Courses, teaching assistance, and student supervision.
+# This page is HIDDEN until you add your real teaching. To show it:
+#   1. Write your teaching below the comment block (see the examples in it).
+#   2. Change "nav: false" to "nav: true" and delete the "sitemap: false" line.
+nav: false
 nav_order: 3
+sitemap: false
 ---
 
-*(Placeholder. Edit `_pages/teaching.md` to list your real courses.)*
+<!--
+  Examples (copy them BELOW this comment block and edit; anything inside
+  this block is invisible on the website):
 
 ## Courses
 
-- **Structural Health Monitoring** — graduate course. Sensors, signal processing,
-  damage detection, and case studies on bridges.
-- **Structural Dynamics** — undergraduate/graduate. Vibration theory and its
-  applications to civil structures.
+- **Course name (course code)**, Teaching Assistant, The Hong Kong Polytechnic University, 2025
 
 ## Student supervision
 
-I supervise students working on bridge SHM topics. Prospective students are welcome
-to get in touch.
+- **Student name**, MSc thesis: "Thesis title", 2025
+-->
