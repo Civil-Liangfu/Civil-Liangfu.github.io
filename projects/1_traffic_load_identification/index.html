@@ -1,0 +1,149 @@
+<!DOCTYPE html> <html lang="en"> <head> <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"> <meta charset="utf-8"> <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"> <meta http-equiv="X-UA-Compatible" content="IE=edge"> <title> Traffic Load Identification | Liangfu GE </title> <meta name="author" content="Liangfu GE "> <meta name="description" content="Who is on the bridge, where, and how heavy? Combining weigh-in-motion sensors with machine vision to map the traffic load on a whole bridge."> <meta name="keywords" content="bridge, structural health monitoring, SHM, damage detection, sensors, civil engineering"> <meta property="og:site_name" content="Liangfu GE "> <meta property="og:type" content="website"> <meta property="og:title" content="Liangfu GE | Traffic Load Identification"> <meta property="og:url" content="https://civil-liangfu.github.io/projects/1_traffic_load_identification/"> <meta property="og:description" content="Who is on the bridge, where, and how heavy? Combining weigh-in-motion sensors with machine vision to map the traffic load on a whole bridge."> <meta property="og:image" content="https://civil-liangfu.github.io/assets/img/prof_pic.jpg"> <meta property="og:locale" content="en"> <meta name="twitter:card" content="summary"> <meta name="twitter:title" content="Traffic Load Identification"> <meta name="twitter:description" content="Who is on the bridge, where, and how heavy? Combining weigh-in-motion sensors with machine vision to map the traffic load on a whole bridge."> <meta name="twitter:image" content="https://civil-liangfu.github.io/assets/img/prof_pic.jpg"> <script type="application/ld+json">
+    {
+        "author":
+        {
+            "@type": "Person",
+            "name": "Liangfu GE "
+        },
+        "url": "https://civil-liangfu.github.io/projects/1_traffic_load_identification/",
+        "@type": "WebSite",
+        "description": "Who is on the bridge, where, and how heavy? Combining weigh-in-motion sensors with machine vision to map the traffic load on a whole bridge.",
+        "headline": "Traffic Load Identification",
+        
+        "sameAs": ["https://scholar.google.com/citations?user=Jx-_4dwAAAAJ","https://orcid.org/0000-0003-0877-1734","https://github.com/Civil-Liangfu"],
+        
+        "name": "Liangfu GE ",
+        "@context": "https://schema.org"
+    }
+  </script> <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https:; style-src 'self' 'unsafe-inline' https:; img-src 'self' data: https:; font-src 'self' data: https:; media-src 'self' https:; frame-src 'self' https:; connect-src 'self' https:;"> <style>
+  :root {
+    --max-content-width: 1080px;
+  }
+</style> <link rel="stylesheet" href="/assets/css/tailwind.css?v=50c64c15cbb9fd1ce6056fdb8bcb4b62"> <link defer rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7.2.0/css/all.min.css" integrity="sha256-MVopmdyC2tYTiJ8wlktf0uh0v4NgT+vNdyVFepi7Q0c=" crossorigin="anonymous"> <link defer rel="stylesheet" href="https://cdn.jsdelivr.net/npm/academicons@1.9.5/css/academicons.min.css" integrity="sha256-SzrCOBJbGVFMahewkgjwnApaV2+av1DwMAA+/QGLyZw=" crossorigin="anonymous"> <link defer rel="stylesheet" href="https://cdn.jsdelivr.net/npm/scholar-icons@1.0.3/css/scholar-icons.css" integrity="sha256-VY3hHVj/hNX3fYG6wtbA6TcKJQl7+FthzGSyIB64klY=" crossorigin="anonymous"> <link defer rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&amp;family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&amp;family=IBM+Plex+Serif:ital,wght@0,400;0,500;0,600;1,400&amp;display=swap"> <link defer rel="stylesheet" href="/assets/css/jekyll-pygments-themes-github.css?v=591dab5a4e56573bf4ef7fd332894c99" media="" id="highlight_theme_light"> <link rel="shortcut icon" href="data:image/svg+xml,&lt;svg%20xmlns=%22http://www.w3.org/2000/svg%22%20viewBox=%220%200%20100%20100%22&gt;&lt;text%20y=%22.9em%22%20font-size=%2290%22&gt;%F0%9F%8C%89&lt;/text&gt;&lt;/svg&gt;"> <link rel="stylesheet" href="/assets/css/main.css?v=f0b101217084a90093badfe99ff9a7d1"> <link rel="canonical" href="https://civil-liangfu.github.io/projects/1_traffic_load_identification/"> <script src="/assets/js/theme.js?v=7af685e2ba20b37fef545c97b8064050"></script> <link defer rel="stylesheet" href="/assets/css/jekyll-pygments-themes-native.css?v=5847e5ed4a4568527aa6cfab446049ca" media="none" id="highlight_theme_dark"> <script>
+    initTheme();
+  </script> </head> <body class="fixed-top-nav sticky-bottom-footer"> <header> <nav id="navbar" class="navbar navbar-light navbar-expand-sm fixed-top" role="navigation"> <div class="container"> <a class="navbar-brand title font-weight-lighter" href="/"> <span class="font-weight-bold">Liangfu GE</span> </a> <button class="navbar-toggler collapsed navbar-toggler-main" type="button" data-nav-toggle="navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation"> <span class="sr-only">Toggle navigation</span> <span class="icon-bar top-bar"></span> <span class="icon-bar middle-bar"></span> <span class="icon-bar bottom-bar"></span> </button> <div class="collapse navbar-collapse navbar-collapse-main" id="navbarNav"> <ul class="navbar-nav navbar-menu-list flex-nowrap"> <li class="nav-item "> <a class="nav-link" href="/">About </a> </li> <li class="nav-item "> <a class="nav-link" href="/publications/">Publications </a> </li> <li class="nav-item active"> <a class="nav-link" href="/projects/">Research <span class="sr-only">(current)</span> </a> </li> <li class="nav-item "> <a class="nav-link" href="/news/">News </a> </li> <li class="nav-item "> <a class="nav-link" href="/cv/">CV </a> </li> <li class="nav-item"> <button id="search-toggle" type="button" title="Search" aria-label="Open search"> <span class="nav-link">ctrl k <i class="fa-solid fa-magnifying-glass"></i></span> </button> </li> <li class="toggle-container"> <button id="light-toggle" type="button" title="Change theme" aria-label="Change color theme"> <i class="fa-half-sun-moon" id="light-toggle-system"></i> <i class="fa-solid fa-moon" id="light-toggle-dark"></i> <i class="fa-solid fa-sun" id="light-toggle-light"></i> </button> </li> </ul> </div> </div> </nav> <progress id="progress" value="0"> <div class="progress-container"> <span class="progress-bar"></span> </div> </progress> </header> <div class="container mt-5" role="main"> <div class="post"> <header class="post-header"> <p class="page-eyebrow"> <a href="/projects/">Research</a> <span aria-hidden="true">·</span> Theme 01 </p> <h1 class="post-title">Traffic Load Identification</h1> <p class="post-description">Who is on the bridge, where, and how heavy? Combining weigh-in-motion sensors with machine vision to map the traffic load on a whole bridge.</p> </header> <article class="prose"> <p>Traffic is the main everyday load on most bridges. To judge whether a bridge is safe, engineers need to know how many vehicles are on it, where they are, and how heavy they are, at every moment. Weigh-in-motion (WIM) sensors can weigh vehicles, but only at one point on the road. Cameras can follow vehicles along the whole deck, but cannot weigh them.</p> <p>This research combines the two. Vehicles are weighed by WIM sensors and then tracked across the bridge with cameras and deep-learning object detection. The result is the traffic load on the whole bridge, over time.</p> <h2 id="main-contributions">Main contributions</h2> <ul> <li> <strong>Fusing WIM and multi-camera vision</strong> to identify moving loads on a bridge <a class="citation" href="#dan2019identification">(Dan et al., 2019)</a>.</li> <li> <strong>Full-bridge load monitoring with YOLO-v3:</strong> an accurate and robust method to monitor how traffic load is distributed over the whole bridge <a class="citation" href="#ge2020accurate">(Ge et al., 2020)</a>.</li> <li> <strong>Real-time safety checks:</strong> using the identified positions of moving loads to monitor and evaluate the overturning risk of single-column-pier box-girder bridges <a class="citation" href="#ge2020real">(Ge et al., 2020)</a>.</li> <li> <strong>Traffic load simulation</strong> that combines machine vision and WIM monitoring <a class="citation" href="#ge2022intelligent">(Ge et al., 2022)</a>.</li> <li> <strong>Long-term monitoring of long-span bridges</strong> with an improved system for full-bridge traffic load distribution <a class="citation" href="#ge2023improved">(Ge et al., 2023)</a>.</li> <li> <strong>A benchmark dataset</strong> for vision-based traffic load monitoring on a cable-stayed bridge <a class="citation" href="#ge2024benchmark">(Ge et al., 2024)</a>.</li> </ul> <p>The traffic load data from this work also drives the bridge digital twins described in <a href="/projects/4_digital_twins/">Digital Twins and Physics-Informed Learning</a>.</p> </article> <h2>References</h2> <div class="publications"> <h2 class="bibliography">2024</h2> <ol class="bibliography"><li> <div class="row"> <div class="col col-sm-2 abbr"> <abbr class="badge rounded w-100">JBE</abbr> </div> <div id="ge2024benchmark" class="col-sm-8"> <div class="title">A benchmark data set for vision-based traffic load monitoring in a cable-stayed bridge</div> <div class="author"> <em>Liangfu Ge</em>, Danhui Dan, and Ayan Sadhu </div> <div class="periodical"> <em>Journal of Bridge Engineering</em>, 2024 </div> <div class="periodical"> </div> <div class="links"> </div> </div> </div> </li></ol> <h2 class="bibliography">2023</h2> <ol class="bibliography"><li> <div class="row"> <div class="col col-sm-2 abbr"> <abbr class="badge rounded w-100">Structures</abbr> </div> <div id="ge2023improved" class="col-sm-8"> <div class="title">An improved system for long-term monitoring of full-bridge traffic load distribution on long-span bridges</div> <div class="author"> <em>Liangfu Ge</em>, Danhui Dan, Ki Young Koo, and <span class="more-authors" title="click to view 1 more author" onclick=" var element=this; element.setAttribute('title', ''); var more_authors_text=element.textContent == '1 more author' ? 'Yifeng Chen' : '1 more author'; var cursorPosition=0; var textAdder=setInterval(function(){ element.innerHTML = more_authors_text.substring(0, cursorPosition + 1); if (++cursorPosition == more_authors_text.length){ clearInterval(textAdder); } }, '10'); ">1 more author</span> </div> <div class="periodical"> <em>Structures</em>, 2023 </div> <div class="periodical"> </div> <div class="links"> </div> </div> </div> </li></ol> <h2 class="bibliography">2022</h2> <ol class="bibliography"><li> <div class="row"> <div class="col col-sm-2 abbr"> <abbr class="badge rounded w-100">IEEE T-ITS</abbr> </div> <div id="ge2022intelligent" class="col-sm-8"> <div class="title">Intelligent simulation method of bridge traffic flow load combining machine vision and weigh-in-motion monitoring</div> <div class="author"> <em>Liangfu Ge</em>, Danhui Dan, Zijia Liu, and <span class="more-authors" title="click to view 1 more author" onclick=" var element=this; element.setAttribute('title', ''); var more_authors_text=element.textContent == '1 more author' ? 'Xin Ruan' : '1 more author'; var cursorPosition=0; var textAdder=setInterval(function(){ element.innerHTML = more_authors_text.substring(0, cursorPosition + 1); if (++cursorPosition == more_authors_text.length){ clearInterval(textAdder); } }, '10'); ">1 more author</span> </div> <div class="periodical"> <em>IEEE Transactions on Intelligent Transportation Systems</em>, 2022 </div> <div class="periodical"> </div> <div class="links"> </div> </div> </div> </li></ol> <h2 class="bibliography">2020</h2> <ol class="bibliography"> <li> <div class="row"> <div class="col col-sm-2 abbr"> <abbr class="badge rounded w-100">SCHM</abbr> </div> <div id="ge2020accurate" class="col-sm-8"> <div class="title">An accurate and robust monitoring method of full-bridge traffic load distribution based on YOLO-v3 machine vision</div> <div class="author"> <em>Liangfu Ge</em>, Danhui Dan, and Hui Li </div> <div class="periodical"> <em>Structural Control and Health Monitoring</em>, 2020 </div> <div class="periodical"> </div> <div class="links"> </div> </div> </div> </li> <li> <div class="row"> <div class="col col-sm-2 abbr"> <abbr class="badge rounded w-100">Eng. Struct.</abbr> </div> <div id="ge2020real" class="col-sm-8"> <div class="title">Real-time monitoring and evaluation of overturning risk of single-column-pier box-girder bridges based on identification of spatial distribution of moving loads</div> <div class="author"> <em>Liangfu Ge</em>, Danhui Dan, Xingfei Yan, and <span class="more-authors" title="click to view 1 more author" onclick=" var element=this; element.setAttribute('title', ''); var more_authors_text=element.textContent == '1 more author' ? 'Kailong Zhang' : '1 more author'; var cursorPosition=0; var textAdder=setInterval(function(){ element.innerHTML = more_authors_text.substring(0, cursorPosition + 1); if (++cursorPosition == more_authors_text.length){ clearInterval(textAdder); } }, '10'); ">1 more author</span> </div> <div class="periodical"> <em>Engineering Structures</em>, 2020 </div> <div class="periodical"> </div> <div class="links"> </div> </div> </div> </li> </ol> <h2 class="bibliography">2019</h2> <ol class="bibliography"><li> <div class="row"> <div class="col col-sm-2 abbr"> <abbr class="badge rounded w-100">Measurement</abbr> </div> <div id="dan2019identification" class="col-sm-8"> <div class="title">Identification of moving loads based on the information fusion of weigh-in-motion system and multiple camera machine vision</div> <div class="author"> Danhui Dan, <em>Liangfu Ge</em>, and Xingfei Yan </div> <div class="periodical"> <em>Measurement</em>, 2019 </div> <div class="periodical"> </div> <div class="links"> </div> </div> </div> </li></ol> </div> <nav class="page-pager" aria-label="Other research themes"> <a class="pager-next" href="/projects/2_damage_detection/"><small>Next theme →</small><span>Structural Damage Detection</span></a> </nav> </div> </div> <footer class="sticky-bottom site-footer" role="contentinfo"> <div class="container site-footer__inner"> <span class="site-footer__owner">© 2026 Liangfu GE</span> <span class="site-footer__meta"> Powered by <a href="https://jekyllrb.com/" target="_blank" rel="external nofollow noopener">Jekyll</a> with <a href="https://github.com/alshedivat/al-folio" rel="external nofollow noopener" target="_blank">al-folio</a> theme. Hosted by <a href="https://pages.github.com/" target="_blank" rel="external nofollow noopener">GitHub Pages</a>. </span> </div> </footer> <script>
+  window.alFolio = {
+    compatBootstrap: false
+  };
+</script> <script src="/assets/js/nav-toggle.js?v=141bd79a73ebc0f0b6ea58e440ae79fc"></script> <script defer src="https://cdn.jsdelivr.net/npm/masonry-layout@4.2.2/dist/masonry.pkgd.min.js" integrity="sha256-Nn1q/fx0H7SNLZMQ5Hw5JLaTRZp0yILA/FRexe19VdI=" crossorigin="anonymous"></script> <script defer src="https://cdn.jsdelivr.net/npm/imagesloaded@5.0.0/imagesloaded.pkgd.min.js" integrity="sha256-htrLFfZJ6v5udOG+3kNLINIKh2gvoKqwEhHYfTTMICc=" crossorigin="anonymous"></script> <script defer src="/assets/js/masonry.js?v=e49affc7bd2646f6acdad1dbe02c2359" type="text/javascript"></script> <script defer type="text/javascript" id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-mml-chtml.js" integrity="sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI=" crossorigin="anonymous"></script> <script src="/assets/al_math/js/mathjax-setup.js"></script> <script defer src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6" crossorigin="anonymous"></script> <script src="/assets/js/tooltips-setup.js?v=fe487e99db6c43751e6e7bdb2d6a0611"></script> <script src="/assets/js/no_defer.js?v=53b1b1a645525975c963ce8bf8bfefcf"></script> <script defer src="/assets/js/common.js?v=87baac90f765f2f3362dcf6aaf312a8a"></script> <script defer src="/assets/js/copy_code.js?v=c8a01c11a92744d44b093fc3bda915df" type="text/javascript"></script> <script defer src="/assets/js/jupyter_new_tab.js?v=896d254890d9b47f0281f63bfccf0dee"></script> <script async src="https://d1bxh8uas1mnw7.cloudfront.net/assets/embed.js"></script> <script async src="https://badge.dimensions.ai/badge.js"></script> <script defer src="https://cdn.jsdelivr.net/npm/medium-zoom@1.1.0/dist/medium-zoom.min.js" integrity="sha256-ZgMyDAIYDYGxbcpJcfUnYwNevG/xi9OHKaR/8GK+jWc=" crossorigin="anonymous"></script> <script defer src="/assets/al_img_tools/js/zoom.js"></script> <script defer src="/assets/js/progress-bar.js?v=499464c5c63ced6cf7ad62509f1e2610" type="text/javascript"></script> <script src="https://cdn.jsdelivr.net/npm/vanilla-back-to-top@7.2.1/dist/vanilla-back-to-top.min.js" integrity="sha256-uMJJ3EoTyfRBoTbR+lrfu1uRQ87RZG8AR3cVNuQVeFg=" crossorigin="anonymous"></script> <script>
+    addBackToTop();
+  </script> <script type="module" src="/assets/al_search/js/search/ninja-keys.min.js"></script> <ninja-keys hidebreadcrumbs noautoloadmdicons placeholder="Type to start searching"></ninja-keys> <script src="/assets/al_search/js/search-setup.js"></script> <script>
+// get the ninja-keys element
+const ninja = document.querySelector('ninja-keys');
+
+// add the home and posts menu items
+ninja.data = [{
+    id: "nav-about",
+    title: "About",
+    section: "Navigation",
+    handler: () => {
+      window.location.href = "/";
+    },
+  },{id: "nav-publications",
+          title: "Publications",
+          description: "Journal articles and conference papers, newest first.",
+          section: "Navigation",
+          handler: () => {
+            window.location.href = "/publications/";
+          },
+        },{id: "nav-research",
+          title: "Research",
+          description: "Research projects in bridge structural health monitoring.",
+          section: "Navigation",
+          handler: () => {
+            window.location.href = "/projects/";
+          },
+        },{id: "nav-news",
+          title: "News",
+          description: "",
+          section: "Navigation",
+          handler: () => {
+            window.location.href = "/news/";
+          },
+        },{id: "nav-cv",
+          title: "CV",
+          description: "Curriculum vitae.",
+          section: "Navigation",
+          handler: () => {
+            window.location.href = "/cv/";
+          },
+        },{id: "news-my-new-personal-homepage-is-live",
+          title: 'My new personal homepage is live.',
+          description: "",
+          section: "News",},{id: "projects-traffic-load-identification",
+          title: 'Traffic Load Identification',
+          description: "Who is on the bridge, where, and how heavy? Combining weigh-in-motion sensors with machine vision to map the traffic load on a whole bridge.",
+          section: "Projects",handler: () => {
+              window.location.href = "/projects/1_traffic_load_identification/";
+            },},{id: "projects-structural-damage-detection",
+          title: 'Structural Damage Detection',
+          description: "Finding damage early by combining load and response measurements with machine learning, influence lines, and acoustic signals.",
+          section: "Projects",handler: () => {
+              window.location.href = "/projects/2_damage_detection/";
+            },},{id: "projects-robotics-for-inspection",
+          title: 'Robotics for Inspection',
+          description: "Ground robots, drones and sonar, combined with deep learning, for automated inspection of structures, including parts under water.",
+          section: "Projects",handler: () => {
+              window.location.href = "/projects/3_robotics_inspection/";
+            },},{id: "projects-digital-twins-and-physics-informed-learning",
+          title: 'Digital Twins and Physics-Informed Learning',
+          description: "Virtual models of bridges and dams that stay in step with monitoring data, and physics-guided machine learning to predict how structures vibrate.",
+          section: "Projects",handler: () => {
+              window.location.href = "/projects/4_digital_twins/";
+            },},{
+        id: 'social-email',
+        title: 'email',
+        section: 'Socials',
+        handler: () => {
+          window.open("mailto:%6C%69%61%6E%67%66%75%34%77%6F%72%6B@%67%6D%61%69%6C.%63%6F%6D", "_blank");
+        },
+      },{
+        id: 'social-scholar',
+        title: 'Google Scholar',
+        section: 'Socials',
+        handler: () => {
+          window.open("https://scholar.google.com/citations?user=Jx-_4dwAAAAJ", "_blank");
+        },
+      },{
+        id: 'social-orcid',
+        title: 'ORCID',
+        section: 'Socials',
+        handler: () => {
+          window.open("https://orcid.org/0000-0003-0877-1734", "_blank");
+        },
+      },{
+        id: 'social-github',
+        title: 'GitHub',
+        section: 'Socials',
+        handler: () => {
+          window.open("https://github.com/Civil-Liangfu", "_blank");
+        },
+      },{
+      id: 'light-theme',
+      title: 'Change theme to light',
+      description: 'Change the theme of the site to Light',
+      section: 'Theme',
+      handler: () => {
+        setThemeSetting("light");
+      },
+    },
+    {
+      id: 'dark-theme',
+      title: 'Change theme to dark',
+      description: 'Change the theme of the site to Dark',
+      section: 'Theme',
+      handler: () => {
+        setThemeSetting("dark");
+      },
+    },
+    {
+      id: 'system-theme',
+      title: 'Use system default theme',
+      description: 'Change the theme of the site to System Default',
+      section: 'Theme',
+      handler: () => {
+        setThemeSetting("system");
+      },
+    },];
+
+</script> <script src="/assets/al_search/js/shortcut-key.js"></script> </body> </html>
