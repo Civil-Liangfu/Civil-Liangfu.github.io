@@ -45,7 +45,7 @@ it on the same GitHub page and create a new one.
 | **Research topics** | The research cards and pages. **New** adds a topic; “Position” sets the order           |
 | **News**            | News items. **New** adds one (the date is filled in with today)                         |
 | **Publications**    | The BibTeX list (see “Adding a publication” below)                                      |
-| **CV**              | Position, experience, education, awards, interests, methods, selected papers            |
+| **CV**              | Experience, education, awards, grants, papers, talks, teaching, mentoring               |
 | **Teaching**        | The Teaching page, and the switches that show it in the menu                            |
 
 Each **Save** is one change on GitHub. Wait 1–2 minutes, then refresh the live site.

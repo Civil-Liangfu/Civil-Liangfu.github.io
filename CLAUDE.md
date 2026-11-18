@@ -79,20 +79,28 @@ After upgrading `al_folio_core` / `al_folio_cv`, diff these against the gem vers
 - Social links: `_data/socials.yml` (jekyll-socials keys; values are IDs, not URLs; the
   ResearchGate key is `research_gate_profile`). The Scholar-citations workflow reads
   `scholar_userid` from here.
-- Publications: `_bibliography/papers.bib` (`selected={true}` → home page). No `doi`s yet.
+- Publications: `_bibliography/papers.bib` (`selected={true}` → home page). Every journal
+  paper has a `doi` (taken from the owner's CV, Nov 2026); conference papers have none.
 - Research: `_projects/*.md`, one per research theme, written only from paper titles;
   `{% cite key %}` + `related_publications: true`. No images yet (`img:` is optional).
 - News: `_news/*.md` (`inline: true`; panel adds a `title` used only for the file name).
-- Teaching: `_pages/teaching.md`, hidden (`nav: false`, `sitemap: false`) until the owner
-  adds real teaching.
+- Teaching: `_pages/teaching.md`, in the menu (`nav: true`, `sitemap: true`): courses and
+  student supervision from the owner's CV.
 - CV: `_data/cv.yml`, must stay valid for **RenderCV** (`render-cv.yml` makes a PDF on
   every change on `main`) and render on `/cv/`. Rules: no `label/summary/address/image`
-  under `cv:`; entry extra fields only as strings; multi-word section keys in snake_case
-  (`current_position`, `research_interests`, `methods_and_tools`, `awards_and_honours`);
-  sections titled `Skills`, `Awards`, `Interests`, … switch the website to other
-  templates, so avoid those exact titles. Education/Experience details are unknown.
+  under `cv:`; entry extra fields only as strings; multi-word section keys in snake case
+  (`current_position`, `research_interests`, `methods_and_tools`, `awards_and_honours`,
+  `grants_and_fellowships`, `conference_presentations`); single-word keys are capitalised
+  (`Experience`, `Education`, `Publications`, `Teaching`, `Mentoring`), because the website
+  shows a key with no underscore exactly as written. Sections titled `Skills`, `Awards`,
+  `Interests`, … switch the website to other templates, so avoid those exact titles. Apart
+  from Experience, Education and Publications, `/cv/` only renders `bullet` entries and
+  `label`/`details` entries (details as plain text), so new sections must use one of
+  those. Section order follows the field order in `admin/config.yml` (the panel rewrites
+  it). Content filled in from the owner's CV (Nov 2026); `current_position` was dropped
+  because it repeated Experience.
 - Navbar: `nav:` / `nav_order:` front matter in `_pages/*`. Current: about · publications(1)
-  · research(2) · news(4) · CV(5). Teaching(3), blog and repositories are `nav: false`.
+  · research(2) · teaching(3) · news(4) · CV(5). Blog and repositories are `nav: false`.
 
 ## Workflows (GitHub Actions)
 

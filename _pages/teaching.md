@@ -3,23 +3,31 @@ layout: page
 permalink: /teaching/
 title: Teaching
 description: Courses, teaching assistance, and student supervision.
-# This page is HIDDEN until you add your real teaching. To show it:
-#   1. Write your teaching below the comment block (see the examples in it).
-#   2. Change "nav: false" to "nav: true" and delete the "sitemap: false" line.
-nav: false
+nav: true
 nav_order: 3
-sitemap: false
+sitemap: true
 ---
 
 <!--
-  Examples (copy them BELOW this comment block and edit; anything inside
-  this block is invisible on the website):
+  HOW TO EDIT THIS PAGE: add one "- " line per item under the right heading.
+  To hide the page again, switch off "Show this page in the menu" in the editing panel.
+-->
 
 ## Courses
 
-- **Course name (course code)**, Teaching Assistant, The Hong Kong Polytechnic University, 2025
+- **Engineering Analysis and Computation**, 2025–present
+- **Finite Element Analysis** (graduate level), Teaching Assistant, 2020–2021
+- **Probability and Statistics** (undergraduate level), Teaching Assistant, 2018–2019
+- **Theoretical Mechanics** (undergraduate level), Teaching Assistant, 2017–2018
 
 ## Student supervision
 
-- **Student name**, MSc thesis: "Thesis title", 2025
--->
+Supervisory committee member for:
+
+- **Xia Liao**, PhD student, Tongji University. Research on physics-informed deep
+  learning (primary supervisor: Danhui Dan), 2023–present
+- **Rawan Moghrabi**, undergraduate student, Western University. Research on SLAM with
+  vehicle robots (primary supervisor: Soodeh Nikan), 2023
+- **Joel Waldner**, undergraduate student, Western University. Research on civil
+  infrastructure management using underwater drones (primary supervisor: Ayan Sadhu),
+  2023
