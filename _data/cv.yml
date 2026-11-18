@@ -1,24 +1,3 @@
-# =============================================================================
-# My CV — shown on the website at /cv/
-# =============================================================================
-# This file is used twice:
-#   1. The website's CV page (/cv/).
-#   2. The "Render a CV" GitHub workflow, which turns it into a PDF
-#      (assets/rendercv/rendercv_output/Liangfu_Ge_CV.pdf). That tool is strict,
-#      so please only use the kinds of entries shown in this file and in the
-#      TEMPLATES at the bottom.
-#
-# Easiest: edit it in the editing panel (/admin/ on the website) → "CV".
-#
-# Tips:
-#   - Section names with several words are written with underscores, e.g.
-#     current_position. The website and the PDF show them as "Current Position".
-#   - Keep the indentation (spaces at the start of lines) exactly as it is.
-#   - Lines starting with "#" are notes and are NOT shown anywhere.
-#   - Dates: a year (2024) or year-month (2024-09). Use "present" for an
-#     ongoing job. Never write placeholders like 20XX: the PDF tool rejects them.
-# =============================================================================
-
 cv:
   name: Liangfu Ge
   location: Hong Kong, China
@@ -31,18 +10,15 @@ cv:
       username: Jx-_4dwAAAAJ
     - network: GitHub
       username: Civil-Liangfu
-
   sections:
     current_position:
-      - label: Researcher
+      - label: Research Assistant Professor
         details: Department of Civil and Environmental Engineering, The Hong Kong Polytechnic University, Hong Kong, China
-
     research_interests:
       - bullet: Traffic load identification
       - bullet: Structural damage detection
       - bullet: Application of robotics in structural health monitoring (SHM)
       - bullet: Digital twinning of bridge structures
-
     methods_and_tools:
       - label: Monitoring and sensing
         details: weigh-in-motion (WIM), machine vision, influence lines, Internet of Things (IoT)
@@ -52,74 +28,73 @@ cv:
         details: physics-informed neural networks, Fourier neural operators, vortex-induced vibration, operational modal analysis
       - label: Robotics and inspection
         details: ground robots, drones, forward-looking sonar
-
-    # Selected papers. The full list is on the Publications page
-    # (it comes from _bibliography/papers.bib).
     Publications:
-      - title: "VIV-SDE-Net: A physics-informed neural framework for long-horizon prediction of bridge vortex-induced vibrations"
-        authors: ["**Liangfu Ge**", Chenqi Wang, Mengliang Liu, Danhui Dan, Fangliang Jian]
+      - title: 'VIV-SDE-Net: A physics-informed neural framework for long-horizon prediction of bridge vortex-induced vibrations'
+        authors:
+          - '**Liangfu Ge**'
+          - Chenqi Wang
+          - Mengliang Liu
+          - Danhui Dan
+          - Fangliang Jian
         journal: Advances in Structural Engineering
-        date: 2026
+        date: '2026'
       - title: Deep learning-enhanced smart ground robotic system for automated structural damage inspection and mapping
-        authors: ["**Liangfu Ge**", Ayan Sadhu]
+        authors:
+          - '**Liangfu Ge**'
+          - Ayan Sadhu
         journal: Automation in Construction
-        date: 2025
+        date: '2025'
       - title: Advanced deep learning framework for underwater object detection with multibeam forward-looking sonar
-        authors: ["**Liangfu Ge**", Premjeet Singh, Ayan Sadhu]
+        authors:
+          - '**Liangfu Ge**'
+          - Premjeet Singh
+          - Ayan Sadhu
         journal: Structural Health Monitoring
-        date: 2025
+        date: '2025'
       - title: A benchmark data set for vision-based traffic load monitoring in a cable-stayed bridge
-        authors: ["**Liangfu Ge**", Danhui Dan, Ayan Sadhu]
+        authors:
+          - '**Liangfu Ge**'
+          - Danhui Dan
+          - Ayan Sadhu
         journal: Journal of Bridge Engineering
-        date: 2024
+        date: '2024'
       - title: An improved system for long-term monitoring of full-bridge traffic load distribution on long-span bridges
-        authors: ["**Liangfu Ge**", Danhui Dan, Ki Young Koo, Yifeng Chen]
+        authors:
+          - '**Liangfu Ge**'
+          - Danhui Dan
+          - Ki Young Koo
+          - Yifeng Chen
         journal: Structures
-        date: 2023
-      - title: "Bridge damage detection using precise vision-based displacement influence lines and weigh-in-motion devices: Experimental validation"
-        authors: ["**Liangfu Ge**", Ki Young Koo, Miaomin Wang, James Brownjohn, Danhui Dan]
+        date: '2023'
+      - title: 'Bridge damage detection using precise vision-based displacement influence lines and weigh-in-motion devices: Experimental validation'
+        authors:
+          - '**Liangfu Ge**'
+          - Ki Young Koo
+          - Miaomin Wang
+          - James Brownjohn
+          - Danhui Dan
         journal: Engineering Structures
-        date: 2023
+        date: '2023'
       - title: Intelligent simulation method of bridge traffic flow load combining machine vision and weigh-in-motion monitoring
-        authors: ["**Liangfu Ge**", Danhui Dan, Zijia Liu, Xin Ruan]
+        authors:
+          - '**Liangfu Ge**'
+          - Danhui Dan
+          - Zijia Liu
+          - Xin Ruan
         journal: IEEE Transactions on Intelligent Transportation Systems
-        date: 2022
+        date: '2022'
       - title: An accurate and robust monitoring method of full-bridge traffic load distribution based on YOLO-v3 machine vision
-        authors: ["**Liangfu Ge**", Danhui Dan, Hui Li]
+        authors:
+          - '**Liangfu Ge**'
+          - Danhui Dan
+          - Hui Li
         journal: Structural Control and Health Monitoring
-        date: 2020
+        date: '2020'
       - title: Real-time monitoring and evaluation of overturning risk of single-column-pier box-girder bridges based on identification of spatial distribution of moving loads
-        authors: ["**Liangfu Ge**", Danhui Dan, Xingfei Yan, Kailong Zhang]
+        authors:
+          - '**Liangfu Ge**'
+          - Danhui Dan
+          - Xingfei Yan
+          - Kailong Zhang
         journal: Engineering Structures
-        date: 2020
-
-# =============================================================================
-# TEMPLATES — copy a block into "sections:" above, remove the "#" signs, and
-# fill it in. Keep 4 spaces before the section name, 6 spaces before "- ",
-# and 8 spaces before the other lines. Sections appear in the order you write
-# them (Experience is always shown first on the website).
-# =============================================================================
-#
-#    Experience:
-#      - position: Your job title
-#        company: Organization name
-#        location: City, Country
-#        start_date: 2024
-#        end_date: present
-#        summary: One sentence about the role.
-#        highlights:
-#          - A key project or result
-#
-#    Education:
-#      - institution: University name
-#        degree: PhD
-#        area: Your field of study
-#        location: City, Country
-#        start_date: 2018
-#        end_date: 2023
-#        highlights:
-#          - "Thesis: Title of your thesis"
-#
-#    awards_and_honours:
-#      - label: "2024"
-#        details: Name of the award, who gave it
+        date: '2020'
