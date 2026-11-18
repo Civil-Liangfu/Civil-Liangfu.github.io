@@ -333,6 +333,14 @@ collections:
                     fields:
                       - { label: Year, name: label, widget: string }
                       - { label: Award and who gave it, name: details, widget: string }
+                  - label: Grants and fellowships
+                    name: grants_and_fellowships
+                    widget: list
+                    required: false
+                    summary: "{{label}} · {{details}}"
+                    fields:
+                      - { label: Years (e.g. 2025–2027), name: label, widget: string }
+                      - { label: "Grant, project and amount", name: details, widget: string }
                   - label: Research interests
                     name: research_interests
                     widget: list
@@ -364,6 +372,32 @@ collections:
                         name: date
                         widget: string
                         pattern: ['^\d{4}(-\d{2})?$', "Use a year, e.g. 2024."]
+                  - label: Conference presentations
+                    name: conference_presentations
+                    widget: list
+                    required: false
+                    summary: "{{bullet}}"
+                    fields:
+                      - label: Presentation
+                        name: bullet
+                        widget: string
+                        hint: Authors (year). Title. Conference, city, country. Write your own name as **Ge, L.** to make it bold.
+                  - label: Teaching
+                    name: Teaching
+                    widget: list
+                    required: false
+                    summary: "{{label}} · {{details}}"
+                    fields:
+                      - { label: Years (e.g. 2025–present), name: label, widget: string }
+                      - { label: "Course, level and role", name: details, widget: string }
+                  - label: Mentoring
+                    name: Mentoring
+                    widget: list
+                    required: false
+                    summary: "{{label}} · {{details}}"
+                    fields:
+                      - { label: Years (e.g. 2023–present), name: label, widget: string }
+                      - { label: "Student, university and your role", name: details, widget: string }
 
   # ---------------------------------------------------------------------------
   # TEACHING (hidden page until switched on)
