@@ -40,7 +40,8 @@ traffic load on the whole bridge, over time.
 - **Long-term monitoring of long-span bridges** with an improved system for full-bridge
   traffic load distribution {% cite ge2023improved %}.
 - **A benchmark dataset** for vision-based traffic load monitoring on a cable-stayed
-  bridge {% cite ge2024benchmark %}.
+  bridge {% cite ge2024benchmark %}. The dataset is openly available on
+  [Zenodo](https://zenodo.org/record/7924653).
 
 The traffic load data from this work also drives the bridge digital twins described in
 [Digital Twins and Physics-Informed Learning](/projects/4_digital_twins/).

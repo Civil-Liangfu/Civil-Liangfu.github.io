@@ -3,7 +3,7 @@ layout: about
 title: About
 permalink: /
 eyebrow: Civil Infrastructure · Smart Cities
-subtitle: Researcher in Structural Health Monitoring
+subtitle: Research Assistant Professor in Structural Health Monitoring
 profile:
   image: /assets/img/prof_pic.jpg
   image_alt: Portrait of Liangfu Ge
@@ -20,5 +20,6 @@ contact_heading: Get in touch
 contact_note: If you are interested in these areas, please feel free to reach out. I'm eager to explore collaborative opportunities and share my insights.
 ---
 
-I'm a researcher at Hong Kong Polytechnic University, specializing in **Structural Health Monitoring (SHM)** and **Smart Cities**.
+I'm a Research Assistant Professor at The Hong Kong Polytechnic University, specializing in **Structural Health Monitoring (SHM)** and **Smart Cities**.
 My research interests include traffic load identification, structural damage detection, robotics applications in SHM, and digital twinning of civil infrastructure.
+Before joining PolyU, I was a Postdoctoral Research Associate at Western University, Canada. I received my PhD from Tongji University, including a research visit to the University of Exeter, UK.
