@@ -120,7 +120,10 @@ After upgrading `al_folio_core` / `al_folio_cv`, diff these against the gem vers
 
 - Matter for the site: **Deploy site**, **Check for broken links on site** (after a
   successful deploy), **Update Google Scholar Citations**, **Render a CV**, **Prettier**
-  (passes if files are formatted: `npm ci && npx prettier --write <files>`).
+  (passes if files are formatted: `npm ci && npx prettier --write <files>`). The Prettier
+  workflow installs the **latest** `prettier` and `@shopify/prettier-plugin-liquid` on every
+  run, and versions disagree on some details (3.8.0 and 3.10.1 want different blank lines
+  and Liquid indentation), so keep `devDependencies` at the latest versions before checking.
 - **Integration tests** (`unit-tests.yml`) and **Visual regression checks** are al-folio's
   developer checks against removed demo pages; they fail regardless of content. Turning
   their automatic triggers off is the owner's decision (proposed, not done).
