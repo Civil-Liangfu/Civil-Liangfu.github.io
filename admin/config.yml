@@ -30,6 +30,8 @@ public_folder: /assets/img
 
 output:
   omit_empty_optional_fields: true # leave empty optional boxes out of the files
+  yaml:
+    quote: double # write text in "double quotes", the style the Prettier check expects
 
 collections:
   # ---------------------------------------------------------------------------
@@ -87,7 +89,21 @@ collections:
             name: selected_papers
             widget: boolean
             default: true
-            hint: Shows the papers marked “selected” in Publications.
+            hint: Shows the papers listed in the next box.
+          - label: Selected publications
+            name: selected_publications
+            widget: list
+            required: false
+            hint: >-
+              The papers shown on the home page, in this order (drag items to reorder).
+              Add one item per paper: its key from the Publications list, which is the word
+              right after “@article{” or “@inproceedings{”, e.g. ge2025deep. A key that is
+              not in the Publications list is skipped.
+            field:
+              label: Paper key
+              name: key
+              widget: string
+              pattern: ['^[^\s{},]+$', "Only the key, e.g. ge2025deep (no spaces, braces or commas)."]
           - label: News on the home page
             name: announcements
             widget: object
@@ -238,9 +254,12 @@ collections:
             widget: text
             hint: >-
               Paste each new paper’s BibTeX entry at the top (copy it from Google Scholar:
-              “Cite” → “BibTeX”). Extra lines you can add inside an entry:
-              abbr={JBE}, (short journal label), selected={true}, (show on the home page),
-              doi={10.xxxx/xxxxx}, (adds a DOI button). Keep the braces and commas exactly.
+              “Cite” → “BibTeX”). Each paper is labelled automatically from its type:
+              @article = Journal Paper, @inproceedings = Conference Paper. Extra lines you can
+              add inside an entry: type_label={Book Chapter}, (a different label),
+              doi={10.xxxx/xxxxx}, (adds a DOI button), abbr={JBE}, (short journal name).
+              Keep the braces and commas exactly. To show a paper on the home page, add its
+              key under Home page → Selected publications.
 
   # ---------------------------------------------------------------------------
   # CV
