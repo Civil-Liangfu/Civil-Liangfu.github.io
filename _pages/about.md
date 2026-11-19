@@ -12,6 +12,16 @@ profile:
   location: Hong Kong, China
 research_heading: Research
 selected_papers: true
+selected_publications:
+  - ge2026viv
+  - ge2025advanced
+  - ge2025deep
+  - ge2024benchmark
+  - ge2023improved
+  - ge2023bridge
+  - ge2022intelligent
+  - ge2020accurate
+  - ge2020real
 announcements:
   enabled: true
   limit: 5

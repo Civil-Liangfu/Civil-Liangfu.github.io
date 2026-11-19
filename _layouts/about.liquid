@@ -10,6 +10,8 @@ layout: default
 {% endcomment %}
 
 {% assign socials = site.data.socials %}
+{% assign section_no = 0 -%}
+{% comment %} numbers the sections below 01, 02, … {% endcomment %}
 {% assign profile = page.profile %}
 
 {% comment %} Photo path: accepts "prof_pic.jpg" or "/assets/img/prof_pic.jpg" {% endcomment %}
@@ -103,7 +105,11 @@ layout: default
   {% if themes.size > 0 %}
     <section class="home-section" id="research">
       <div class="section-head">
-        <span class="section-index">01</span>
+        {% assign section_no = section_no | plus: 1 -%}
+        <span class="section-index">
+          {%- if section_no < 10 %}0{% endif -%}
+          {{- section_no -}}
+        </span>
         <h2>{{ page.research_heading | default: 'Research' }}</h2>
         <a class="section-link" href="{{ '/projects/' | relative_url }}">All research</a>
       </div>
@@ -128,23 +134,53 @@ layout: default
     </section>
   {% endif %}
 
-  <!-- Selected publications (entries in papers.bib with selected={true}) -->
+  {% comment %}
+    Selected publications: the papers listed in `selected_publications` in
+    _pages/about.md (editing panel → Home page → Selected publications), as BibTeX
+    keys, shown in that order. If that list is empty, papers marked selected={true}
+    in papers.bib are shown instead. A key not found in papers.bib is skipped, and the
+    section is hidden when there is nothing to show.
+  {% endcomment %}
   {% if page.selected_papers %}
-    <section class="home-section" id="selected-publications">
-      <div class="section-head">
-        <span class="section-index">02</span>
-        <h2>Selected publications</h2>
-        <a class="section-link" href="{{ '/publications/' | relative_url }}">All publications</a>
-      </div>
-      {% include selected_papers.liquid %}
-    </section>
+    {% capture selected_html %}
+      {% if page.selected_publications and page.selected_publications.size > 0 %}
+        {% capture nocite_output %}
+          {% for paper_key in page.selected_publications %}
+            {% nocite paper_key %}
+          {% endfor %}
+        {% endcapture %}
+        <div class="publications">
+          {% bibliography --group_by none --cited_in_order %}
+        </div>
+      {% else %}
+        {% include selected_papers.liquid %}
+      {% endif %}
+    {% endcapture %}
+    {% if selected_html contains '<li' %}
+      <section class="home-section" id="selected-publications">
+        <div class="section-head">
+          {% assign section_no = section_no | plus: 1 -%}
+          <span class="section-index">
+            {%- if section_no < 10 %}0{% endif -%}
+            {{- section_no -}}
+          </span>
+          <h2>Selected publications</h2>
+          <a class="section-link" href="{{ '/publications/' | relative_url }}">All publications</a>
+        </div>
+        {{ selected_html }}
+      </section>
+    {% endif %}
   {% endif %}
 
   <!-- News (files in _news/) -->
   {% if page.announcements and page.announcements.enabled and site.news.size > 0 %}
     <section class="home-section" id="news">
       <div class="section-head">
-        <span class="section-index">03</span>
+        {% assign section_no = section_no | plus: 1 -%}
+        <span class="section-index">
+          {%- if section_no < 10 %}0{% endif -%}
+          {{- section_no -}}
+        </span>
         <h2>News</h2>
         <a class="section-link" href="{{ '/news/' | relative_url }}">All news</a>
       </div>
