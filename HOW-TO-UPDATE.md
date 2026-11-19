@@ -40,7 +40,7 @@ it on the same GitHub page and create a new one.
 
 | Panel section       | What it changes                                                                         |
 | ------------------- | --------------------------------------------------------------------------------------- |
-| **Home page**       | Name line, role, photo, department/university/city, short bio, contact text             |
+| **Home page**       | Name line, role, photo, department/university/city, short bio, selected papers, contact |
 | **Contact links**   | Email, Google Scholar, ORCID, ResearchGate, LinkedIn, GitHub (buttons on the home page) |
 | **Research topics** | The research cards and pages. **New** adds a topic; “Position” sets the order           |
 | **News**            | News items. **New** adds one (the date is filled in with today)                         |
@@ -56,9 +56,13 @@ Good to know:
 - Empty boxes are simply left out, so I can leave optional boxes blank.
 - When the panel saves a file, it removes the `#` notes inside that file. That is
   normal and does not affect the website.
-- On research pages, cite a paper by writing `{% cite key %}` in the page text, where
-  `key` is the first word of the paper's BibTeX entry (e.g. `ge2020accurate`). The cited
-  papers are listed at the bottom of the page automatically.
+- Every paper has a **key**: the word right after `@article{` or `@inproceedings{` in
+  its BibTeX entry (e.g. `ge2025deep`). Keys are how the site refers to papers:
+  - **Selected publications** on the home page: in **Home page → Selected
+    publications**, add one item per paper key. They are shown in that order (drag
+    items to reorder). A key that is not in the Publications list is simply skipped.
+  - On research pages, cite a paper by writing `{% cite key %}` in the page text. The
+    cited papers are listed at the bottom of the page automatically.
 
 ---
 
@@ -74,7 +78,8 @@ Everything below is done in the browser at
 | Change the home page text         | `_pages/about.md`              | Also in the panel                                                            |
 | Change my photo                   | `assets/img/prof_pic.jpg`      | Upload a new image with that exact name (or use the panel)                   |
 | Change my links (email, Scholar…) | `_data/socials.yml`            | Also in the panel                                                            |
-| Add or feature a publication      | `_bibliography/papers.bib`     | Also in the panel; see below                                                 |
+| Add a publication                 | `_bibliography/papers.bib`     | Also in the panel; see below                                                 |
+| Choose the home page's papers     | `_pages/about.md`              | `selected_publications` list of paper keys; also in the panel (Home page)    |
 | Edit or add a research topic      | `_projects/`                   | Also in the panel                                                            |
 | Add a news item                   | `_news/`                       | Also in the panel                                                            |
 | Edit my CV                        | `_data/cv.yml`                 | Also in the panel; templates for new sections are at the bottom              |
@@ -96,12 +101,18 @@ Paste the BibTeX entry at the top of the list (in the panel: **Publications**; a
 `_bibliography/papers.bib`). Google Scholar gives it under **Cite → BibTeX**. Useful extra
 lines (each one goes inside the `{ … }` of the entry, with a comma at the end):
 
-- `abbr={JBE},` short journal name shown as a label
-- `selected={true},` also show the paper on the home page
+- `type_label={Book Chapter},` a different label in front of the paper. Without it, the
+  label comes from the entry type: `@article` → **Journal Paper**, `@inproceedings` →
+  **Conference Paper**, `@incollection` → **Book Chapter**, `@book` → **Book**,
+  `@phdthesis` → **Thesis**, `@misc` → **Preprint**.
+- `abbr={JBE},` short journal name, shown in small letters under the label
 - `doi={10.xxxx/xxxxx},` adds a DOI button and citation badges (copy the DOI from
   the paper's web page)
 - `pdf={my_paper.pdf},` adds a PDF button (upload the file to `assets/pdf/` first)
 - `html={https://…},` adds a link button to any web page
+
+To show a new paper on the home page, also add its key under **Home page → Selected
+publications** in the panel.
 
 ### Avoid these common mistakes (they stop the whole site from updating)
 

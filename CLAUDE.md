@@ -42,8 +42,18 @@ After upgrading `al_folio_core` / `al_folio_cv`, diff these against the gem vers
 - `_layouts/about.liquid` — home page (hero, research cards from `site.projects`,
   selected papers, news, contact band). Reads plain front-matter fields in
   `_pages/about.md`: `eyebrow`, `subtitle`, `profile.{image,image_alt,department,institution,location}`,
-  `research_heading`, `selected_papers`, `announcements.{enabled,limit}`, `social`,
-  `contact_heading`, `contact_note`. Contact buttons are built from `_data/socials.yml`.
+  `research_heading`, `selected_papers`, `selected_publications`, `announcements.{enabled,limit}`,
+  `social`, `contact_heading`, `contact_note`. Contact buttons are built from `_data/socials.yml`.
+  Selected papers: `selected_publications` is an ordered list of BibTeX keys, rendered with
+  `{% nocite paper_key %}` in a loop (output captured, so a missing key's "(missing
+  reference)" text never shows) + `{% bibliography --group_by none --cited_in_order %}`.
+  If the list is empty it falls back to `selected={true}` entries; the section is hidden
+  when nothing renders. Section numbers (01, 02, …) are counted, not hard-coded.
+- `_layouts/bib.liquid` — local copy of the theme's publication entry template; only
+  adds a type label at the top of the left column ("Journal Paper" for `@article`,
+  "Conference Paper" for `@inproceedings`/`@conference`, "Book Chapter", "Book",
+  "Thesis", "Report", "Preprint"), overridable per entry with `type_label={…}` (listed in
+  `filtered_bibtex_keywords`). Classes `.pub-type--journal|conference|other`.
 - `_layouts/page.liquid` — adds "Research · Theme 0N", `.prose` width and prev/next
   links for `_projects/` pages.
 - `_includes/footer.liquid` — cleaner footer (no stray space when `last_name` is empty).
@@ -58,7 +68,9 @@ After upgrading `al_folio_core` / `al_folio_cv`, diff these against the gem vers
 - `admin/index.html` loads Sveltia CMS **pinned** to `@sveltia/cms@0.250.2` from unpkg;
   `admin/config.yml` defines the forms. Backend `github`, `branch: main`,
   `auth_methods: [token]` (fine-grained PAT, Contents read/write; no OAuth server).
-  `output.omit_empty_optional_fields: true`.
+  `output.omit_empty_optional_fields: true`, `output.yaml.quote: double` (with the default,
+  the panel single-quotes strings that need quotes, e.g. ones with a colon, and every such
+  save failed the Prettier check).
 - Validate config against `schema/sveltia-cms.json` from the npm package, **and** load it
   in a browser: the runtime is stricter than the schema. Learned rules: field `name`s
   must not contain spaces (so CV section keys are snake_case); a required DateTime needs
@@ -79,7 +91,9 @@ After upgrading `al_folio_core` / `al_folio_cv`, diff these against the gem vers
 - Social links: `_data/socials.yml` (jekyll-socials keys; values are IDs, not URLs; the
   ResearchGate key is `research_gate_profile`). The Scholar-citations workflow reads
   `scholar_userid` from here.
-- Publications: `_bibliography/papers.bib` (`selected={true}` → home page). Every journal
+- Publications: `_bibliography/papers.bib`. The owner replaces it wholesale from Google
+  Scholar exports, which carry no `selected`/`abbr` fields, so the home page selection
+  lives in `_pages/about.md` (`selected_publications`), not in the .bib. Every journal
   paper has a `doi` (taken from the owner's CV, Nov 2026); conference papers have none.
 - Research: `_projects/*.md`, one per research theme, written only from paper titles;
   `{% cite key %}` + `related_publications: true`. No images yet (`img:` is optional).
@@ -106,7 +120,10 @@ After upgrading `al_folio_core` / `al_folio_cv`, diff these against the gem vers
 
 - Matter for the site: **Deploy site**, **Check for broken links on site** (after a
   successful deploy), **Update Google Scholar Citations**, **Render a CV**, **Prettier**
-  (passes if files are formatted: `npm ci && npx prettier --write <files>`).
+  (passes if files are formatted: `npm ci && npx prettier --write <files>`). The Prettier
+  workflow installs the **latest** `prettier` and `@shopify/prettier-plugin-liquid` on every
+  run, and versions disagree on some details (3.8.0 and 3.10.1 want different blank lines
+  and Liquid indentation), so keep `devDependencies` at the latest versions before checking.
 - **Integration tests** (`unit-tests.yml`) and **Visual regression checks** are al-folio's
   developer checks against removed demo pages; they fail regardless of content. Turning
   their automatic triggers off is the owner's decision (proposed, not done).

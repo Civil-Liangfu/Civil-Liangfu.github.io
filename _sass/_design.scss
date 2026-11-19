@@ -828,6 +828,39 @@ code {
   text-decoration: none;
 }
 
+/* Publication type label ("Journal Paper", "Conference Paper", …), set in _layouts/bib.liquid */
+.publications .pub-type {
+  display: inline-block;
+  margin-bottom: 0.35rem;
+  padding: 0.3rem 0.6rem;
+  border-radius: 6px;
+  background: var(--c-line);
+  color: var(--c-ink-2);
+  font-family: var(--font-sans);
+  font-size: 0.74rem;
+  font-weight: 600;
+  line-height: 1.25;
+  letter-spacing: 0.01em;
+}
+
+.publications .pub-type--journal {
+  background: var(--c-primary-soft);
+  color: var(--c-primary);
+}
+
+.publications .pub-type--conference {
+  background: var(--c-accent-soft);
+  color: var(--c-accent);
+}
+
+/* With a type label above it, the short journal name (abbr) is shown as small plain text */
+.publications ol.bibliography li .abbr .pub-type + abbr.badge {
+  display: block;
+  padding: 0;
+  background: transparent;
+  color: var(--c-muted) !important;
+}
+
 .publications ol.bibliography li .title {
   margin-bottom: 0.3rem;
   font-size: 1.04rem;
