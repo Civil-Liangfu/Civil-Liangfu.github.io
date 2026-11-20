@@ -23,6 +23,7 @@ selected_publications:
   - "ge2020accurate"
   - "ge2020real"
   - "ge2026end"
+  - "ge2024domain"
 announcements:
   enabled: true
   limit: 5
