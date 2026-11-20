@@ -56,7 +56,9 @@ After upgrading `al_folio_core` / `al_folio_cv`, diff these against the gem vers
   `filtered_bibtex_keywords`); classes `.pub-type--journal|conference|other`; and
   (2) owner-name roles: the owner's `<em>` gets `author-self--first` (green, first in
   the author list) or `author-self--corresponding` (orange) plus a `<sup class="author-corr">*</sup>`
-  and a `.pub-role` line ("Corresponding author" / "Co-corresponding author") when the
+  and a hidden `.sr-only` "(corresponding author)" / "(co-corresponding author)" for screen
+  readers, the same text as a hover tooltip on the name (the visible `.pub-role` line under
+  the type label was removed at the owner's request, Nov 2026), when the
   entry's key is in `_data/corresponding.yml` (`papers: [{key, role: sole|co}]`, edited
   in the panel under Publications → Corresponding author; kept out of the .bib so a
   Google Scholar re-paste can't wipe it). First author wins the colour when both apply.

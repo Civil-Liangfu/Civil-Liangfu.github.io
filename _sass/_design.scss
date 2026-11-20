@@ -983,16 +983,6 @@ code {
   font-weight: 700;
 }
 
-/* "Corresponding author" / "Co-corresponding author" under the type label */
-.publications .pub-role {
-  display: block;
-  margin: 0.15rem 0 0.35rem;
-  color: var(--c-accent);
-  font-size: 0.74rem;
-  font-weight: 600;
-  line-height: 1.3;
-}
-
 /* Key explaining the colours, above publication lists (_includes/author_legend.liquid) */
 .author-legend {
   display: flex;

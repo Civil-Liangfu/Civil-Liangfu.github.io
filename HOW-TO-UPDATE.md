@@ -69,7 +69,8 @@ Good to know:
 - In every author list, all authors are shown and my name is bold:
   - **green** when I am the first author (worked out automatically from the order),
   - **orange with a \*** when I am a corresponding author (green with an orange \* if I am
-    both), and the paper then says “Corresponding author” or “Co-corresponding author”.
+    both). Pointing at my name shows “Corresponding author” or “Co-corresponding
+    author”.
 
 ---
 

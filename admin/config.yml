@@ -274,8 +274,8 @@ collections:
             summary: "{{key}} · {{role}}"
             hint: >-
               Add one item per paper. On the website your name is then shown in orange with
-              a * after it (green if you are also the first author), and the paper says
-              “Corresponding author” or “Co-corresponding author”. The paper key is the
+              a * after it (green if you are also the first author). Pointing at your name
+              shows “Corresponding author” or “Co-corresponding author”. The paper key is the
               word right after “@article{” or “@inproceedings{” in the Publications list,
               e.g. ge2025deep. A key that is not in the list is ignored.
             fields:

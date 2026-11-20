@@ -8,8 +8,8 @@
      different label for one paper, add e.g. type_label={Book Chapter}, to its entry.
   2. The site owner's name in the author list: bold; green when first author; orange
      with a * when corresponding author (from _data/corresponding.yml, edited in the
-     panel under Publications → Corresponding author). Under the type label it then
-     says "Corresponding author" or "Co-corresponding author".
+     panel under Publications → Corresponding author). Hovering over the name shows
+     "Corresponding author" or "Co-corresponding author".
   Styling: _sass/_design.scss (section 7).
 {% endcomment %}
 {%- assign my_corresponding = site.data.corresponding.papers | where: 'key', entry.key | first -%}
@@ -57,9 +57,6 @@
       {%- endif -%}
       {%- if pub_type != '' -%}
         <span class="pub-type pub-type--{{ pub_type_kind }}">{{ pub_type }}</span>
-      {%- endif -%}
-      {%- if my_corresponding -%}
-        <span class="pub-role">{{ my_corresponding_label }}</span>
       {%- endif -%}
       {%- if entry.abbr -%}
         {%- if site.data.venues[entry.abbr] -%}
@@ -170,6 +167,8 @@
           </em>
           {%- if my_corresponding -%}
             <sup class="author-corr" aria-hidden="true">*</sup>
+            {%- comment -%} not shown on screen; read out by screen readers {%- endcomment -%}
+            <span class="sr-only"> ({{ my_corresponding_label | downcase }})</span>
           {%- endif -%}
         {%- else -%}
           {%- if coauthor_url -%}
