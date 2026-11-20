@@ -64,6 +64,21 @@ After upgrading `al_folio_core` / `al_folio_cv`, diff these against the gem vers
   is the colour key above the Publications page and the home page's selected papers (its
   "corresponding" item appears only when the list is non-empty). `--c-green` token:
   #15803d light / #5fd18b dark.
+- `_pages/publications.md` + `_includes/publication_section.liquid` — the Publications
+  page is split by BibTeX type into **Journal Papers** (`@article`), **Conference Papers**
+  (`@inproceedings, @conference, @proceedings`) and **Other Publications** (an explicit
+  list of every other type, so a thesis/preprint from a Scholar paste never vanishes;
+  bibtex-ruby query conditions can't test the entry type, so no "not article" query).
+  Each is `{% bibliography --query {{ types }} %}` (comma = OR; jekyll-scholar
+  interpolates `{{ var }}` in queries), still grouped by year, counted with
+  `bibliography_count`, and skipped when empty. `type_label` changes the label only, not
+  the subsection. A pill row (`.pub-jump`) links to each subsection. Gotchas: the
+  theme's `bibsearch.js` reads the URL hash as a search term, so the jump links scroll
+  with `scrollIntoView` and `preventDefault` (a plain `#conference-papers` link filters
+  everything out); year headings must stay `h2.bibliography` and each subsection must be
+  its own `<section>` so the search's sibling walk stays inside it; a CSS `:has()` rule
+  hides a subsection whose papers are all `.unloaded`; the theme's `.publications h2 span`
+  (1.5rem) is beaten by `.publications h2 .pub-section__count`.
 - `_layouts/page.liquid` — adds "Research · Theme 0N", `.prose` width and prev/next
   links for `_projects/` pages.
 - `_includes/footer.liquid` — cleaner footer (no stray space when `last_name` is empty).

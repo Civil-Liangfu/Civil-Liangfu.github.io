@@ -781,6 +781,88 @@ code {
    7. PUBLICATIONS (publications page, home page, research pages)
    ----------------------------------------------------------------------------- */
 
+/* Publications page: "Journal Papers" / "Conference Papers" subsections
+   (_pages/publications.md, _includes/publication_section.liquid) */
+.pub-jump {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin: 1.25rem 0 1.5rem;
+}
+
+.pub-jump a {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.5rem;
+  padding: 0.45rem 0.95rem;
+  border: 1px solid var(--c-line-strong);
+  border-radius: 999px;
+  color: var(--c-ink-2);
+  font-size: 0.9rem;
+  font-weight: 500;
+  text-decoration: none;
+}
+
+.pub-jump a:hover {
+  border-color: var(--c-accent);
+  color: var(--c-accent);
+}
+
+.pub-jump a span,
+.pub-section__count {
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  font-weight: 500;
+  color: var(--c-muted);
+}
+
+.pub-section {
+  scroll-margin-top: 5rem; /* keep the heading clear of the fixed navbar after a jump */
+}
+
+.pub-section + .pub-section {
+  margin-top: 3.5rem;
+  padding-top: 2.5rem;
+  border-top: 1px solid var(--c-line-strong);
+}
+
+.pub-section__title {
+  display: flex;
+  align-items: baseline;
+  gap: 0.75rem;
+  margin: 0;
+  font-size: clamp(1.5rem, 2.8vw, 1.95rem);
+  letter-spacing: -0.02em;
+  color: var(--c-ink);
+}
+
+/* More specific than the theme's ".publications h2 span" (which sets 1.5rem) */
+.publications h2 .pub-section__count {
+  padding: 0.15rem 0.55rem;
+  border-radius: 999px;
+  background: var(--c-line);
+  font-size: 0.8rem;
+  letter-spacing: 0;
+  transform: translateY(-0.2em);
+}
+
+/* First year label right under a subsection heading: less space above it */
+.publications .pub-section__title + h2.bibliography {
+  margin-top: 1.25rem;
+}
+
+/* While the search box is in use, hide a subsection with no matching paper
+   (and drop the divider of the subsection after it, which then comes first) */
+.pub-section:not(:has(ol.bibliography > li:not(.unloaded))) {
+  display: none;
+}
+
+.pub-section:not(:has(ol.bibliography > li:not(.unloaded))) + .pub-section {
+  margin-top: 0;
+  padding-top: 0;
+  border-top: 0;
+}
+
 .publications h2.bibliography {
   display: flex;
   align-items: center;
