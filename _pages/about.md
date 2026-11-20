@@ -13,17 +13,17 @@ profile:
 research_heading: "Research"
 selected_papers: true
 selected_publications:
-  - "ge2026viv"
+  - "ge2026end"
   - "ge2025advanced"
   - "ge2025deep"
-  - "ge2024benchmark"
+  - "ge2024domain"
   - "ge2023improved"
   - "ge2023bridge"
   - "ge2022intelligent"
   - "ge2020accurate"
   - "ge2020real"
-  - "ge2026end"
-  - "ge2024domain"
+  - "ge2024benchmark"
+  - "ge2026viv"
 announcements:
   enabled: true
   limit: 5
