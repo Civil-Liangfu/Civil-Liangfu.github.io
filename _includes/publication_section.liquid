@@ -1,0 +1,19 @@
+{% comment %}
+  One subsection of the Publications page (_pages/publications.md): a heading with
+  the number of papers, then the papers themselves, grouped by year.
+  Parameters:
+    id    – anchor for links, e.g. "journal-papers" (→ /publications/#journal-papers)
+    title – heading text, e.g. "Journal Papers"
+    types – which BibTeX types go here, e.g. "@inproceedings, @conference"
+    count – number of matching papers; nothing is shown when it is 0
+{% endcomment %}
+{% assign section_count = include.count | strip | plus: 0 %}
+{% if section_count > 0 %}
+  <section class="pub-section" id="{{ include.id }}">
+    <h2 class="pub-section__title">
+      {{ include.title }}
+      <span class="pub-section__count">{{ section_count }}</span>
+    </h2>
+    {% bibliography --query {{ include.types }} %}
+  </section>
+{% endif %}

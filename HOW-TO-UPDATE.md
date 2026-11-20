@@ -111,12 +111,24 @@ lines (each one goes inside the `{ … }` of the entry, with a comma at the end)
 - `type_label={Book Chapter},` a different label in front of the paper. Without it, the
   label comes from the entry type: `@article` → **Journal Paper**, `@inproceedings` →
   **Conference Paper**, `@incollection` → **Book Chapter**, `@book` → **Book**,
-  `@phdthesis` → **Thesis**, `@misc` → **Preprint**.
+  `@phdthesis` → **Thesis**, `@misc` → **Preprint**. (This changes only the label,
+  not the list the paper is in; see below.)
 - `abbr={JBE},` short journal name, shown in small letters under the label
 - `doi={10.xxxx/xxxxx},` adds a DOI button and citation badges (copy the DOI from
   the paper's web page)
 - `pdf={my_paper.pdf},` adds a PDF button (upload the file to `assets/pdf/` first)
 - `html={https://…},` adds a link button to any web page
+
+The Publications page has one list per kind of paper, each grouped by year, newest
+first. The word after `@` decides the list:
+
+| Entry type                                                | List on the Publications page                   |
+| --------------------------------------------------------- | ----------------------------------------------- |
+| `@article`                                                | **Journal Papers**                              |
+| `@inproceedings` (or `@conference`)                       | **Conference Papers**                           |
+| anything else (`@phdthesis`, `@incollection`, `@misc`, …) | **Other Publications** (only shown when needed) |
+
+The buttons at the top of the page jump to each list and show how many papers it has.
 
 To show a new paper on the home page, also add its key under **Home page → Selected
 publications** in the panel.
