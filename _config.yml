@@ -336,9 +336,11 @@ display_categories: [] # categories to show on the front page of your blog
 # -----------------------------------------------------------------------------
 
 scholar:
-  # Your name as it appears in papers.bib. It is shown in bold in every author list.
+  # Your name as it appears in papers.bib. It is shown in bold in every author list
+  # (green when you are first author, orange when you are corresponding author).
+  # Google Scholar exports sometimes abbreviate it, e.g. "Ge, L", so list those forms too.
   last_name: [Ge]
-  first_name: [Liangfu, L.]
+  first_name: [Liangfu, L., L]
 
   style: apa
   locale: en
@@ -402,7 +404,7 @@ filtered_bibtex_keywords:
   ]
 
 # Maximum number of authors to be shown for each publication (more authors are visible on click)
-max_author_limit: 3 # leave blank to always show all authors
+max_author_limit: # leave blank to always show all authors
 more_authors_animation_delay: 10 # more authors are revealed on click using animation; smaller delay means faster animation
 
 # Enables publication thumbnails. If disabled, none of the publications will display thumbnails, even if specified in the bib entry.

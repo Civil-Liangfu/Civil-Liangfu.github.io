@@ -1,0 +1,17 @@
+{% comment %}
+  Key for how the site owner's name is coloured in publication lists
+  (see _layouts/bib.liquid). Used on the Publications page and the home page.
+  The "corresponding author" part only appears once at least one paper is listed
+  in _data/corresponding.yml.
+{% endcomment %}
+{%- capture legend_owner -%}{{ site.scholar.first_name | first }} {{ site.scholar.last_name | first }}{%- endcapture -%}
+<p class="author-legend">
+  <span
+    ><strong class="legend-first">{{ legend_owner }}</strong>&nbsp;first author</span
+  >
+  {% if site.data.corresponding.papers.size > 0 %}
+    <span
+      ><strong class="legend-corresponding">{{ legend_owner }}</strong><sup>*</sup>&nbsp;corresponding author</span
+    >
+  {% endif %}
+</p>
