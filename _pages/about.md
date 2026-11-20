@@ -16,6 +16,7 @@ selected_publications:
   - "ge2026end"
   - "ge2025advanced"
   - "ge2025deep"
+  - "ge2024domainb"
   - "ge2023improved"
   - "ge2023bridge"
   - "ge2022intelligent"
@@ -23,7 +24,6 @@ selected_publications:
   - "ge2020real"
   - "ge2024benchmark"
   - "ge2026viv"
-  - "ge2024domainb"
 announcements:
   enabled: true
   limit: 5
