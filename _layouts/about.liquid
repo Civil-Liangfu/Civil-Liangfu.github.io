@@ -167,6 +167,7 @@ layout: default
           <h2>Selected publications</h2>
           <a class="section-link" href="{{ '/publications/' | relative_url }}">All publications</a>
         </div>
+        {% include author_legend.liquid %}
         {{ selected_html }}
       </section>
     {% endif %}

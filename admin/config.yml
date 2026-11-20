@@ -91,6 +91,7 @@ collections:
             default: true
             hint: Shows the papers listed in the next box.
           - label: Selected publications
+            label_singular: Paper
             name: selected_publications
             widget: list
             required: false
@@ -260,6 +261,35 @@ collections:
               doi={10.xxxx/xxxxx}, (adds a DOI button), abbr={JBE}, (short journal name).
               Keep the braces and commas exactly. To show a paper on the home page, add its
               key under Home page → Selected publications.
+      - name: corresponding
+        label: Corresponding author
+        file: _data/corresponding.yml
+        format: yml
+        fields:
+          - label: Papers on which I am a corresponding author
+            label_singular: Paper
+            name: papers
+            widget: list
+            required: false
+            summary: "{{key}} · {{role}}"
+            hint: >-
+              Add one item per paper. On the website your name is then shown in orange with
+              a * after it (green if you are also the first author), and the paper says
+              “Corresponding author” or “Co-corresponding author”. The paper key is the
+              word right after “@article{” or “@inproceedings{” in the Publications list,
+              e.g. ge2025deep. A key that is not in the list is ignored.
+            fields:
+              - label: Paper key
+                name: key
+                widget: string
+                pattern: ['^[^\s{},]+$', "Only the key, e.g. ge2025deep (no spaces, braces or commas)."]
+              - label: My role
+                name: role
+                widget: select
+                default: sole
+                options:
+                  - { label: "Sole corresponding author", value: sole }
+                  - { label: "Co-corresponding author", value: co }
 
   # ---------------------------------------------------------------------------
   # CV

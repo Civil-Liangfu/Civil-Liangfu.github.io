@@ -49,11 +49,21 @@ After upgrading `al_folio_core` / `al_folio_cv`, diff these against the gem vers
   reference)" text never shows) + `{% bibliography --group_by none --cited_in_order %}`.
   If the list is empty it falls back to `selected={true}` entries; the section is hidden
   when nothing renders. Section numbers (01, 02, …) are counted, not hard-coded.
-- `_layouts/bib.liquid` — local copy of the theme's publication entry template; only
-  adds a type label at the top of the left column ("Journal Paper" for `@article`,
+- `_layouts/bib.liquid` — local copy of the theme's publication entry template. Adds
+  (1) a type label at the top of the left column ("Journal Paper" for `@article`,
   "Conference Paper" for `@inproceedings`/`@conference`, "Book Chapter", "Book",
   "Thesis", "Report", "Preprint"), overridable per entry with `type_label={…}` (listed in
-  `filtered_bibtex_keywords`). Classes `.pub-type--journal|conference|other`.
+  `filtered_bibtex_keywords`); classes `.pub-type--journal|conference|other`; and
+  (2) owner-name roles: the owner's `<em>` gets `author-self--first` (green, first in
+  the author list) or `author-self--corresponding` (orange) plus a `<sup class="author-corr">*</sup>`
+  and a `.pub-role` line ("Corresponding author" / "Co-corresponding author") when the
+  entry's key is in `_data/corresponding.yml` (`papers: [{key, role: sole|co}]`, edited
+  in the panel under Publications → Corresponding author; kept out of the .bib so a
+  Google Scholar re-paste can't wipe it). First author wins the colour when both apply.
+  `max_author_limit` is blank, so every author is shown. `_includes/author_legend.liquid`
+  is the colour key above the Publications page and the home page's selected papers (its
+  "corresponding" item appears only when the list is non-empty). `--c-green` token:
+  #15803d light / #5fd18b dark.
 - `_layouts/page.liquid` — adds "Research · Theme 0N", `.prose` width and prev/next
   links for `_projects/` pages.
 - `_includes/footer.liquid` — cleaner footer (no stray space when `last_name` is empty).
@@ -86,8 +96,8 @@ After upgrading `al_folio_core` / `al_folio_cv`, diff these against the gem vers
 
 - Site identity & URL: `_config.yml`. **Do not change** `url: https://civil-liangfu.github.io`
   or `baseurl: ""`. The owner deliberately set `first_name: Liangfu GE` with an empty
-  `last_name`; keep it. `scholar.last_name/first_name` (`[Ge]`, `[Liangfu, L.]`) bold the
-  owner in author lists. `_config.yml` is NOT in the panel (it would lose its comments).
+  `last_name`; keep it. `scholar.last_name/first_name` (`[Ge]`, `[Liangfu, L., L]`) mark the
+  owner in author lists (Google Scholar exports sometimes write "Ge, L"). `_config.yml` is NOT in the panel (it would lose its comments).
 - Social links: `_data/socials.yml` (jekyll-socials keys; values are IDs, not URLs; the
   ResearchGate key is `research_gate_profile`). The Scholar-citations workflow reads
   `scholar_userid` from here.

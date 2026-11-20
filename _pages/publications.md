@@ -13,6 +13,10 @@ nav_order: 1
 
 {% include bib_search.liquid %}
 
+<!-- Key for the colours of my name in the author lists -->
+
+{% include author_legend.liquid %}
+
 <div class="publications">
 
 {% bibliography %}

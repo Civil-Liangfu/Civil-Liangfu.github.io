@@ -2,11 +2,24 @@
 ---
 {% comment %}
   LOCAL COPY of the al-folio publication entry template (al_folio_core 1.0.11).
-  Only change: a "Journal Paper" / "Conference Paper" / … label at the top of the
-  left column, worked out from the BibTeX entry type (@article, @inproceedings, …).
-  To set a different label for one paper, add e.g. type_label={Book Chapter},
-  inside its BibTeX entry. Styling: _sass/_design.scss (section 7).
+  Changes:
+  1. A "Journal Paper" / "Conference Paper" / … label at the top of the left column,
+     worked out from the BibTeX entry type (@article, @inproceedings, …). To set a
+     different label for one paper, add e.g. type_label={Book Chapter}, to its entry.
+  2. The site owner's name in the author list: bold; green when first author; orange
+     with a * when corresponding author (from _data/corresponding.yml, edited in the
+     panel under Publications → Corresponding author). Under the type label it then
+     says "Corresponding author" or "Co-corresponding author".
+  Styling: _sass/_design.scss (section 7).
 {% endcomment %}
+{%- assign my_corresponding = site.data.corresponding.papers | where: 'key', entry.key | first -%}
+{%- if my_corresponding -%}
+  {%- if my_corresponding.role == 'co' -%}
+    {%- assign my_corresponding_label = 'Co-corresponding author' -%}
+  {%- else -%}
+    {%- assign my_corresponding_label = 'Corresponding author' -%}
+  {%- endif -%}
+{%- endif -%}
 <div class="row">
   {% if site.enable_publication_thumbnails %}
     <div class="col col-sm-2 abbr">
@@ -44,6 +57,9 @@
       {%- endif -%}
       {%- if pub_type != '' -%}
         <span class="pub-type pub-type--{{ pub_type_kind }}">{{ pub_type }}</span>
+      {%- endif -%}
+      {%- if my_corresponding -%}
+        <span class="pub-role">{{ my_corresponding_label }}</span>
       {%- endif -%}
       {%- if entry.abbr -%}
         {%- if site.data.venues[entry.abbr] -%}
@@ -127,10 +143,34 @@
           {%- if forloop.last and author_array_limit == author_array_size %}and {% endif -%}
         {% endif %}
         {%- if author_is_self -%}
-          <em>
+          {%- comment -%} first author → green; corresponding author → orange + * {%- endcomment -%}
+          {%- assign self_class = 'author-self' -%}
+          {%- assign self_title = '' -%}
+          {%- if forloop.first -%}
+            {%- assign self_class = 'author-self author-self--first' -%}
+            {%- assign self_title = 'First author' -%}
+          {%- elsif my_corresponding -%}
+            {%- assign self_class = 'author-self author-self--corresponding' -%}
+          {%- endif -%}
+          {%- if my_corresponding -%}
+            {%- if self_title != '' -%}
+              {%- assign self_title = self_title | append: ' and ' | append: my_corresponding_label | downcase | capitalize -%}
+            {%- else -%}
+              {%- assign self_title = my_corresponding_label -%}
+            {%- endif -%}
+          {%- endif -%}
+          <em
+            class="{{ self_class }}"
+            {% if self_title != '' %}
+              title="{{ self_title }}"
+            {% endif %}
+          >
             {{- author.first }}
             {{ author_last_html -}}
           </em>
+          {%- if my_corresponding -%}
+            <sup class="author-corr" aria-hidden="true">*</sup>
+          {%- endif -%}
         {%- else -%}
           {%- if coauthor_url -%}
             <a href="{{ coauthor_url }}">

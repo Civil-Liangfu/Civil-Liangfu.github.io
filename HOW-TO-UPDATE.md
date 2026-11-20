@@ -44,7 +44,7 @@ it on the same GitHub page and create a new one.
 | **Contact links**   | Email, Google Scholar, ORCID, ResearchGate, LinkedIn, GitHub (buttons on the home page) |
 | **Research topics** | The research cards and pages. **New** adds a topic; “Position” sets the order           |
 | **News**            | News items. **New** adds one (the date is filled in with today)                         |
-| **Publications**    | The BibTeX list (see “Adding a publication” below)                                      |
+| **Publications**    | The BibTeX list (see “Adding a publication” below), and where I am corresponding author |
 | **CV**              | Experience, education, awards, grants, papers, talks, teaching, mentoring               |
 | **Teaching**        | The Teaching page, and the switches that show it in the menu                            |
 
@@ -61,8 +61,15 @@ Good to know:
   - **Selected publications** on the home page: in **Home page → Selected
     publications**, add one item per paper key. They are shown in that order (drag
     items to reorder). A key that is not in the Publications list is simply skipped.
+  - **Corresponding author**: in **Publications → Corresponding author**, add one item
+    per paper where I am a corresponding author, and choose **Sole corresponding author**
+    or **Co-corresponding author**.
   - On research pages, cite a paper by writing `{% cite key %}` in the page text. The
     cited papers are listed at the bottom of the page automatically.
+- In every author list, all authors are shown and my name is bold:
+  - **green** when I am the first author (worked out automatically from the order),
+  - **orange with a \*** when I am a corresponding author (green with an orange \* if I am
+    both), and the paper then says “Corresponding author” or “Co-corresponding author”.
 
 ---
 
