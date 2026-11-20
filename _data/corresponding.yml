@@ -1,15 +1,3 @@
-# Papers on which I am a corresponding author.
-# Easiest to edit in the editing panel: Publications → Corresponding author.
-#
-# Each item has:
-#   key:  the paper's key in _bibliography/papers.bib (the word after "@article{"),
-#         e.g. ge2025deep
-#   role: sole = sole corresponding author, co = co-corresponding author
-#
-# Example (remove the "#" signs and the "[]" after "papers:"):
-# papers:
-#   - key: ge2025deep
-#     role: sole
-#   - key: ge2024benchmark
-#     role: co
-papers: []
+papers:
+  - key: "dan2026marker"
+    role: "sole"
