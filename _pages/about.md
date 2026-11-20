@@ -10,6 +10,7 @@ profile:
   department: "Department of Civil and Environmental Engineering"
   institution: "The Hong Kong Polytechnic University"
   location: "Hong Kong, China"
+highlights: true
 research_heading: "Research"
 selected_papers: true
 selected_publications:
@@ -24,6 +25,7 @@ selected_publications:
   - "ge2020real"
   - "ge2024benchmark"
   - "ge2026viv"
+recognition: true
 announcements:
   enabled: true
   limit: 5

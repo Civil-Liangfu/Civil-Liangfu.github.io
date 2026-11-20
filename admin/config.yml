@@ -80,6 +80,14 @@ collections:
             buttons: [bold, italic, link]
             editor_components: []
             hint: Two or three sentences work best. Use the “B” button for bold.
+          - label: Show numbers at a glance
+            name: highlights
+            widget: boolean
+            default: true
+            hint: >-
+              A row under your introduction with your numbers of publications, journal
+              papers, conference papers and first-author papers. They are counted
+              automatically from the Publications list.
           - label: Heading of the research section
             name: research_heading
             widget: string
@@ -105,6 +113,13 @@ collections:
               name: key
               widget: string
               pattern: ['^[^\s{},]+$', "Only the key, e.g. ge2025deep (no spaces, braces or commas)."]
+          - label: Show fellowships and awards
+            name: recognition
+            widget: boolean
+            default: true
+            hint: >-
+              Taken from “Grants and fellowships” and “Awards and honours” in the CV
+              section of this panel, so edit them there.
           - label: News on the home page
             name: announcements
             widget: object
@@ -381,7 +396,10 @@ collections:
                     summary: "{{label}} · {{details}}"
                     fields:
                       - { label: Year, name: label, widget: string }
-                      - { label: Award and who gave it, name: details, widget: string }
+                      - label: Award and who gave it
+                        name: details
+                        widget: string
+                        hint: On the home page, the text before the first comma is shown in bold.
                   - label: Grants and fellowships
                     name: grants_and_fellowships
                     widget: list
@@ -389,7 +407,10 @@ collections:
                     summary: "{{label}} · {{details}}"
                     fields:
                       - { label: Years (e.g. 2025–2027), name: label, widget: string }
-                      - { label: "Grant, project and amount", name: details, widget: string }
+                      - label: Grant, project and amount
+                        name: details
+                        widget: string
+                        hint: On the home page, the text before the first comma is shown in bold.
                   - label: Research interests
                     name: research_interests
                     widget: list

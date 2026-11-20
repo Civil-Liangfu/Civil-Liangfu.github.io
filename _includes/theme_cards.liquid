@@ -1,0 +1,24 @@
+{% comment %}
+  Research theme cards (one per file in _projects/, sorted by `importance`).
+  Used on the home page (_layouts/about.liquid) and the Research page
+  (_pages/projects.md), so both always look the same.
+{% endcomment %}
+{% assign themes = site.projects | sort: 'importance' %}
+<div class="theme-grid">
+  {% for project in themes %}
+    <a class="theme-card" href="{% if project.redirect %}{{ project.redirect }}{% else %}{{ project.url | relative_url }}{% endif %}">
+      {% if project.img %}
+        <div class="theme-card__img">
+          {% include figure.liquid loading="lazy" path=project.img sizes="(min-width: 768px) 520px, 95vw" alt=project.title %}
+        </div>
+      {% endif %}
+      <span class="theme-card__num">
+        {%- if forloop.index < 10 %}0{% endif -%}
+        {{- forloop.index -}}
+      </span>
+      <h3 class="theme-card__title">{{ project.title }}</h3>
+      <p class="theme-card__desc">{{ project.description }}</p>
+      <span class="theme-card__more">Read more</span>
+    </a>
+  {% endfor %}
+</div>

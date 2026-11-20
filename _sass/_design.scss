@@ -355,6 +355,52 @@ code {
   border: 1px solid var(--c-line);
 }
 
+/* Plain text pages such as Teaching (class set in _layouts/page.liquid):
+   spaced headings, and each list item on its own ruled row */
+.page-text > h2 {
+  margin: 2.75rem 0 0.75rem;
+  font-size: 1.65rem;
+}
+
+.page-text > h2:first-child {
+  margin-top: 0.5rem;
+}
+
+.page-text > p {
+  max-width: 72ch;
+  color: var(--c-ink-2);
+}
+
+.page-text > ul {
+  margin: 0 0 1rem;
+  padding: 0;
+  list-style: none;
+  border-top: 1px solid var(--c-line);
+}
+
+.page-text > ul > li {
+  padding: 0.85rem 0 0.85rem 1.1rem;
+  border-bottom: 1px solid var(--c-line);
+  position: relative;
+  color: var(--c-ink-2);
+  line-height: 1.6;
+}
+
+.page-text > ul > li::before {
+  content: "";
+  position: absolute;
+  top: 1.45rem;
+  left: 0;
+  width: 0.4rem;
+  height: 0.4rem;
+  border-radius: 50%;
+  background: var(--c-accent);
+}
+
+.page-text > ul > li strong {
+  color: var(--c-ink);
+}
+
 /* "References" heading under research pages */
 .post > h2 {
   margin-top: 3.5rem;
@@ -693,6 +739,111 @@ code {
 
 .theme-card:hover .theme-card__more {
   color: var(--c-accent);
+}
+
+/* Numbers at a glance (row under the introduction) */
+.home-stats {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  border-top: 1px solid var(--c-line);
+}
+
+.home-stat {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  padding: 1.75rem 1.25rem 1.6rem;
+}
+
+.home-stat + .home-stat {
+  border-left: 1px solid var(--c-line);
+}
+
+/* first number lines up with the text column above it */
+.home-stat:first-child {
+  padding-left: 0;
+}
+
+.home-stat__num {
+  font-family: var(--font-serif);
+  font-size: clamp(2.1rem, 4vw, 2.75rem);
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  color: var(--c-ink);
+}
+
+.home-stat__label {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--c-muted);
+}
+
+/* Fellowships & awards (from the CV) */
+.recognition-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 22rem), 1fr));
+  gap: 1.25rem;
+}
+
+.recognition-group {
+  padding: 1.5rem 1.65rem 0.75rem;
+  border: 1px solid var(--c-line);
+  border-radius: var(--radius);
+  background: var(--c-surface);
+}
+
+.recognition-group__title {
+  margin: 0 0 0.5rem;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--c-accent);
+}
+
+.recognition-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.recognition-list li {
+  display: grid;
+  grid-template-columns: 5.75rem minmax(0, 1fr);
+  gap: 1rem;
+  padding: 0.9rem 0;
+  border-top: 1px solid var(--c-line);
+}
+
+.recognition-list li:first-child {
+  border-top: 0;
+}
+
+.recognition-list__year {
+  padding-top: 0.15rem;
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  color: var(--c-muted);
+  white-space: nowrap;
+}
+
+.recognition-list strong {
+  display: block;
+  font-weight: 600;
+  line-height: 1.4;
+  color: var(--c-ink);
+}
+
+.recognition-list span:not(.recognition-list__year) {
+  display: block;
+  margin-top: 0.2rem;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  color: var(--c-ink-2);
 }
 
 /* News list */
@@ -1047,7 +1198,7 @@ code {
 }
 
 /* -----------------------------------------------------------------------------
-   8. CARDS (Research page, CV page)
+   8. CARDS (CV page; the research cards are .theme-card in section 6)
    ----------------------------------------------------------------------------- */
 
 .card {
@@ -1055,61 +1206,6 @@ code {
   border-radius: var(--radius);
   background: var(--c-surface);
   box-shadow: none;
-}
-
-/* Start the 01, 02, … numbering once for the whole list (not per card) */
-.projects {
-  counter-reset: theme;
-}
-
-.projects .card {
-  counter-increment: theme;
-  overflow: hidden;
-  transition:
-    border-color 0.22s ease,
-    box-shadow 0.22s ease,
-    transform 0.22s ease;
-}
-
-.projects a:hover .card,
-.projects .card.hoverable:hover {
-  border-color: var(--c-line-strong);
-  box-shadow: var(--shadow-md);
-  transform: translateY(-3px);
-}
-
-.projects .card-body {
-  padding: 1.6rem 1.65rem 1.5rem;
-}
-
-/* Number each research card 01, 02, … */
-.projects .card-body::before {
-  content: counter(theme, decimal-leading-zero);
-  display: block;
-  margin-bottom: 0.6rem;
-  font-family: var(--font-mono);
-  font-size: 0.8rem;
-  font-weight: 500;
-  letter-spacing: 0.1em;
-  color: var(--c-accent);
-}
-
-.projects .card-title {
-  font-family: var(--font-serif);
-  font-size: 1.4rem;
-  font-weight: 500;
-  line-height: 1.25;
-  color: var(--c-ink);
-}
-
-.projects a:hover .card-title {
-  color: var(--c-ink);
-}
-
-.projects .card-text {
-  font-size: 0.98rem;
-  line-height: 1.6;
-  color: var(--c-ink-2);
 }
 
 /* CV page */
@@ -1263,6 +1359,33 @@ footer a:hover {
   .news-list li {
     grid-template-columns: 1fr;
     gap: 0.25rem;
+  }
+
+  /* Numbers at a glance: 2 × 2 */
+  .home-stats {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .home-stat {
+    padding: 1.35rem 1rem 1.25rem;
+  }
+
+  .home-stat:nth-child(odd) {
+    padding-left: 0;
+    border-left: 0;
+  }
+
+  .home-stat:nth-child(n + 3) {
+    border-top: 1px solid var(--c-line);
+  }
+
+  .recognition-group {
+    padding: 1.25rem 1.15rem 0.5rem;
+  }
+
+  .recognition-list li {
+    grid-template-columns: 1fr;
+    gap: 0.2rem;
   }
 
   .section-link {

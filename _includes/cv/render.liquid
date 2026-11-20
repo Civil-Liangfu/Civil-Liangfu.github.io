@@ -1,8 +1,11 @@
 {% comment %}
   LOCAL COPY of the al_folio_cv render template (al_folio_cv 1.0.0).
-  Only change: section keys written in snake_case (e.g. current_position, which
-  the editing panel needs) are shown as titles ("Current Position"), the same way
-  RenderCV titles them in the PDF. Search for "display_title" below.
+  Changes:
+  1. Section keys written in snake_case (e.g. current_position, which the editing
+     panel needs) are shown as titles ("Current Position"), the same way RenderCV
+     titles them in the PDF. Search for "display_title" below.
+  2. The PDF link (cv_pdf in _pages/cv.md) is a "Download PDF" button under the
+     description instead of a small icon next to the title.
 {% endcomment %}
 {% comment %}
   Unified CV layout that handles both RenderCV (YAML) and JSONResume (JSON) formats
@@ -18,10 +21,14 @@
 
 <div class="post">
   <header class="post-header">
-    <h1 class="post-title">
-      {{ page.title }}
-      {% if page.cv_pdf %}
+    <h1 class="post-title">{{ page.title }}</h1>
+    {% if page.description %}
+      <p class="post-description">{{ page.description }}</p>
+    {% endif %}
+    {% if page.cv_pdf %}
+      <div class="home-actions cv-download">
         <a
+          class="btn-site btn-site--primary"
           {% if page.cv_pdf contains '://' %}
             href="{{ page.cv_pdf }}"
           {% else %}
@@ -29,14 +36,10 @@
           {% endif %}
           target="_blank"
           rel="noopener noreferrer"
-          class="float-right"
         >
-          <i class="fa-solid fa-file-pdf"></i>
+          <i class="fa-solid fa-file-pdf"></i> Download PDF
         </a>
-      {% endif %}
-    </h1>
-    {% if page.description %}
-      <p class="post-description">{{ page.description }}</p>
+      </div>
     {% endif %}
   </header>
 

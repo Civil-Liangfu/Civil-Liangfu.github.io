@@ -38,15 +38,15 @@ it on the same GitHub page and create a new one.
 
 ### What I can edit in the panel
 
-| Panel section       | What it changes                                                                         |
-| ------------------- | --------------------------------------------------------------------------------------- |
-| **Home page**       | Name line, role, photo, department/university/city, short bio, selected papers, contact |
-| **Contact links**   | Email, Google Scholar, ORCID, ResearchGate, LinkedIn, GitHub (buttons on the home page) |
-| **Research topics** | The research cards and pages. **New** adds a topic; “Position” sets the order           |
-| **News**            | News items. **New** adds one (the date is filled in with today)                         |
-| **Publications**    | The BibTeX list (see “Adding a publication” below), and where I am corresponding author |
-| **CV**              | Experience, education, awards, grants, papers, talks, teaching, mentoring               |
-| **Teaching**        | The Teaching page, and the switches that show it in the menu                            |
+| Panel section       | What it changes                                                                            |
+| ------------------- | ------------------------------------------------------------------------------------------ |
+| **Home page**       | Name line, role, photo, affiliation, short bio, selected papers, section switches, contact |
+| **Contact links**   | Email, Google Scholar, ORCID, ResearchGate, LinkedIn, GitHub (buttons on the home page)    |
+| **Research topics** | The research cards and pages. **New** adds a topic; “Position” sets the order              |
+| **News**            | News items. **New** adds one (the date is filled in with today)                            |
+| **Publications**    | The BibTeX list (see “Adding a publication” below), and where I am corresponding author    |
+| **CV**              | Experience, education, awards, grants, papers, talks, teaching, mentoring                  |
+| **Teaching**        | The Teaching page, and the switches that show it in the menu                               |
 
 Each **Save** is one change on GitHub. Wait 1–2 minutes, then refresh the live site.
 Pictures I upload in the panel are stored in `assets/img/`.
@@ -71,6 +71,15 @@ Good to know:
   - **orange with a \*** when I am a corresponding author (green with an orange \* if I am
     both). Pointing at my name shows “Corresponding author” or “Co-corresponding
     author”.
+- Two home page sections fill themselves in. Each has an on/off switch under **Home
+  page** in the panel:
+  - **Numbers at a glance** (under my introduction): how many publications, journal
+    papers, conference papers and first-author papers I have. They are counted from the
+    Publications list, so they update when I paste a new list.
+  - **Fellowships & awards**: taken from **Grants and fellowships** and **Awards and
+    honours** in the **CV** section. The text before the first comma is shown in bold.
+- The **CV** page has a **Download PDF** button. The PDF is made automatically from my
+  CV a few minutes after I save a CV change (the “Render a CV” step on GitHub).
 
 ---
 
@@ -92,9 +101,11 @@ Everything below is done in the browser at
 | Add a news item                   | `_news/`                       | Also in the panel                                                            |
 | Edit my CV                        | `_data/cv.yml`                 | Also in the panel; templates for new sections are at the bottom              |
 | Show my teaching                  | `_pages/teaching.md`           | Also in the panel                                                            |
-| Use my own PDF CV                 | `assets/pdf/` + `_pages/cv.md` | Upload the PDF to `assets/pdf/`, then set `cv_pdf: /assets/pdf/yourfile.pdf` |
+| Use my own PDF CV instead         | `assets/pdf/` + `_pages/cv.md` | Upload the PDF to `assets/pdf/`, then set `cv_pdf: /assets/pdf/yourfile.pdf` |
 | Change colours or fonts           | `_sass/_design.scss`           | All colours and fonts are listed at the top of the file                      |
 | Change my name or the footer text | `_config.yml`                  | `first_name` and `footer_text`                                               |
+| Change the browser-tab icon       | `_config.yml`                  | `icon:` (now `favicon.png`, a bridge; an emoji such as 🌉 also works)        |
+| Start a blog                      | `_pages/blog.md` + `_posts/`   | Add posts to `_posts/`, then set `published: true` and `nav: true`           |
 
 ### The editing loop
 
