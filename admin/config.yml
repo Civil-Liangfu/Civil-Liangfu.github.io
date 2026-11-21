@@ -80,6 +80,14 @@ collections:
             buttons: [bold, italic, link]
             editor_components: []
             hint: Two or three sentences work best. Use the “B” button for bold.
+          - label: Show numbers at a glance
+            name: highlights
+            widget: boolean
+            default: true
+            hint: >-
+              A row under your introduction with your numbers of publications, journal
+              papers, conference papers and first-author papers. They are counted
+              automatically from the Publications list.
           - label: Heading of the research section
             name: research_heading
             widget: string
@@ -105,6 +113,13 @@ collections:
               name: key
               widget: string
               pattern: ['^[^\s{},]+$', "Only the key, e.g. ge2025deep (no spaces, braces or commas)."]
+          - label: Show fellowships and awards
+            name: recognition
+            widget: boolean
+            default: true
+            hint: >-
+              Taken from “Grants and fellowships” and “Awards and honours” in the CV
+              section of this panel, so edit them there.
           - label: News on the home page
             name: announcements
             widget: object
@@ -218,6 +233,8 @@ collections:
     delete: true
     slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
     identifier_field: title
+    media_folder: /assets/news # photos and videos uploaded with a news item
+    public_folder: /assets/news
     summary: "{{date | date('YYYY-MM-DD')}} · {{title}}"
     sortable_fields:
       fields: [date, title]
@@ -237,6 +254,51 @@ collections:
         buttons: [bold, italic, link]
         editor_components: []
         hint: One or two sentences.
+      - label: Photos
+        label_singular: Photo
+        name: images
+        widget: list
+        required: false
+        hint: Optional. Shown under the text on the News page; visitors can click a photo to enlarge it. Large photos are made smaller automatically when you upload them.
+        fields:
+          - label: Photo
+            name: src
+            widget: image
+            media_libraries:
+              default:
+                config:
+                  slugify_filename: true
+                  transformations:
+                    raster_image: { format: webp, quality: 85, width: 1800, height: 1800 }
+          - label: Caption
+            name: caption
+            widget: string
+            required: false
+            hint: Optional. Shown under the photo and read aloud by screen readers.
+      - label: Video link
+        name: video_link
+        widget: string
+        required: false
+        hint: Optional. A YouTube, Bilibili or Vimeo link; the video is shown under the text.
+      - label: Or upload a short video
+        name: video_file
+        widget: file
+        required: false
+        accept: video/mp4,video/webm
+        media_libraries:
+          default:
+            config:
+              slugify_filename: true
+              max_file_size: 20971520
+        hint: Optional. An MP4 file of at most 20 MB. For longer videos, put them on YouTube or Bilibili and use the video link above.
+      - label: LinkedIn post
+        name: linkedin_post
+        widget: text
+        required: false
+        hint: >-
+          Optional. To show a LinkedIn post: on LinkedIn, click the ••• at the top right of the
+          post, choose “Embed this post”, copy the code and paste it here. A plain link to the
+          post also works; it is shown as a “View on LinkedIn” button.
 
   # ---------------------------------------------------------------------------
   # PUBLICATIONS (BibTeX file)
@@ -274,8 +336,8 @@ collections:
             summary: "{{key}} · {{role}}"
             hint: >-
               Add one item per paper. On the website your name is then shown in orange with
-              a * after it (green if you are also the first author), and the paper says
-              “Corresponding author” or “Co-corresponding author”. The paper key is the
+              a * after it (green if you are also the first author). Pointing at your name
+              shows “Corresponding author” or “Co-corresponding author”. The paper key is the
               word right after “@article{” or “@inproceedings{” in the Publications list,
               e.g. ge2025deep. A key that is not in the list is ignored.
             fields:
@@ -381,7 +443,10 @@ collections:
                     summary: "{{label}} · {{details}}"
                     fields:
                       - { label: Year, name: label, widget: string }
-                      - { label: Award and who gave it, name: details, widget: string }
+                      - label: Award and who gave it
+                        name: details
+                        widget: string
+                        hint: On the home page, the text before the first comma is shown in bold.
                   - label: Grants and fellowships
                     name: grants_and_fellowships
                     widget: list
@@ -389,7 +454,10 @@ collections:
                     summary: "{{label}} · {{details}}"
                     fields:
                       - { label: Years (e.g. 2025–2027), name: label, widget: string }
-                      - { label: "Grant, project and amount", name: details, widget: string }
+                      - label: Grant, project and amount
+                        name: details
+                        widget: string
+                        hint: On the home page, the text before the first comma is shown in bold.
                   - label: Research interests
                     name: research_interests
                     widget: list
