@@ -119,7 +119,7 @@ After upgrading `al_folio_core` / `al_folio_cv`, diff these against the gem vers
   LinkedIn" button). LinkedIn offers no API for reading a person's posts, so embedding
   per post is the only "link". Liquid variables leak between includes, hence the `nm_`
   resets. "Follow me on LinkedIn" on `/news/` appears when `linkedin_username` is set in
-  `_data/socials.yml` (not set yet). Item pages are kept out of the sitemap (`defaults`,
+  `_data/socials.yml` (set: liangfu-ge-367697234). Item pages are kept out of the sitemap (`defaults`,
   `type: news`). `_news/*.md` is in `.prettierignore`: the panel saves a pasted embed code
   as `"…\"…"`, which Prettier wants single-quoted.
 
