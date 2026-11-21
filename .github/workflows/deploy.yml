@@ -56,12 +56,20 @@ on:
       - "!docs/INSTALL.md"
       - "!README.md"
   workflow_dispatch:
+  # Commits made by other workflows (the CV PDF, the weekly citation counts) don't
+  # start this workflow by themselves, so publish the site once those finish.
+  workflow_run:
+    workflows: ["Render a CV", "Update citation counts"]
+    types: [completed]
+    branches: [main]
 
 permissions:
   contents: write
 
 jobs:
   deploy:
+    # only after a successful run on main (not a pull-request test run)
+    if: github.event_name != 'workflow_run' || (github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.event != 'pull_request')
     # available images: https://github.com/actions/runner-images#available-images
     runs-on: ubuntu-latest
     steps:

@@ -233,6 +233,8 @@ collections:
     delete: true
     slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
     identifier_field: title
+    media_folder: /assets/news # photos and videos uploaded with a news item
+    public_folder: /assets/news
     summary: "{{date | date('YYYY-MM-DD')}} · {{title}}"
     sortable_fields:
       fields: [date, title]
@@ -252,6 +254,51 @@ collections:
         buttons: [bold, italic, link]
         editor_components: []
         hint: One or two sentences.
+      - label: Photos
+        label_singular: Photo
+        name: images
+        widget: list
+        required: false
+        hint: Optional. Shown under the text on the News page; visitors can click a photo to enlarge it. Large photos are made smaller automatically when you upload them.
+        fields:
+          - label: Photo
+            name: src
+            widget: image
+            media_libraries:
+              default:
+                config:
+                  slugify_filename: true
+                  transformations:
+                    raster_image: { format: webp, quality: 85, width: 1800, height: 1800 }
+          - label: Caption
+            name: caption
+            widget: string
+            required: false
+            hint: Optional. Shown under the photo and read aloud by screen readers.
+      - label: Video link
+        name: video_link
+        widget: string
+        required: false
+        hint: Optional. A YouTube, Bilibili or Vimeo link; the video is shown under the text.
+      - label: Or upload a short video
+        name: video_file
+        widget: file
+        required: false
+        accept: video/mp4,video/webm
+        media_libraries:
+          default:
+            config:
+              slugify_filename: true
+              max_file_size: 20971520
+        hint: Optional. An MP4 file of at most 20 MB. For longer videos, put them on YouTube or Bilibili and use the video link above.
+      - label: LinkedIn post
+        name: linkedin_post
+        widget: text
+        required: false
+        hint: >-
+          Optional. To show a LinkedIn post: on LinkedIn, click the ••• at the top right of the
+          post, choose “Embed this post”, copy the code and paste it here. A plain link to the
+          post also works; it is shown as a “View on LinkedIn” button.
 
   # ---------------------------------------------------------------------------
   # PUBLICATIONS (BibTeX file)

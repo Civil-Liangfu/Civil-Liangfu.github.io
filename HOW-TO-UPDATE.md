@@ -43,7 +43,7 @@ it on the same GitHub page and create a new one.
 | **Home page**       | Name line, role, photo, affiliation, short bio, selected papers, section switches, contact |
 | **Contact links**   | Email, Google Scholar, ORCID, ResearchGate, LinkedIn, GitHub (buttons on the home page)    |
 | **Research topics** | The research cards and pages. **New** adds a topic; “Position” sets the order              |
-| **News**            | News items. **New** adds one (the date is filled in with today)                            |
+| **News**            | News items, with optional photos, a video and a LinkedIn post (see “News” below)           |
 | **Publications**    | The BibTeX list (see “Adding a publication” below), and where I am corresponding author    |
 | **CV**              | Experience, education, awards, grants, papers, talks, teaching, mentoring                  |
 | **Teaching**        | The Teaching page, and the switches that show it in the menu                               |
@@ -80,6 +80,39 @@ Good to know:
     honours** in the **CV** section. The text before the first comma is shown in bold.
 - The **CV** page has a **Download PDF** button. The PDF is made automatically from my
   CV a few minutes after I save a CV change (the “Render a CV” step on GitHub).
+
+### News: photos, videos and LinkedIn posts
+
+In **News → New News item**, the text is required; everything else is optional:
+
+- **Photos:** click **Add Photo**, then **Browse** to upload. Big photos are made
+  smaller automatically. Visitors can click a photo on the News page to enlarge it.
+- **Video link:** a YouTube, Bilibili or Vimeo link. The video plays on the News page.
+- **Or upload a short video:** an MP4 file of at most 20 MB. Put longer videos on
+  YouTube or Bilibili and use the link instead.
+- **LinkedIn post:** LinkedIn does not let other websites read my posts automatically,
+  but every public post can be shown on my site:
+  1. On LinkedIn, open the post and click the **•••** at its top right.
+  2. Choose **Embed this post**, then **Copy code**.
+  3. Paste the code into the **LinkedIn post** box.
+
+  A plain link to the post also works; it then shows as a “View on LinkedIn” button.
+
+The home page lists the latest news with a small photo and labels such as “Video” or
+“LinkedIn post” that lead to the full item on the News page. Once my LinkedIn address
+is filled in under **Contact links → LinkedIn**, the News page also shows a **Follow me
+on LinkedIn** button.
+
+### Citation counts (automatic)
+
+Every Monday, GitHub fetches my citation counts from **Google Scholar**. If Google blocks
+the request, it uses **OpenAlex**, an open citation database, instead. Each paper then
+shows **Cited by N** next to its DOI, and the home page shows my total citations and
+h-index with the source and date. Nothing to do on my side.
+
+- To update now: on GitHub, **Actions → Update citation counts → Run workflow**.
+- A paper shows no count when it has no citations yet, or when its title in the
+  Publications list differs from the title on Google Scholar.
 
 ---
 
@@ -126,8 +159,7 @@ lines (each one goes inside the `{ … }` of the entry, with a comma at the end)
   `@phdthesis` → **Thesis**, `@misc` → **Preprint**. (This changes only the label,
   not the list the paper is in; see below.)
 - `abbr={JBE},` short journal name, shown in small letters under the label
-- `doi={10.xxxx/xxxxx},` adds a DOI button and citation badges (copy the DOI from
-  the paper's web page)
+- `doi={10.xxxx/xxxxx},` adds a DOI button (copy the DOI from the paper's web page)
 - `pdf={my_paper.pdf},` adds a PDF button (upload the file to `assets/pdf/` first)
 - `html={https://…},` adds a link button to any web page
 
@@ -171,8 +203,9 @@ Other workflows I may see in the Actions tab:
 - **Render a CV** runs when the CV changes and makes a PDF of it
   (`assets/rendercv/rendercv_output/Liangfu_Ge_CV.pdf`). If it fails, the CV has an entry
   it does not understand; compare it with the templates at the bottom of `_data/cv.yml`.
-- **Update Google Scholar Citations** runs three times a week. It sometimes fails because
-  Google blocks it. That is harmless.
+- **Update citation counts** runs every Monday (see “Citation counts” above). A red ✗
+  means neither Google Scholar nor OpenAlex answered that week; the old counts stay on
+  the site and the next run tries again.
 - **Integration tests** and **Visual regression checks** are the theme developers' own
   checks. They test demo pages that are not part of my site, so a red ✗ on them does
   **not** mean my website is broken.

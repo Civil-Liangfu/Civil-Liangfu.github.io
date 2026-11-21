@@ -105,7 +105,9 @@ layout: default
     Numbers at a glance, counted automatically from _bibliography/papers.bib.
     First-author papers: entries whose author list starts with my name as Google
     Scholar writes it ("Ge, Liangfu", "Ge, L"; from scholar.last_name/first_name in
-    _config.yml). Switch: `highlights` in _pages/about.md (panel: Home page).
+    _config.yml). Citations and h-index come from _data/citations.yml (updated every
+    week by the "Update citation counts" workflow) and appear once it has data.
+    Switch: `highlights` in _pages/about.md (panel: Home page).
   {% endcomment %}
   {% if page.highlights != false %}
     {% assign owner_last = site.scholar.last_name | first %}
@@ -115,24 +117,51 @@ layout: default
     {% capture count_conference %}{% bibliography_count --query @inproceedings, @conference, @proceedings %}{% endcapture %}
     {% capture count_first %}{% bibliography_count --query @*[author~=^{{ owner_last }}\W+{{ owner_initial }}] %}{% endcapture %}
     {% assign count_all = count_all | strip | plus: 0 %}
+    {% assign cite_meta = site.data.citations.metadata %}
+    {% assign cite_total = site.data.citations.totals.citations | default: 0 %}
     {% if count_all > 0 %}
-      <section class="home-stats" aria-label="Publications at a glance">
-        <div class="home-stat">
-          <span class="home-stat__num">{{ count_all }}</span>
-          <span class="home-stat__label">Publications</span>
+      <section class="home-stats" aria-label="At a glance">
+        <div class="home-stats__grid{% if cite_total > 0 %} home-stats__grid--6{% endif %}">
+          <div class="home-stat">
+            <span class="home-stat__num">{{ count_all }}</span>
+            <span class="home-stat__label">Publications</span>
+          </div>
+          <div class="home-stat">
+            <span class="home-stat__num">{{ count_journal | strip }}</span>
+            <span class="home-stat__label">Journal papers</span>
+          </div>
+          <div class="home-stat">
+            <span class="home-stat__num">{{ count_conference | strip }}</span>
+            <span class="home-stat__label">Conference papers</span>
+          </div>
+          <div class="home-stat">
+            <span class="home-stat__num">{{ count_first | strip }}</span>
+            <span class="home-stat__label">As first author</span>
+          </div>
+          {% if cite_total > 0 %}
+            <div class="home-stat">
+              <span class="home-stat__num">
+                {%- if cite_total >= 1000 -%}
+                  {{- cite_total | divided_by: 1000 }},{{ cite_total | modulo: 1000 | prepend: '00' | slice: -3, 3 -}}
+                {%- else -%}
+                  {{- cite_total -}}
+                {%- endif -%}
+              </span>
+              <span class="home-stat__label">Citations</span>
+            </div>
+            <div class="home-stat">
+              <span class="home-stat__num">{{ site.data.citations.totals.h_index }}</span>
+              <span class="home-stat__label">h-index</span>
+            </div>
+          {% endif %}
         </div>
-        <div class="home-stat">
-          <span class="home-stat__num">{{ count_journal | strip }}</span>
-          <span class="home-stat__label">Journal papers</span>
-        </div>
-        <div class="home-stat">
-          <span class="home-stat__num">{{ count_conference | strip }}</span>
-          <span class="home-stat__label">Conference papers</span>
-        </div>
-        <div class="home-stat">
-          <span class="home-stat__num">{{ count_first | strip }}</span>
-          <span class="home-stat__label">As first author</span>
-        </div>
+        {% if cite_total > 0 %}
+          <p class="home-stats__note">
+            Citations and h-index:
+            <a href="{{ cite_meta.source_url }}" target="_blank" rel="noopener noreferrer">{{ cite_meta.source }}</a>, updated
+            {{ cite_meta.last_updated | date: '%-d %b %Y' }}.
+          </p>
+        {% endif %}
       </section>
     {% endif %}
   {% endif %}
@@ -275,7 +304,28 @@ layout: default
                   <a href="{{ item.url | relative_url }}">{{ item.title }}</a>
                 </p>
               {% endif %}
+              {% comment %} Labels for the item's media; the full item is on the News page {% endcomment %}
+              {% assign item_anchor = '/news/#news-' | append: item.slug | relative_url %}
+              {% if item.video_link or item.video_file or item.linkedin_post or item.images.size > 1 %}
+                <p class="news-chips">
+                  {% if item.images.size > 1 %}
+                    <a href="{{ item_anchor }}"><i class="fa-regular fa-images"></i> {{ item.images.size }} photos</a>
+                  {% endif %}
+                  {% if item.video_link or item.video_file %}
+                    <a href="{{ item_anchor }}"><i class="fa-solid fa-circle-play"></i> Video</a>
+                  {% endif %}
+                  {% if item.linkedin_post %}
+                    <a href="{{ item_anchor }}"><i class="fa-brands fa-linkedin"></i> LinkedIn post</a>
+                  {% endif %}
+                </p>
+              {% endif %}
             </div>
+            {% if item.images.size > 0 %}
+              {% assign thumb = item.images.first %}
+              <a class="news-thumb" href="{{ item_anchor }}" aria-hidden="true" tabindex="-1">
+                <img src="{{ thumb.src | default: thumb | relative_url }}" alt="" loading="lazy">
+              </a>
+            {% endif %}
           </li>
         {% endfor %}
       </ul>

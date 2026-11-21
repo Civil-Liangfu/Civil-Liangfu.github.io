@@ -10,6 +10,8 @@
      with a * when corresponding author (from _data/corresponding.yml, edited in the
      panel under Publications → Corresponding author). Hovering over the name shows
      "Corresponding author" or "Co-corresponding author".
+  3. A "Cited by N" button next to DOI, from _data/citations.yml (filled in every
+     week by the "Update citation counts" workflow); hidden when N is 0 or unknown.
   Styling: _sass/_design.scss (section 7).
 {% endcomment %}
 {%- assign my_corresponding = site.data.corresponding.papers | where: 'key', entry.key | first -%}
@@ -280,6 +282,19 @@
       {% endif %}
       {% if entry.doi %}
         <a href="https://doi.org/{{ entry.doi }}" class="btn btn-sm z-depth-0" role="button">DOI</a>
+      {% endif %}
+      {% comment %} "Cited by N", from _data/citations.yml (updated every week) {% endcomment %}
+      {% assign cite_info = site.data.citations.papers[entry.key] %}
+      {% if cite_info and cite_info.citations > 0 %}
+        <a
+          href="{{ cite_info.url }}"
+          class="btn btn-sm z-depth-0 pub-cites"
+          role="button"
+          target="_blank"
+          rel="noopener noreferrer"
+          title="Citations on {{ site.data.citations.metadata.source }}, updated {{ site.data.citations.metadata.last_updated | date: '%-d %b %Y' }}"
+          >Cited by {{ cite_info.citations -}}
+        </a>
       {% endif %}
       {% if entry.arxiv %}
         <a href="http://arxiv.org/abs/{{ entry.arxiv }}" class="btn btn-sm z-depth-0" role="button">arXiv</a>

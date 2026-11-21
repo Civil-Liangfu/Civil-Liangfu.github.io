@@ -50,6 +50,10 @@ After upgrading `al_folio_core` / `al_folio_cv`, diff these against the gem vers
   "Last, First" author format). Fellowships & awards: `site.data.cv.cv.sections`
   `grants_and_fellowships` + `awards_and_honours` (text before the first ", " in bold).
   Research cards: `_includes/theme_cards.liquid`, shared with `_pages/projects.md`.
+  Once `_data/citations.yml` has `totals.citations` > 0 the band gets two more tiles
+  (Citations, h-index; class `home-stats__grid--6`: 6 → 3 → 2 per row) and a source/date
+  note. The news list shows each item's first photo as a thumbnail and "N photos / Video /
+  LinkedIn post" labels linking to `/news/#news-<slug>`.
   Selected papers: `selected_publications` is an ordered list of BibTeX keys, rendered with
   `{% nocite paper_key %}` in a loop (output captured, so a missing key's "(missing
   reference)" text never shows) + `{% bibliography --group_by none --cited_in_order %}`.
@@ -68,7 +72,9 @@ After upgrading `al_folio_core` / `al_folio_cv`, diff these against the gem vers
   entry's key is in `_data/corresponding.yml` (`papers: [{key, role: sole|co}]`, edited
   in the panel under Publications → Corresponding author; kept out of the .bib so a
   Google Scholar re-paste can't wipe it). First author wins the colour when both apply.
-  `max_author_limit` is blank, so every author is shown. `_includes/author_legend.liquid`
+  (3) a "Cited by N" button (`.pub-cites`) next to DOI from `_data/citations.yml`
+  `papers[entry.key]` (hidden when 0/missing; the theme's per-entry Google Scholar badge
+  is switched off in `_config.yml`). `max_author_limit` is blank, so every author is shown. `_includes/author_legend.liquid`
   is the colour key above the Publications page and the home page's selected papers (its
   "corresponding" item appears only when the list is non-empty). `--c-green` token:
   #15803d light / #5fd18b dark.
@@ -103,6 +109,19 @@ After upgrading `al_folio_core` / `al_folio_cv`, diff these against the gem vers
   rendered at 192 px from `assets/img/favicon.svg` (arch bridge in the site colours) with
   Playwright; re-render the PNG after editing the SVG.
 - `_pages/404.md` — no auto-redirect; buttons to Home / Publications / Research / CV.
+- News: `_includes/news.liquid` (local override of the theme's table; used by
+  `_pages/news.md`) lists items newest first with anchors `#news-<slug>`, and
+  `_includes/news_media.liquid` renders each item's optional front matter: `images`
+  (list of `{src, caption}`, `data-zoomable`), `video_link` (YouTube incl. youtu.be/shorts/
+  embed/live → youtube-nocookie; Bilibili BV/av; Vimeo; anything else → "Watch the video"
+  button), `video_file` (`<video>`), `linkedin_post` (an "Embed this post" iframe code or
+  `/embed/` URL → iframe with the code's height; any other LinkedIn link → "View on
+  LinkedIn" button). LinkedIn offers no API for reading a person's posts, so embedding
+  per post is the only "link". Liquid variables leak between includes, hence the `nm_`
+  resets. "Follow me on LinkedIn" on `/news/` appears when `linkedin_username` is set in
+  `_data/socials.yml` (not set yet). Item pages are kept out of the sitemap (`defaults`,
+  `type: news`). `_news/*.md` is in `.prettierignore`: the panel saves a pasted embed code
+  as `"…\"…"`, which Prettier wants single-quoted.
 
 ## Editing panel (`admin/`, Sveltia CMS)
 
@@ -139,6 +158,9 @@ After upgrading `al_folio_core` / `al_folio_cv`, diff these against the gem vers
 - Research: `_projects/*.md`, one per research theme, written only from paper titles;
   `{% cite key %}` + `related_publications: true`. No images yet (`img:` is optional).
 - News: `_news/*.md` (`inline: true`; panel adds a `title` used only for the file name).
+  Uploads from the News form go to `assets/news/` (collection `media_folder`); photos are
+  converted to WebP ≤ 1800 px on upload (`media_libraries.default.config.transformations`),
+  video files are limited to 20 MB (`max_file_size`). Round-trip tested in the panel.
 - Teaching: `_pages/teaching.md`, in the menu (`nav: true`, `sitemap: true`): courses and
   student supervision from the owner's CV.
 - CV: `_data/cv.yml`, must stay valid for **RenderCV** (`render-cv.yml` makes a PDF on
@@ -162,13 +184,25 @@ After upgrading `al_folio_core` / `al_folio_cv`, diff these against the gem vers
 ## Workflows (GitHub Actions)
 
 - Matter for the site: **Deploy site**, **Check for broken links on site** (after a
-  successful deploy), **Update Google Scholar Citations** (runs "succeed" but
-  `_data/citations.yml` has stayed empty, and the last scheduled run was Aug 2026, so the
-  site shows no citation counts), **Render a CV**, **Prettier**
+  successful deploy), **Update citation counts**, **Render a CV**, **Prettier**
   (passes if files are formatted: `npm ci && npx prettier --write <files>`). The Prettier
   workflow installs the **latest** `prettier` and `@shopify/prettier-plugin-liquid` on every
   run, and versions disagree on some details (3.8.0 and 3.10.1 want different blank lines
   and Liquid indentation), so keep `devDependencies` at the latest versions before checking.
+- **Update citation counts** (`.github/workflows/citations.yml`, `bin/update_citations.py`):
+  Mondays 04:23 UTC, manual "Run workflow", and a dry run (`--dry-run`, prints, no commit)
+  on PRs that change it. Google Scholar via `scholarly==1.7.11` (needs `httpx<0.28`) for
+  profile totals + per-paper counts matched to papers.bib by normalised title (prefix match
+  for shortened titles); if Scholar fails or matches nothing, OpenAlex (DOI batches +
+  `author.orcid` works; totals computed from matched papers). Writes `_data/citations.yml`
+  (`metadata{last_updated,source,source_url}`, `totals{citations,h_index,i10_index}`,
+  `papers{<bibkey>: {citations, url}}`, double-quoted, Prettier-clean); if both fail it keeps
+  the file and exits 1. It replaces the theme's `update-citations.yml`, which GitHub had
+  set to `disabled_inactivity` (a new file name = a new, enabled workflow); the weekly bot
+  commit keeps the repo active. Commits pushed with `GITHUB_TOKEN` don't trigger `push`
+  workflows, so `deploy.yml` also runs on `workflow_run` of "Render a CV" and "Update
+  citation counts" (successful, non-PR runs on main) — this also stops the CV PDF lagging
+  one deploy behind.
 - **Integration tests** (`unit-tests.yml`) and **Visual regression checks** are al-folio's
   developer checks against removed demo pages; they fail regardless of content. Turning
   their automatic triggers off is the owner's decision (proposed, not done).

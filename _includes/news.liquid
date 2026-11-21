@@ -1,0 +1,34 @@
+{% comment %}
+  LOCAL OVERRIDE of the theme's news list (al_folio_core 1.0.11), used by the News
+  page (_pages/news.md). Each item shows its date and text, then its photos, video
+  and LinkedIn post (_includes/news_media.liquid). Each item has an anchor
+  (#news-<file name>), which the home page links to. Styling: _sass/_design.scss.
+{% endcomment %}
+<div class="news">
+  {% if site.news != blank %}
+    {% assign news = site.news | sort: 'date' | reverse %}
+    {% assign news_limit = news.size %}
+    {% if include.limit and page.announcements.limit %}
+      {% assign news_limit = page.announcements.limit %}
+    {% endif %}
+    <ol class="news-feed">
+      {% for item in news limit: news_limit %}
+        <li class="news-entry" id="news-{{ item.slug }}">
+          <time class="news-entry__date" datetime="{{ item.date | date_to_xmlschema }}">{{ item.date | date: '%b %d, %Y' }}</time>
+          <div class="news-entry__body">
+            {% if item.inline %}
+              <div class="news-entry__text">{{ item.content | emojify }}</div>
+            {% else %}
+              <p class="news-entry__text">
+                <a href="{{ item.url | relative_url }}">{{ item.title }}</a>
+              </p>
+            {% endif %}
+            {% include news_media.liquid item=item %}
+          </div>
+        </li>
+      {% endfor %}
+    </ol>
+  {% else %}
+    <p>No news so far.</p>
+  {% endif %}
+</div>

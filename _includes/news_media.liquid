@@ -1,0 +1,121 @@
+{% comment %}
+  Photos, video and LinkedIn post of one news item (a file in _news/), shown under
+  its text on the News page (_includes/news.liquid). All fields are optional and
+  are set in the editing panel (News):
+    images         list of { src, caption } – photos; click one to enlarge it
+    video_link     YouTube, Bilibili or Vimeo link → embedded player
+                   (any other link → a "Watch the video" button)
+    video_file     an uploaded MP4/WebM file → video player
+    linkedin_post  the post's "Embed this post" code → the embedded post
+                   (a plain link to the post → a "View on LinkedIn" button)
+  Variables are reset first because Liquid keeps them between includes.
+{% endcomment %}
+{% assign nm_item = include.item %}
+{% assign nm_embed = '' %}
+{% assign nm_vid = '' %}
+{% assign nm_link = nm_item.video_link | strip %}
+{% assign nm_li = nm_item.linkedin_post | strip %}
+
+{% if nm_item.images and nm_item.images.size > 0 %}
+  <div class="news-photos{% if nm_item.images.size == 1 %} news-photos--one{% endif %}">
+    {% for photo in nm_item.images %}
+      {% assign photo_src = photo.src | default: photo %}
+      <figure>
+        <img
+          src="{{ photo_src | relative_url }}"
+          alt="{{ photo.caption | default: '' | escape }}"
+          loading="lazy"
+          data-zoomable
+        >
+        {% if photo.caption %}
+          <figcaption>{{ photo.caption }}</figcaption>
+        {% endif %}
+      </figure>
+    {% endfor %}
+  </div>
+{% endif %}
+
+{% if nm_link != '' %}
+  {% if nm_link contains 'youtu.be/' %}
+    {% assign nm_vid = nm_link | split: 'youtu.be/' | last | split: '?' | first %}
+  {% elsif nm_link contains 'youtube.com/' %}
+    {% if nm_link contains 'v=' %}
+      {% assign nm_vid = nm_link | split: 'v=' | last | split: '&' | first | split: '#' | first %}
+    {% elsif nm_link contains '/shorts/' %}
+      {% assign nm_vid = nm_link | split: '/shorts/' | last | split: '?' | first %}
+    {% elsif nm_link contains '/embed/' %}
+      {% assign nm_vid = nm_link | split: '/embed/' | last | split: '?' | first %}
+    {% elsif nm_link contains '/live/' %}
+      {% assign nm_vid = nm_link | split: '/live/' | last | split: '?' | first %}
+    {% endif %}
+  {% endif %}
+  {% if nm_vid != '' %}
+    {% assign nm_embed = 'https://www.youtube-nocookie.com/embed/' | append: nm_vid %}
+  {% elsif nm_link contains 'bilibili.com/video/' %}
+    {% assign nm_vid = nm_link | split: 'bilibili.com/video/' | last | split: '/' | first | split: '?' | first %}
+    {% assign nm_prefix = nm_vid | slice: 0, 2 | downcase %}
+    {% if nm_prefix == 'av' %}
+      {% assign nm_aid = nm_vid | slice: 2, 20 %}
+      {% assign nm_embed = 'https://player.bilibili.com/player.html?autoplay=0&aid=' | append: nm_aid %}
+    {% else %}
+      {% assign nm_embed = 'https://player.bilibili.com/player.html?autoplay=0&bvid=' | append: nm_vid %}
+    {% endif %}
+  {% elsif nm_link contains 'vimeo.com/' %}
+    {% assign nm_vid = nm_link | split: '?' | first | split: '/' | last %}
+    {% assign nm_embed = 'https://player.vimeo.com/video/' | append: nm_vid %}
+  {% endif %}
+
+  {% if nm_embed != '' %}
+    <div class="news-video">
+      <iframe
+        src="{{ nm_embed | escape }}"
+        title="Video"
+        loading="lazy"
+        allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; fullscreen"
+        allowfullscreen
+      ></iframe>
+    </div>
+  {% else %}
+    <p class="news-links">
+      <a class="btn-site" href="{{ nm_link | escape }}" target="_blank" rel="noopener noreferrer"
+        ><i class="fa-solid fa-circle-play"></i> Watch the video</a
+      >
+    </p>
+  {% endif %}
+{% endif %}
+
+{% if nm_item.video_file %}
+  <div class="news-video news-video--file">
+    <video controls playsinline preload="metadata" src="{{ nm_item.video_file | relative_url }}"></video>
+  </div>
+{% endif %}
+
+{% if nm_li != '' %}
+  {% if nm_li contains 'linkedin.com/embed/' %}
+    {% if nm_li contains 'src="' %}
+      {% assign nm_li_src = nm_li | split: 'src="' | last | split: '"' | first %}
+    {% else %}
+      {% assign nm_li_src = nm_li | split: ' ' | first %}
+    {% endif %}
+    {% assign nm_li_height = 600 %}
+    {% if nm_li contains 'height="' %}
+      {% assign nm_li_height = nm_li | split: 'height="' | last | split: '"' | first | plus: 0 %}
+    {% endif %}
+    <div class="news-linkedin">
+      <iframe
+        src="{{ nm_li_src | escape }}"
+        height="{{ nm_li_height }}"
+        title="LinkedIn post"
+        loading="lazy"
+        allowfullscreen
+      ></iframe>
+    </div>
+  {% elsif nm_li contains 'linkedin.com' %}
+    {% assign nm_li_url = nm_li | split: ' ' | first %}
+    <p class="news-links">
+      <a class="btn-site" href="{{ nm_li_url | escape }}" target="_blank" rel="noopener noreferrer"
+        ><i class="fa-brands fa-linkedin"></i> View on LinkedIn</a
+      >
+    </p>
+  {% endif %}
+{% endif %}
