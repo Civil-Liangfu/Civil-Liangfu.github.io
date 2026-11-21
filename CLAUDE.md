@@ -190,8 +190,10 @@ After upgrading `al_folio_core` / `al_folio_cv`, diff these against the gem vers
   run, and versions disagree on some details (3.8.0 and 3.10.1 want different blank lines
   and Liquid indentation), so keep `devDependencies` at the latest versions before checking.
 - **Update citation counts** (`.github/workflows/citations.yml`, `bin/update_citations.py`):
-  Mondays 04:23 UTC, manual "Run workflow", and a dry run (`--dry-run`, prints, no commit)
-  on PRs that change it. Google Scholar via `scholarly==1.7.11` (needs `httpx<0.28`) for
+  Mondays 04:23 UTC, on pushes to main that change `papers.bib`, `socials.yml` or the
+  updater, manual "Run workflow", and a dry run (`--dry-run`, prints, no commit) on PRs
+  that change it (`concurrency` group; `git pull --rebase` before pushing). First real run
+  from GitHub (Nov 2026): Google Scholar answered, 34/34 papers matched. Google Scholar via `scholarly==1.7.11` (needs `httpx<0.28`) for
   profile totals + per-paper counts matched to papers.bib by normalised title (prefix match
   for shortened titles); if Scholar fails or matches nothing, OpenAlex (DOI batches +
   `author.orcid` works; totals computed from matched papers). Writes `_data/citations.yml`

@@ -105,7 +105,8 @@ on LinkedIn** button.
 
 ### Citation counts (automatic)
 
-Every Monday, GitHub fetches my citation counts from **Google Scholar**. If Google blocks
+Every Monday, and right after I change the Publications list, GitHub fetches my
+citation counts from **Google Scholar**. If Google blocks
 the request, it uses **OpenAlex**, an open citation database, instead. Each paper then
 shows **Cited by N** next to its DOI, and the home page shows my total citations and
 h-index with the source and date. Nothing to do on my side.
