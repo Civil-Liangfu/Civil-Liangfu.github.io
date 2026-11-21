@@ -1,10 +1,114 @@
 # Citation counts for the papers in _bibliography/papers.bib.
 # Filled in AUTOMATICALLY every Monday by the "Update citation counts" workflow
 # (bin/update_citations.py). There is no need to edit this file.
-# Until the first update, nothing about citations is shown on the site.
 metadata:
-  last_updated: ""
-  source: ""
-  source_url: ""
-totals: {}
-papers: {}
+  last_updated: "2026-11-21"
+  source: "Google Scholar"
+  source_url: "https://scholar.google.com/citations?user=Jx-_4dwAAAAJ"
+totals:
+  citations: 925
+  h_index: 13
+  i10_index: 13
+papers:
+  dan2026marker:
+    citations: 0
+    url: "https://scholar.google.com/citations?view_op=view_citation&user=Jx-_4dwAAAAJ&citation_for_view=Jx-_4dwAAAAJ:Fu2w8maKXqMC"
+  dan2026novel:
+    citations: 0
+    url: "https://scholar.google.com/citations?view_op=view_citation&user=Jx-_4dwAAAAJ&citation_for_view=Jx-_4dwAAAAJ:35r97b3x0nAC"
+  ge2026end:
+    citations: 0
+    url: "https://scholar.google.com/citations?view_op=view_citation&user=Jx-_4dwAAAAJ&citation_for_view=Jx-_4dwAAAAJ:W5xh706n7nkC"
+  liao2026frequency:
+    citations: 0
+    url: "https://scholar.google.com/citations?view_op=view_citation&user=Jx-_4dwAAAAJ&citation_for_view=Jx-_4dwAAAAJ:evX43VCCuoAC"
+  ge2026proactive:
+    citations: 0
+    url: "https://scholar.google.com/citations?view_op=view_citation&user=Jx-_4dwAAAAJ&citation_for_view=Jx-_4dwAAAAJ:2KloaMYe4IUC"
+  hu2026fusing:
+    citations: 0
+    url: "https://scholar.google.com/citations?view_op=view_citation&user=Jx-_4dwAAAAJ&citation_for_view=Jx-_4dwAAAAJ:tzM49s52ZIMC"
+  chen2026stream:
+    citations: 0
+    url: "https://scholar.google.com/citations?view_op=view_citation&user=Jx-_4dwAAAAJ&citation_for_view=Jx-_4dwAAAAJ:_Re3VWB3Y0AC"
+  nuraliyev2026bayesian:
+    citations: 0
+    url: "https://scholar.google.com/citations?view_op=view_citation&user=Jx-_4dwAAAAJ&citation_for_view=Jx-_4dwAAAAJ:ZfRJV9d4-WMC"
+  lei2026damage:
+    citations: 0
+    url: "https://scholar.google.com/citations?view_op=view_citation&user=Jx-_4dwAAAAJ&citation_for_view=Jx-_4dwAAAAJ:tKAzc9rXhukC"
+  liao2026solving:
+    citations: 0
+    url: "https://scholar.google.com/citations?view_op=view_citation&user=Jx-_4dwAAAAJ&citation_for_view=Jx-_4dwAAAAJ:7T2F9Uy0os0C"
+  hu2026vision:
+    citations: 0
+    url: "https://scholar.google.com/citations?view_op=view_citation&user=Jx-_4dwAAAAJ&citation_for_view=Jx-_4dwAAAAJ:NJ774b8OgUMC"
+  luleci2026latent:
+    citations: 0
+    url: "https://scholar.google.com/citations?view_op=view_citation&user=Jx-_4dwAAAAJ&citation_for_view=Jx-_4dwAAAAJ:_Ybze24A_UAC"
+  singh2026digital:
+    citations: 1
+    url: "https://scholar.google.com/citations?view_op=view_citation&user=Jx-_4dwAAAAJ&citation_for_view=Jx-_4dwAAAAJ:JQOojiI6XY0C"
+  luleci2026physics:
+    citations: 1
+    url: "https://scholar.google.com/citations?view_op=view_citation&user=Jx-_4dwAAAAJ&citation_for_view=Jx-_4dwAAAAJ:uLbwQdceFCQC"
+  ge2026viv:
+    citations: 1
+    url: "https://scholar.google.com/citations?view_op=view_citation&user=Jx-_4dwAAAAJ&citation_for_view=Jx-_4dwAAAAJ:UHK10RUVsp4C"
+  dan2025physics:
+    citations: 8
+    url: "https://scholar.google.com/citations?view_op=view_citation&user=Jx-_4dwAAAAJ&citation_for_view=Jx-_4dwAAAAJ:tkaPQYYpVKoC"
+  dan2025gaussian:
+    citations: 5
+    url: "https://scholar.google.com/citations?view_op=view_citation&user=Jx-_4dwAAAAJ&citation_for_view=Jx-_4dwAAAAJ:Mojj43d5GZwC"
+  dan2025novel:
+    citations: 3
+    url: "https://scholar.google.com/citations?view_op=view_citation&user=Jx-_4dwAAAAJ&citation_for_view=Jx-_4dwAAAAJ:AXPGKjj_ei8C"
+  ge2025advanced:
+    citations: 57
+    url: "https://scholar.google.com/citations?view_op=view_citation&user=Jx-_4dwAAAAJ&citation_for_view=Jx-_4dwAAAAJ:tOudhMTPpwUC"
+  ge2025deep:
+    citations: 60
+    url: "https://scholar.google.com/citations?view_op=view_citation&user=Jx-_4dwAAAAJ&citation_for_view=Jx-_4dwAAAAJ:eJXPG6dFmWUC"
+  barbosh2024automated:
+    citations: 17
+    url: "https://scholar.google.com/citations?view_op=view_citation&user=Jx-_4dwAAAAJ&citation_for_view=Jx-_4dwAAAAJ:sSrBHYA8nusC"
+  ge2024domain:
+    citations: 0
+    url: "https://scholar.google.com/citations?view_op=view_citation&user=Jx-_4dwAAAAJ&citation_for_view=Jx-_4dwAAAAJ:8AbLer7MMksC"
+  ge2024structural:
+    citations: 0
+    url: "https://scholar.google.com/citations?view_op=view_citation&user=Jx-_4dwAAAAJ&citation_for_view=Jx-_4dwAAAAJ:geHnlv5EZngC"
+  ge2024drone:
+    citations: 0
+    url: "https://scholar.google.com/citations?view_op=view_citation&user=Jx-_4dwAAAAJ&citation_for_view=Jx-_4dwAAAAJ:Y5dfb0dijaUC"
+  ge2024domainb:
+    citations: 81
+    url: "https://scholar.google.com/citations?view_op=view_citation&user=Jx-_4dwAAAAJ&citation_for_view=Jx-_4dwAAAAJ:1sJd4Hv_s6UC"
+  ge2024benchmark:
+    citations: 15
+    url: "https://scholar.google.com/citations?view_op=view_citation&user=Jx-_4dwAAAAJ&citation_for_view=Jx-_4dwAAAAJ:b0M2c_1WBrUC"
+  yu2023time:
+    citations: 24
+    url: "https://scholar.google.com/citations?view_op=view_citation&user=Jx-_4dwAAAAJ&citation_for_view=Jx-_4dwAAAAJ:O3NaXMp0MMsC"
+  ge2023improved:
+    citations: 33
+    url: "https://scholar.google.com/citations?view_op=view_citation&user=Jx-_4dwAAAAJ&citation_for_view=Jx-_4dwAAAAJ:RGFaLdJalmkC"
+  ge2023bridge:
+    citations: 69
+    url: "https://scholar.google.com/citations?view_op=view_citation&user=Jx-_4dwAAAAJ&citation_for_view=Jx-_4dwAAAAJ:GnPB-g6toBAC"
+  ge2022intelligent:
+    citations: 41
+    url: "https://scholar.google.com/citations?view_op=view_citation&user=Jx-_4dwAAAAJ&citation_for_view=Jx-_4dwAAAAJ:RHpTSmoSYBkC"
+  dan2021digital:
+    citations: 165
+    url: "https://scholar.google.com/citations?view_op=view_citation&user=Jx-_4dwAAAAJ&citation_for_view=Jx-_4dwAAAAJ:LkGwnXOMwfcC"
+  ge2020accurate:
+    citations: 142
+    url: "https://scholar.google.com/citations?view_op=view_citation&user=Jx-_4dwAAAAJ&citation_for_view=Jx-_4dwAAAAJ:d1gkVwhDpl0C"
+  ge2020real:
+    citations: 44
+    url: "https://scholar.google.com/citations?view_op=view_citation&user=Jx-_4dwAAAAJ&citation_for_view=Jx-_4dwAAAAJ:u5HHmVD_uO8C"
+  dan2019identification:
+    citations: 158
+    url: "https://scholar.google.com/citations?view_op=view_citation&user=Jx-_4dwAAAAJ&citation_for_view=Jx-_4dwAAAAJ:u-x6o8ySG0sC"
