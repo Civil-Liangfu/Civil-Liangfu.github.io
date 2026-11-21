@@ -3,6 +3,7 @@ layout: default
 permalink: /blog/
 title: blog
 nav: false
+published: false # hidden: there are no blog posts yet. To start a blog, add posts to _posts/ and change this to true (and nav: true to show it in the menu)
 nav_order: 1
 pagination:
   enabled: true

@@ -4,7 +4,8 @@ layout: default
 {% comment %}
   Local copy of the al-folio "page" layout. Additions for research pages
   (files in _projects/): a "Research · Theme 0N" label above the title, a
-  comfortable reading width, and previous/next links at the bottom.
+  comfortable reading width, and previous/next links at the bottom. Other pages
+  (e.g. Teaching) get the class "page-text": spaced headings and ruled lists.
 {% endcomment %}
 
 {% if page._styles %}
@@ -45,11 +46,7 @@ layout: default
     {% endif %}
   </header>
 
-  <article
-    {% if is_theme %}
-      class="prose"
-    {% endif %}
-  >
+  <article class="{% if is_theme %}prose{% else %}page-text{% endif %}">
     {{ content }}
   </article>
 

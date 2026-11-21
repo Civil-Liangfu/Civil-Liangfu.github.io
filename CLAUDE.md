@@ -39,11 +39,21 @@ After upgrading `al_folio_core` / `al_folio_cv`, diff these against the gem vers
   theme's `--global-*` variables. Theme rules are often very specific or `!important`
   (e.g. `.publications ol.bibliography li …`, `.cv .card .list-group-item .badge`) —
   match their selectors rather than adding more `!important`.
-- `_layouts/about.liquid` — home page (hero, research cards from `site.projects`,
-  selected papers, news, contact band). Reads plain front-matter fields in
-  `_pages/about.md`: `eyebrow`, `subtitle`, `profile.{image,image_alt,department,institution,location}`,
-  `research_heading`, `selected_papers`, `selected_publications`, `announcements.{enabled,limit}`,
-  `social`, `contact_heading`, `contact_note`. Contact buttons are built from `_data/socials.yml`.
+- `_layouts/about.liquid` — home page (hero, numbers at a glance, research cards,
+  selected papers, fellowships & awards, news, contact band). Reads plain front-matter
+  fields in `_pages/about.md`: `eyebrow`, `subtitle`, `profile.{image,image_alt,department,institution,location}`,
+  `highlights`, `research_heading`, `selected_papers`, `selected_publications`, `recognition`,
+  `announcements.{enabled,limit}`, `social`, `contact_heading`, `contact_note` (`highlights` and
+  `recognition` are on unless `false`). Contact buttons are built from `_data/socials.yml`.
+  Numbers at a glance: `bibliography_count` (all / `@article` / conference types / first
+  author via `@*[author~=^{{ owner_last }}\W+{{ owner_initial }}]`, which assumes Scholar's
+  "Last, First" author format). Fellowships & awards: `site.data.cv.cv.sections`
+  `grants_and_fellowships` + `awards_and_honours` (text before the first ", " in bold).
+  Research cards: `_includes/theme_cards.liquid`, shared with `_pages/projects.md`.
+  Once `_data/citations.yml` has `totals.citations` > 0 the band gets two more tiles
+  (Citations, h-index; class `home-stats__grid--6`: 6 → 3 → 2 per row) and a source/date
+  note. The news list shows each item's first photo as a thumbnail and "N photos / Video /
+  LinkedIn post" labels linking to `/news/#news-<slug>`.
   Selected papers: `selected_publications` is an ordered list of BibTeX keys, rendered with
   `{% nocite paper_key %}` in a loop (output captured, so a missing key's "(missing
   reference)" text never shows) + `{% bibliography --group_by none --cited_in_order %}`.
@@ -56,11 +66,15 @@ After upgrading `al_folio_core` / `al_folio_cv`, diff these against the gem vers
   `filtered_bibtex_keywords`); classes `.pub-type--journal|conference|other`; and
   (2) owner-name roles: the owner's `<em>` gets `author-self--first` (green, first in
   the author list) or `author-self--corresponding` (orange) plus a `<sup class="author-corr">*</sup>`
-  and a `.pub-role` line ("Corresponding author" / "Co-corresponding author") when the
+  and a hidden `.sr-only` "(corresponding author)" / "(co-corresponding author)" for screen
+  readers, the same text as a hover tooltip on the name (the visible `.pub-role` line under
+  the type label was removed at the owner's request, Nov 2026), when the
   entry's key is in `_data/corresponding.yml` (`papers: [{key, role: sole|co}]`, edited
   in the panel under Publications → Corresponding author; kept out of the .bib so a
   Google Scholar re-paste can't wipe it). First author wins the colour when both apply.
-  `max_author_limit` is blank, so every author is shown. `_includes/author_legend.liquid`
+  (3) a "Cited by N" button (`.pub-cites`) next to DOI from `_data/citations.yml`
+  `papers[entry.key]` (hidden when 0/missing; the theme's per-entry Google Scholar badge
+  is switched off in `_config.yml`). `max_author_limit` is blank, so every author is shown. `_includes/author_legend.liquid`
   is the colour key above the Publications page and the home page's selected papers (its
   "corresponding" item appears only when the list is non-empty). `--c-green` token:
   #15803d light / #5fd18b dark.
@@ -80,13 +94,34 @@ After upgrading `al_folio_core` / `al_folio_cv`, diff these against the gem vers
   hides a subsection whose papers are all `.unloaded`; the theme's `.publications h2 span`
   (1.5rem) is beaten by `.publications h2 .pub-section__count`.
 - `_layouts/page.liquid` — adds "Research · Theme 0N", `.prose` width and prev/next
-  links for `_projects/` pages.
+  links for `_projects/` pages; other pages get `<article class="page-text">` (spaced
+  `h2`s, ruled list rows; used by Teaching).
 - `_includes/footer.liquid` — cleaner footer (no stray space when `last_name` is empty).
 - `_includes/cv/render.liquid`, `_includes/cv/publications.liquid` — local copies of the
   `al_folio_cv` templates (site `_includes` win over the plugin's include path): show
-  snake_case section keys as "Title Case" (same rule as RenderCV), and read `journal`.
+  snake_case section keys as "Title Case" (same rule as RenderCV), read `journal`, and
+  show `cv_pdf` as a "Download PDF" button. `_pages/cv.md` points `cv_pdf` at the
+  RenderCV output `assets/rendercv/rendercv_output/Liangfu_Ge_CV.pdf` (file name comes
+  from `cv.name`; update `cv_pdf` if that name changes).
 - Fonts URL: `third_party_libraries.google_fonts.url.fonts` in `_config.yml`.
-  `max_width: 1080px`, `footer_fixed: false`.
+  `max_width: 1080px`, `footer_fixed: false`, `last_updated: true` (build date in the
+  footer), `enable_math: false` (no page uses formulas). Favicon: `icon: favicon.png`,
+  rendered at 192 px from `assets/img/favicon.svg` (arch bridge in the site colours) with
+  Playwright; re-render the PNG after editing the SVG.
+- `_pages/404.md` — no auto-redirect; buttons to Home / Publications / Research / CV.
+- News: `_includes/news.liquid` (local override of the theme's table; used by
+  `_pages/news.md`) lists items newest first with anchors `#news-<slug>`, and
+  `_includes/news_media.liquid` renders each item's optional front matter: `images`
+  (list of `{src, caption}`, `data-zoomable`), `video_link` (YouTube incl. youtu.be/shorts/
+  embed/live → youtube-nocookie; Bilibili BV/av; Vimeo; anything else → "Watch the video"
+  button), `video_file` (`<video>`), `linkedin_post` (an "Embed this post" iframe code or
+  `/embed/` URL → iframe with the code's height; any other LinkedIn link → "View on
+  LinkedIn" button). LinkedIn offers no API for reading a person's posts, so embedding
+  per post is the only "link". Liquid variables leak between includes, hence the `nm_`
+  resets. "Follow me on LinkedIn" on `/news/` appears when `linkedin_username` is set in
+  `_data/socials.yml` (not set yet). Item pages are kept out of the sitemap (`defaults`,
+  `type: news`). `_news/*.md` is in `.prettierignore`: the panel saves a pasted embed code
+  as `"…\"…"`, which Prettier wants single-quoted.
 
 ## Editing panel (`admin/`, Sveltia CMS)
 
@@ -123,6 +158,9 @@ After upgrading `al_folio_core` / `al_folio_cv`, diff these against the gem vers
 - Research: `_projects/*.md`, one per research theme, written only from paper titles;
   `{% cite key %}` + `related_publications: true`. No images yet (`img:` is optional).
 - News: `_news/*.md` (`inline: true`; panel adds a `title` used only for the file name).
+  Uploads from the News form go to `assets/news/` (collection `media_folder`); photos are
+  converted to WebP ≤ 1800 px on upload (`media_libraries.default.config.transformations`),
+  video files are limited to 20 MB (`max_file_size`). Round-trip tested in the panel.
 - Teaching: `_pages/teaching.md`, in the menu (`nav: true`, `sitemap: true`): courses and
   student supervision from the owner's CV.
 - CV: `_data/cv.yml`, must stay valid for **RenderCV** (`render-cv.yml` makes a PDF on
@@ -139,16 +177,34 @@ After upgrading `al_folio_core` / `al_folio_cv`, diff these against the gem vers
   it). Content filled in from the owner's CV (Nov 2026); `current_position` was dropped
   because it repeated Experience.
 - Navbar: `nav:` / `nav_order:` front matter in `_pages/*`. Current: about · publications(1)
-  · research(2) · teaching(3) · news(4) · CV(5). Blog and repositories are `nav: false`.
+  · research(2) · teaching(3) · news(4) · CV(5). Blog (no posts) and repositories (only
+  template text) are `published: false`, so they are not built or in the sitemap.
+- Not published: `test/` (theme developer tests) and `requirements.txt` are in `exclude:`.
 
 ## Workflows (GitHub Actions)
 
 - Matter for the site: **Deploy site**, **Check for broken links on site** (after a
-  successful deploy), **Update Google Scholar Citations**, **Render a CV**, **Prettier**
+  successful deploy), **Update citation counts**, **Render a CV**, **Prettier**
   (passes if files are formatted: `npm ci && npx prettier --write <files>`). The Prettier
   workflow installs the **latest** `prettier` and `@shopify/prettier-plugin-liquid` on every
   run, and versions disagree on some details (3.8.0 and 3.10.1 want different blank lines
   and Liquid indentation), so keep `devDependencies` at the latest versions before checking.
+- **Update citation counts** (`.github/workflows/citations.yml`, `bin/update_citations.py`):
+  Mondays 04:23 UTC, on pushes to main that change `papers.bib`, `socials.yml` or the
+  updater, manual "Run workflow", and a dry run (`--dry-run`, prints, no commit) on PRs
+  that change it (`concurrency` group; `git pull --rebase` before pushing). First real run
+  from GitHub (Nov 2026): Google Scholar answered, 34/34 papers matched. Google Scholar via `scholarly==1.7.11` (needs `httpx<0.28`) for
+  profile totals + per-paper counts matched to papers.bib by normalised title (prefix match
+  for shortened titles); if Scholar fails or matches nothing, OpenAlex (DOI batches +
+  `author.orcid` works; totals computed from matched papers). Writes `_data/citations.yml`
+  (`metadata{last_updated,source,source_url}`, `totals{citations,h_index,i10_index}`,
+  `papers{<bibkey>: {citations, url}}`, double-quoted, Prettier-clean); if both fail it keeps
+  the file and exits 1. It replaces the theme's `update-citations.yml`, which GitHub had
+  set to `disabled_inactivity` (a new file name = a new, enabled workflow); the weekly bot
+  commit keeps the repo active. Commits pushed with `GITHUB_TOKEN` don't trigger `push`
+  workflows, so `deploy.yml` also runs on `workflow_run` of "Render a CV" and "Update
+  citation counts" (successful, non-PR runs on main) — this also stops the CV PDF lagging
+  one deploy behind.
 - **Integration tests** (`unit-tests.yml`) and **Visual regression checks** are al-folio's
   developer checks against removed demo pages; they fail regardless of content. Turning
   their automatic triggers off is the owner's decision (proposed, not done).

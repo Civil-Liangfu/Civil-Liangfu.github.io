@@ -1,0 +1,76 @@
+name: Update citation counts
+
+# Fetches the citation counts of the papers in _bibliography/papers.bib (Google
+# Scholar first, OpenAlex if Scholar blocks the request) and saves them to
+# _data/citations.yml; see bin/update_citations.py. The "Deploy site" workflow
+# then publishes them. Runs every Monday, right after the publication list, the
+# Scholar/ORCID IDs or the updater change on main, and by hand from the Actions tab
+# ("Run workflow"). On a pull request that changes the updater it only tests it:
+# the counts are printed in the log and nothing is saved.
+#
+# The commit made every week also counts as repository activity, so GitHub does
+# not switch this schedule off (it disables scheduled workflows after 60 days
+# without commits).
+
+on:
+  schedule:
+    - cron: "23 4 * * 1" # Mondays, 04:23 UTC
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - "_bibliography/papers.bib"
+      - "_data/socials.yml"
+      - "bin/update_citations.py"
+      - ".github/workflows/citations.yml"
+  pull_request:
+    paths:
+      - "bin/update_citations.py"
+      - ".github/workflows/citations.yml"
+
+permissions:
+  contents: write
+
+# one update at a time (a new paper list and the Monday run could otherwise collide)
+concurrency:
+  group: citation-counts
+  cancel-in-progress: false
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        # httpx 0.28 removed an option that scholarly 1.7.11 still uses
+        run: pip install "scholarly==1.7.11" "httpx<0.28" "bibtexparser==1.4.3" pyyaml
+
+      - name: Fetch citation counts (test only, nothing is saved)
+        if: github.event_name == 'pull_request'
+        run: python bin/update_citations.py --dry-run
+
+      - name: Fetch citation counts
+        if: github.event_name != 'pull_request'
+        run: python bin/update_citations.py
+
+      - name: Save to the repository
+        if: github.event_name != 'pull_request'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add _data/citations.yml
+          if git diff --staged --quiet; then
+            echo "No change in the citation counts."
+          else
+            git commit -m "Update citation counts"
+            git pull --rebase origin "$GITHUB_REF_NAME" # in case something was saved meanwhile
+            git push
+          fi

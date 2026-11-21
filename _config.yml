@@ -15,11 +15,11 @@ footer_text: >
   Hosted by <a href="https://pages.github.com/" target="_blank">GitHub Pages</a>.
 keywords: bridge, structural health monitoring, SHM, damage detection, sensors, civil engineering
 lang: en # the language of your site (for example: en, fr, cn, ru, etc.)
-icon: 🌉 # the emoji used as the favicon (alternatively, provide image name in /assets/img/)
+icon: favicon.png # browser-tab icon: an arch bridge in the site colours (drawn in assets/img/favicon.svg). An emoji also works, e.g. 🌉
 
 url: https://civil-liangfu.github.io # the base hostname & protocol for your site
 baseurl: "" # the subpath of your site, e.g. /blog/. Leave blank for root
-last_updated: false # set to true if you want to display last updated in the footer
+last_updated: true # shows "Last updated: <date>" in the footer (the date the site was last rebuilt)
 impressum_path: # set to path to include impressum link in the footer, use the same path as permalink in a page, helps to conform with EU GDPR
 back_to_top: true # set to false to disable the back to top button
 
@@ -227,6 +227,8 @@ exclude:
   - purgecss.config.js
   - README.md
   - readme_preview/
+  - requirements.txt # Python packages for the GitHub workflows, not part of the website
+  - test/ # the theme's developer tests, not part of the website
   - gems/
   - migrations/
   - vendor
@@ -286,6 +288,10 @@ defaults:
       sitemap: false
   - scope:
       path: "admin" # the editing panel: keep it out of search engines
+    values:
+      sitemap: false
+  - scope:
+      type: news # each news item also gets its own page; the News page shows them all
     values:
       sitemap: false
 
@@ -368,7 +374,7 @@ scholar:
 enable_publication_badges:
   altmetric: true # Altmetric badge (Customization options: https://badge-docs.altmetric.com/index.html)
   dimensions: true # Dimensions badge (Customization options: https://badge.dimensions.ai/)
-  google_scholar: true # Google Scholar badge (https://scholar.google.com/intl/en/scholar/citations.html)
+  google_scholar: false # off: citation counts are the "Cited by N" buttons, from _data/citations.yml
   inspirehep: true # Inspire HEP badge (https://help.inspirehep.net/knowledge-base/citation-metrics/)
 
 # Filter out certain bibtex entry keywords used internally from the bib output
@@ -460,7 +466,7 @@ enable_google_verification: false # enables google site verification
 enable_bing_verification: false # enables bing site verification
 enable_cookie_consent: false # enables GDPR-compliant cookie consent dialog (https://github.com/orestbida/cookieconsent)
 enable_masonry: true # enables automatic project cards arrangement
-enable_math: true # enables math typesetting (uses MathJax)
+enable_math: false # math typesetting (MathJax); off because no page uses formulas. Set to true to write $$ … $$
 enable_tooltips: false # enables automatic tooltip links generated for each section titles on pages and posts
 enable_darkmode: true # enables switching between light/dark modes
 enable_navbar_social: false # enables displaying social links in the navbar on the about page

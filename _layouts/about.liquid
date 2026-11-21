@@ -4,9 +4,10 @@ layout: default
 {% comment %}
   HOME PAGE LAYOUT (local override of the al-folio "about" layout).
   The text shown here comes from _pages/about.md (front matter + body),
-  the research cards from _projects/*.md, the news from _news/*.md, the
-  selected papers from _bibliography/papers.bib (selected={true}) and the
-  contact buttons from _data/socials.yml. Styling: _sass/_design.scss.
+  the numbers at a glance and the selected papers from _bibliography/papers.bib,
+  the research cards from _projects/*.md, the fellowships & awards from
+  _data/cv.yml, the news from _news/*.md and the contact buttons from
+  _data/socials.yml. Styling: _sass/_design.scss.
 {% endcomment %}
 
 {% assign socials = site.data.socials %}
@@ -100,6 +101,71 @@ layout: default
     </div>
   </section>
 
+  {% comment %}
+    Numbers at a glance, counted automatically from _bibliography/papers.bib.
+    First-author papers: entries whose author list starts with my name as Google
+    Scholar writes it ("Ge, Liangfu", "Ge, L"; from scholar.last_name/first_name in
+    _config.yml). Citations and h-index come from _data/citations.yml (updated every
+    week by the "Update citation counts" workflow) and appear once it has data.
+    Switch: `highlights` in _pages/about.md (panel: Home page).
+  {% endcomment %}
+  {% if page.highlights != false %}
+    {% assign owner_last = site.scholar.last_name | first %}
+    {% assign owner_initial = site.scholar.first_name | first | slice: 0 %}
+    {% capture count_all %}{% bibliography_count %}{% endcapture %}
+    {% capture count_journal %}{% bibliography_count --query @article %}{% endcapture %}
+    {% capture count_conference %}{% bibliography_count --query @inproceedings, @conference, @proceedings %}{% endcapture %}
+    {% capture count_first %}{% bibliography_count --query @*[author~=^{{ owner_last }}\W+{{ owner_initial }}] %}{% endcapture %}
+    {% assign count_all = count_all | strip | plus: 0 %}
+    {% assign cite_meta = site.data.citations.metadata %}
+    {% assign cite_total = site.data.citations.totals.citations | default: 0 %}
+    {% if count_all > 0 %}
+      <section class="home-stats" aria-label="At a glance">
+        <div class="home-stats__grid{% if cite_total > 0 %} home-stats__grid--6{% endif %}">
+          <div class="home-stat">
+            <span class="home-stat__num">{{ count_all }}</span>
+            <span class="home-stat__label">Publications</span>
+          </div>
+          <div class="home-stat">
+            <span class="home-stat__num">{{ count_journal | strip }}</span>
+            <span class="home-stat__label">Journal papers</span>
+          </div>
+          <div class="home-stat">
+            <span class="home-stat__num">{{ count_conference | strip }}</span>
+            <span class="home-stat__label">Conference papers</span>
+          </div>
+          <div class="home-stat">
+            <span class="home-stat__num">{{ count_first | strip }}</span>
+            <span class="home-stat__label">As first author</span>
+          </div>
+          {% if cite_total > 0 %}
+            <div class="home-stat">
+              <span class="home-stat__num">
+                {%- if cite_total >= 1000 -%}
+                  {{- cite_total | divided_by: 1000 }},{{ cite_total | modulo: 1000 | prepend: '00' | slice: -3, 3 -}}
+                {%- else -%}
+                  {{- cite_total -}}
+                {%- endif -%}
+              </span>
+              <span class="home-stat__label">Citations</span>
+            </div>
+            <div class="home-stat">
+              <span class="home-stat__num">{{ site.data.citations.totals.h_index }}</span>
+              <span class="home-stat__label">h-index</span>
+            </div>
+          {% endif %}
+        </div>
+        {% if cite_total > 0 %}
+          <p class="home-stats__note">
+            Citations and h-index:
+            <a href="{{ cite_meta.source_url }}" target="_blank" rel="noopener noreferrer">{{ cite_meta.source }}</a>, updated
+            {{ cite_meta.last_updated | date: '%-d %b %Y' }}.
+          </p>
+        {% endif %}
+      </section>
+    {% endif %}
+  {% endif %}
+
   <!-- Research themes (one card per file in _projects/) -->
   {% assign themes = site.projects | sort: 'importance' %}
   {% if themes.size > 0 %}
@@ -113,24 +179,7 @@ layout: default
         <h2>{{ page.research_heading | default: 'Research' }}</h2>
         <a class="section-link" href="{{ '/projects/' | relative_url }}">All research</a>
       </div>
-      <div class="theme-grid">
-        {% for project in themes %}
-          <a class="theme-card" href="{% if project.redirect %}{{ project.redirect }}{% else %}{{ project.url | relative_url }}{% endif %}">
-            {% if project.img %}
-              <div class="theme-card__img">
-                {% include figure.liquid loading="lazy" path=project.img sizes="(min-width: 768px) 520px, 95vw" alt=project.title %}
-              </div>
-            {% endif %}
-            <span class="theme-card__num">
-              {%- if forloop.index < 10 %}0{% endif -%}
-              {{- forloop.index -}}
-            </span>
-            <h3 class="theme-card__title">{{ project.title }}</h3>
-            <p class="theme-card__desc">{{ project.description }}</p>
-            <span class="theme-card__more">Read more</span>
-          </a>
-        {% endfor %}
-      </div>
+      {% include theme_cards.liquid %}
     </section>
   {% endif %}
 
@@ -173,6 +222,63 @@ layout: default
     {% endif %}
   {% endif %}
 
+  {% comment %}
+    Fellowships & awards, read from the CV (_data/cv.yml, sections
+    grants_and_fellowships and awards_and_honours), so they always match the CV.
+    Each item's text before the first ", " is shown in bold, the rest below it.
+    Switch: `recognition` in _pages/about.md (panel: Home page).
+  {% endcomment %}
+  {% assign cv_grants = site.data.cv.cv.sections.grants_and_fellowships %}
+  {% assign cv_awards = site.data.cv.cv.sections.awards_and_honours %}
+  {% assign recognition_total = cv_grants.size | default: 0 | plus: cv_awards.size %}
+  {% if page.recognition != false and recognition_total > 0 %}
+    <section class="home-section" id="recognition">
+      <div class="section-head">
+        {% assign section_no = section_no | plus: 1 -%}
+        <span class="section-index">
+          {%- if section_no < 10 %}0{% endif -%}
+          {{- section_no -}}
+        </span>
+        <h2>Fellowships &amp; awards</h2>
+        <a class="section-link" href="{{ '/cv/' | relative_url }}">Full CV</a>
+      </div>
+      <div class="recognition-grid">
+        {% for group in (1..2) %}
+          {% if group == 1 %}
+            {% assign items = cv_grants %}
+            {% assign group_title = 'Fellowships & funding' %}
+          {% else %}
+            {% assign items = cv_awards %}
+            {% assign group_title = 'Awards & honours' %}
+          {% endif %}
+          {% if items.size > 0 %}
+            <div class="recognition-group">
+              <h3 class="recognition-group__title">{{ group_title | escape }}</h3>
+              <ul class="recognition-list">
+                {% for item in items %}
+                  {% assign item_text = item.details | default: item.bullet | default: item %}
+                  {% assign item_main = item_text | split: ', ' | first %}
+                  {% assign item_rest = item_text | remove_first: item_main | remove_first: ', ' %}
+                  <li>
+                    {% if item.label -%}
+                      <span class="recognition-list__year">{{ item.label }}</span>
+                    {%- endif %}
+                    <div>
+                      <strong>{{ item_main }}</strong>
+                      {% if item_rest != '' -%}
+                        <span>{{ item_rest }}</span>
+                      {%- endif %}
+                    </div>
+                  </li>
+                {% endfor %}
+              </ul>
+            </div>
+          {% endif %}
+        {% endfor %}
+      </div>
+    </section>
+  {% endif %}
+
   <!-- News (files in _news/) -->
   {% if page.announcements and page.announcements.enabled and site.news.size > 0 %}
     <section class="home-section" id="news">
@@ -198,7 +304,28 @@ layout: default
                   <a href="{{ item.url | relative_url }}">{{ item.title }}</a>
                 </p>
               {% endif %}
+              {% comment %} Labels for the item's media; the full item is on the News page {% endcomment %}
+              {% assign item_anchor = '/news/#news-' | append: item.slug | relative_url %}
+              {% if item.video_link or item.video_file or item.linkedin_post or item.images.size > 1 %}
+                <p class="news-chips">
+                  {% if item.images.size > 1 %}
+                    <a href="{{ item_anchor }}"><i class="fa-regular fa-images"></i> {{ item.images.size }} photos</a>
+                  {% endif %}
+                  {% if item.video_link or item.video_file %}
+                    <a href="{{ item_anchor }}"><i class="fa-solid fa-circle-play"></i> Video</a>
+                  {% endif %}
+                  {% if item.linkedin_post %}
+                    <a href="{{ item_anchor }}"><i class="fa-brands fa-linkedin"></i> LinkedIn post</a>
+                  {% endif %}
+                </p>
+              {% endif %}
             </div>
+            {% if item.images.size > 0 %}
+              {% assign thumb = item.images.first %}
+              <a class="news-thumb" href="{{ item_anchor }}" aria-hidden="true" tabindex="-1">
+                <img src="{{ thumb.src | default: thumb | relative_url }}" alt="" loading="lazy">
+              </a>
+            {% endif %}
           </li>
         {% endfor %}
       </ul>
