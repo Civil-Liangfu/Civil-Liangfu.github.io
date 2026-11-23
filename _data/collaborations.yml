@@ -1,18 +1,3 @@
-# Collaboration network: the world map on the home page
-# (_includes/collaboration_map.liquid). Easiest to edit in the editing panel:
-# Collaborations.
-#
-#   institution  name shown on the card and the marker
-#   place        "City, Country" (the country is used to count countries)
-#   coordinates  "latitude, longitude". On Google Maps, right-click the place and
-#                click the numbers at the top of the menu to copy them.
-#   people       who you work with there, as shown on the card
-#   coauthors    their names exactly as in the Publications list ("Surname, Given
-#                names"); the card then lists your joint papers automatically
-#   period, summary, link (a web page about the collaboration) are optional
-#
-# `home` is your own institution (the orange marker); the lines on the map run
-# from there to each collaboration.
 home:
   institution: "The Hong Kong Polytechnic University"
   place: "Hong Kong, China"
@@ -48,3 +33,9 @@ collaborations:
       - "Koo, Ki Young"
     period: "2021–2022"
     summary: "Visiting PhD research on bridge health monitoring and safety assessment based on measured response data and full-bridge traffic load distribution."
+  - institution: "University of Central Florida"
+    place: "Florida, United State"
+    people: "Necati Catbas"
+    coauthors:
+      - "Latent infrastructure sensing: Repurposing existing sensing mechanisms for infrastructure Health monitoring"
+    period: "2025-present"
