@@ -113,6 +113,11 @@ collections:
               name: key
               widget: string
               pattern: ['^[^\s{},]+$', "Only the key, e.g. ge2025deep (no spaces, braces or commas)."]
+          - label: Show the collaboration map
+            name: collaboration_map
+            widget: boolean
+            default: true
+            hint: The world map of your collaborations. Edit its content in the “Collaborations” section of this panel.
           - label: Show fellowships and awards
             name: recognition
             widget: boolean
@@ -218,6 +223,91 @@ collections:
           To cite a paper, write {% cite key %}, where key is the paper’s key in
           Publications (e.g. ge2020accurate). Cited papers are listed at the bottom of
           the page automatically.
+
+  # ---------------------------------------------------------------------------
+  # COLLABORATIONS (world map on the home page)
+  # ---------------------------------------------------------------------------
+  - name: collaborations
+    label: Collaborations
+    icon: public
+    files:
+      - name: collaborations
+        label: Collaboration map
+        file: _data/collaborations.yml
+        fields:
+          - label: My institution (orange marker)
+            name: home
+            widget: object
+            collapsed: true
+            hint: The lines on the map start here.
+            # the same fields as each collaboration below (YAML anchor, reused with *collab_fields)
+            fields: &collab_fields
+              - label: Institution
+                name: institution
+                widget: string
+                hint: >-
+                  The full name, e.g. “Tongji University”. This is all you need: the city,
+                  country and map position are filled in automatically a few minutes after
+                  you save.
+              - label: City and country
+                name: place
+                widget: string
+                required: false
+                hint: >-
+                  Optional, e.g. “Shanghai, China”; filled in automatically when left empty.
+                  Adding it helps find the right place when universities share a name.
+              - label: Coordinates (latitude, longitude)
+                name: coordinates
+                widget: string
+                required: false
+                pattern:
+                  - '^\s*-?\d{1,2}(\.\d+)?\s*,\s*-?\d{1,3}(\.\d+)?\s*$'
+                  - "Two numbers separated by a comma: latitude, longitude, e.g. 31.2836, 121.5018"
+                hint: >-
+                  Leave empty: the marker is placed automatically. To place it yourself (or
+                  to correct it), on Google Maps right-click the building, click the two
+                  numbers at the top of the menu to copy them, and paste them here.
+              - label: People
+                name: people
+                widget: string
+                required: false
+                hint: Who you work with there, as shown on the card, e.g. “Prof. Danhui Dan, Dr. Xia Liao”.
+              - label: Their names in the Publications list
+                label_singular: Name
+                name: coauthors
+                widget: list
+                required: false
+                hint: >-
+                  As in the Publications list: Surname, Given names (e.g. Dan, Danhui). Your
+                  joint papers are then listed on the card automatically, including papers
+                  that shorten the name (e.g. Dan, D).
+                field:
+                  label: Name
+                  name: name
+                  widget: string
+              - label: Period
+                name: period
+                widget: string
+                required: false
+                hint: For example “2017–present”.
+              - label: Short description
+                name: summary
+                widget: text
+                required: false
+                hint: One or two sentences about the collaboration.
+              - label: Web page
+                name: link
+                widget: string
+                required: false
+                pattern: ["^https?://", "A full web address, starting with https://"]
+                hint: Optional, e.g. a lab or project page. Shown as a “Website” button on the card.
+          - label: Collaborations (blue markers)
+            label_singular: Collaboration
+            name: collaborations
+            widget: list
+            summary: "{{institution}} · {{place}}"
+            hint: One item per institution. Drag items to change the order of the list under the map.
+            fields: *collab_fields
 
   # ---------------------------------------------------------------------------
   # NEWS
