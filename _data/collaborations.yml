@@ -1,0 +1,50 @@
+# Collaboration network: the world map on the home page
+# (_includes/collaboration_map.liquid). Easiest to edit in the editing panel:
+# Collaborations.
+#
+#   institution  name shown on the card and the marker
+#   place        "City, Country" (the country is used to count countries)
+#   coordinates  "latitude, longitude". On Google Maps, right-click the place and
+#                click the numbers at the top of the menu to copy them.
+#   people       who you work with there, as shown on the card
+#   coauthors    their names exactly as in the Publications list ("Surname, Given
+#                names"); the card then lists your joint papers automatically
+#   period, summary, link (a web page about the collaboration) are optional
+#
+# `home` is your own institution (the orange marker); the lines on the map run
+# from there to each collaboration.
+home:
+  institution: "The Hong Kong Polytechnic University"
+  place: "Hong Kong, China"
+  coordinates: "22.3047, 114.1797"
+  people: "Ir Prof. Yong Xia"
+  coauthors:
+    - "Xia, Yong"
+  period: "2025–present"
+  summary: "My current institution: Department of Civil and Environmental Engineering and the Guangdong-Hong Kong Joint Research Centre for Marine Infrastructure."
+collaborations:
+  - institution: "Tongji University"
+    place: "Shanghai, China"
+    coordinates: "31.2836, 121.5018"
+    people: "Dr. Danhui Dan"
+    coauthors:
+      - "Dan, Danhui"
+    period: "2017–present"
+    summary: "My PhD supervisor (2017–2022). Our joint work on bridge traffic load monitoring, damage detection and digital twins continues, and I serve on the supervisory committee of a PhD student there."
+  - institution: "Western University"
+    place: "London, Canada"
+    coordinates: "43.0096, -81.2737"
+    people: "Dr. Ayan Sadhu"
+    coauthors:
+      - "Sadhu, Ayan"
+    period: "2023–present"
+    summary: "Postdoctoral research (2023–2025) in the Smart Cities and Communities (SCC) Lab, and continuing joint work on robotics, drones and sonar for structural inspection and on domain adaptation for structural health monitoring."
+  - institution: "University of Exeter"
+    place: "Exeter, UK"
+    coordinates: "50.7360, -3.5350"
+    people: "Dr. James Brownjohn, Dr. Ki Young Koo"
+    coauthors:
+      - "Brownjohn, James"
+      - "Koo, Ki Young"
+    period: "2021–2022"
+    summary: "Visiting PhD research on bridge health monitoring and safety assessment based on measured response data and full-bridge traffic load distribution."

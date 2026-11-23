@@ -875,6 +875,422 @@ code {
   color: var(--c-ink-2);
 }
 
+/* Collaboration map (_includes/collaboration_map.liquid): dotted world map with my
+   institution (orange, pulsing) linked by curved lines to each collaboration (blue).
+   The markers are buttons placed in percent of the map box, so the map box itself
+   must have no padding (the padding is on .collab-frame). */
+.collab__summary {
+  margin: -1.1rem 0 1.25rem;
+  font-size: 0.92rem;
+  color: var(--c-muted);
+}
+
+.collab-frame {
+  padding: clamp(0.75rem, 2.4vw, 1.75rem) clamp(0.75rem, 2.4vw, 1.75rem) 0.9rem;
+  border: 1px solid var(--c-line);
+  border-radius: var(--radius);
+  background: radial-gradient(120% 90% at 50% 0%, var(--c-primary-soft) 0%, transparent 60%), var(--c-surface);
+}
+
+.collab-map {
+  position: relative;
+  aspect-ratio: 1000 / 391.67;
+}
+
+.collab-map__svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.collab-map__land {
+  fill: none;
+  stroke: var(--c-line-strong);
+  stroke-width: 3.1;
+  stroke-linecap: round;
+}
+
+.collab-arc {
+  fill: none;
+  stroke: var(--c-accent);
+  stroke-width: 1.5;
+  stroke-dasharray: 3 5;
+  stroke-linecap: round;
+  opacity: 0.45;
+  vector-effect: non-scaling-stroke;
+  animation: collab-flow 1.6s linear infinite;
+  transition:
+    opacity 0.2s ease,
+    stroke-width 0.2s ease;
+}
+
+.collab-arc.is-active {
+  stroke-width: 2.4;
+  opacity: 1;
+}
+
+@keyframes collab-flow {
+  to {
+    stroke-dashoffset: -16;
+  }
+}
+
+.collab-pin {
+  position: absolute;
+  z-index: 1;
+  width: 14px;
+  height: 14px;
+  margin: 0;
+  padding: 0;
+  border: 2.5px solid var(--c-surface);
+  border-radius: 50%;
+  background: var(--c-primary);
+  box-shadow: 0 1px 4px rgba(20, 32, 46, 0.35);
+  transform: translate(-50%, -50%);
+  cursor: pointer;
+  transition:
+    width 0.2s ease,
+    height 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.collab-pin:hover,
+.collab-pin:focus-visible,
+.collab-pin.is-active {
+  z-index: 3;
+  width: 18px;
+  height: 18px;
+}
+
+.collab-pin.is-active {
+  box-shadow:
+    0 0 0 5px color-mix(in srgb, var(--c-primary) 22%, transparent),
+    0 1px 4px rgba(20, 32, 46, 0.35);
+}
+
+.collab-pin--home {
+  z-index: 2;
+  width: 16px;
+  height: 16px;
+  background: var(--c-accent);
+}
+
+.collab-pin--home.is-active {
+  box-shadow:
+    0 0 0 5px color-mix(in srgb, var(--c-accent) 22%, transparent),
+    0 1px 4px rgba(20, 32, 46, 0.35);
+}
+
+/* a slow ripple around my institution */
+.collab-pin--home::before {
+  content: "";
+  position: absolute;
+  inset: -8px;
+  border: 2px solid var(--c-accent);
+  border-radius: 50%;
+  opacity: 0;
+  animation: collab-pulse 2.6s ease-out infinite;
+  pointer-events: none;
+}
+
+@keyframes collab-pulse {
+  0% {
+    transform: scale(0.45);
+    opacity: 0.75;
+  }
+
+  100% {
+    transform: scale(1.5);
+    opacity: 0;
+  }
+}
+
+/* name above a marker: on hover/focus, and for the selected one */
+.collab-pin__label {
+  position: absolute;
+  bottom: calc(100% + 9px);
+  left: 50%;
+  padding: 0.28rem 0.6rem;
+  border-radius: 6px;
+  background: var(--c-ink);
+  color: var(--c-bg);
+  font-family: var(--font-sans);
+  font-size: 0.74rem;
+  font-weight: 500;
+  line-height: 1.2;
+  white-space: nowrap;
+  opacity: 0;
+  transform: translateX(-50%);
+  pointer-events: none;
+  transition: opacity 0.15s ease;
+}
+
+.collab-pin--east .collab-pin__label {
+  right: -8px;
+  left: auto;
+  transform: none;
+}
+
+.collab-pin--west .collab-pin__label {
+  left: -8px;
+  transform: none;
+}
+
+.collab-pin:hover .collab-pin__label,
+.collab-pin:focus-visible .collab-pin__label,
+.collab-pin.is-active .collab-pin__label {
+  opacity: 1;
+}
+
+.collab-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem 1.4rem;
+  margin: 0.6rem 0 0;
+  font-size: 0.8rem;
+  color: var(--c-muted);
+}
+
+.collab-legend__dot {
+  display: inline-block;
+  width: 9px;
+  height: 9px;
+  margin-right: 0.3rem;
+  border-radius: 50%;
+  background: var(--c-primary);
+  vertical-align: 0;
+}
+
+.collab-legend__dot--home {
+  background: var(--c-accent);
+}
+
+/* list of institutions + the selected card */
+.collab-body {
+  display: grid;
+  grid-template-columns: minmax(0, 17rem) minmax(0, 1fr);
+  gap: 1.5rem;
+  align-items: start;
+  margin-top: 1.5rem;
+}
+
+.collab-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.collab-list__item {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.1rem;
+  width: 100%;
+  padding: 0.7rem 0.9rem 0.7rem 2.1rem;
+  border: 1px solid var(--c-line);
+  border-radius: 10px;
+  background: transparent;
+  color: inherit;
+  text-align: left;
+  cursor: pointer;
+  transition:
+    border-color 0.2s ease,
+    background-color 0.2s ease;
+}
+
+.collab-list__item::before {
+  content: "";
+  position: absolute;
+  top: 1.05rem;
+  left: 0.9rem;
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--c-primary);
+}
+
+.collab-list__item--home::before {
+  background: var(--c-accent);
+}
+
+.collab-list__item:hover {
+  border-color: var(--c-line-strong);
+}
+
+.collab-list__item.is-active {
+  border-color: var(--c-primary);
+  background: var(--c-primary-soft);
+}
+
+.collab-list__item--home.is-active {
+  border-color: var(--c-accent);
+  background: var(--c-accent-soft);
+}
+
+.collab-list__name {
+  font-size: 0.95rem;
+  font-weight: 600;
+  line-height: 1.3;
+  color: var(--c-ink);
+}
+
+.collab-list__place {
+  font-size: 0.8rem;
+  color: var(--c-muted);
+}
+
+.collab-cards {
+  display: grid;
+  gap: 1rem;
+}
+
+.collab-card {
+  padding: 1.5rem 1.65rem;
+  border: 1px solid var(--c-line);
+  border-radius: var(--radius);
+  background: var(--c-surface);
+}
+
+.collab-card[hidden] {
+  display: none;
+}
+
+.collab-card__eyebrow {
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: 0.74rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--c-accent);
+}
+
+.collab-card__title {
+  margin: 0.3rem 0 0.9rem;
+  font-size: 1.45rem;
+  line-height: 1.25;
+}
+
+.collab-card__facts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem 2.25rem;
+  margin: 0 0 0.9rem;
+}
+
+.collab-card__facts dt {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  font-weight: 400;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--c-muted);
+}
+
+.collab-card__facts dd {
+  margin: 0.1rem 0 0;
+  font-weight: 500;
+  color: var(--c-ink);
+}
+
+.collab-card__summary {
+  margin: 0 0 1rem;
+  line-height: 1.6;
+  color: var(--c-ink-2);
+}
+
+.collab-card__papers {
+  padding-top: 0.9rem;
+  border-top: 1px solid var(--c-line);
+}
+
+.collab-card__label {
+  margin: 0 0 0.35rem;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--c-muted);
+}
+
+.collab-card__count {
+  margin-left: 0.35rem;
+  padding: 0.05rem 0.45rem;
+  border-radius: 999px;
+  background: var(--c-line);
+  color: var(--c-ink-2);
+  letter-spacing: 0;
+}
+
+/* joint papers: a short scrolling list, newest year first */
+.collab-card__list {
+  max-height: 15.5rem;
+  overflow-y: auto;
+  padding-right: 0.5rem;
+  scrollbar-width: thin;
+  /* fade at the bottom: there is more to scroll */
+  mask-image: linear-gradient(to bottom, #000 calc(100% - 2.5rem), transparent);
+  padding-bottom: 1.5rem;
+}
+
+.collab-card__list ol.bibliography {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.collab-card__list ol.bibliography li {
+  padding: 0.4rem 0;
+}
+
+.collab-year {
+  margin: 0.55rem 0 0;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 500;
+  color: var(--c-accent);
+}
+
+.collab-paper__title {
+  display: block;
+  font-size: 0.9rem;
+  font-weight: 500;
+  line-height: 1.4;
+  color: var(--c-ink);
+  text-decoration: none;
+}
+
+a.collab-paper__title:hover {
+  color: var(--c-accent);
+}
+
+.collab-paper__venue {
+  display: block;
+  margin-top: 0.1rem;
+  font-size: 0.8rem;
+  font-style: italic;
+  color: var(--c-muted);
+}
+
+.collab-card__more {
+  display: inline-block;
+  margin-top: 0.75rem;
+  font-size: 0.88rem;
+  font-weight: 500;
+}
+
+.collab-card__more::after {
+  content: " →";
+}
+
+.collab-card__link {
+  margin-top: 1.1rem;
+}
+
 /* News list */
 .news-list {
   list-style: none;
@@ -1591,6 +2007,38 @@ footer a:hover {
 
   .recognition-group {
     padding: 1.25rem 1.15rem 0.5rem;
+  }
+
+  /* Collaboration map: smaller markers; list in two columns above the card */
+  .collab-pin {
+    width: 11px;
+    height: 11px;
+    border-width: 2px;
+  }
+
+  .collab-pin:hover,
+  .collab-pin:focus-visible,
+  .collab-pin.is-active {
+    width: 14px;
+    height: 14px;
+  }
+
+  .collab-pin__label {
+    font-size: 0.68rem;
+  }
+
+  .collab-body {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .collab-list {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .collab-card {
+    padding: 1.2rem 1.15rem;
   }
 
   .recognition-list li {

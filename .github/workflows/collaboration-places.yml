@@ -1,0 +1,65 @@
+name: Place collaborations on the map
+
+# After _data/collaborations.yml changes on main (e.g. a collaboration added in the
+# editing panel), looks up every entry that has no coordinates yet and saves its
+# position (and its city and country, if those are empty too); see
+# bin/locate_collaborations.py. "Deploy site" then publishes the new markers.
+# Entries that already have coordinates are never changed. Can also be started by
+# hand from the Actions tab ("Run workflow"). On a pull request that changes the
+# lookup it only tests it on the existing entries and saves nothing.
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "_data/collaborations.yml"
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - "bin/locate_collaborations.py"
+      - ".github/workflows/collaboration-places.yml"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: collaboration-places
+  cancel-in-progress: false
+
+jobs:
+  locate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: pip install "ruamel.yaml==0.18.6"
+
+      - name: Test the lookup on the existing entries (nothing is saved)
+        if: github.event_name == 'pull_request'
+        run: python bin/locate_collaborations.py --check
+
+      - name: Look up entries without coordinates
+        if: github.event_name != 'pull_request'
+        run: python bin/locate_collaborations.py
+
+      - name: Save to the repository
+        if: github.event_name != 'pull_request'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add _data/collaborations.yml
+          if git diff --staged --quiet; then
+            echo "Nothing new to place on the map."
+          else
+            git commit -m "Place collaborations on the map"
+            git pull --rebase origin "$GITHUB_REF_NAME" # in case something was saved meanwhile
+            git push
+          fi

@@ -1,0 +1,15 @@
+---
+---
+{% comment %}
+  One joint paper on a card of the collaboration map (_includes/collaboration_map.liquid):
+  the title (linked to its DOI when there is one), then the journal or conference.
+{% endcomment %}
+{%- assign paper_venue = entry.journal | default: entry.booktitle -%}
+{%- if entry.doi -%}
+  <a class="collab-paper__title" href="https://doi.org/{{ entry.doi }}" target="_blank" rel="noopener noreferrer">{{ entry.title }}</a>
+{%- else -%}
+  <span class="collab-paper__title">{{ entry.title }}</span>
+{%- endif -%}
+{%- if paper_venue -%}
+  <span class="collab-paper__venue">{{ paper_venue }}</span>
+{%- endif -%}

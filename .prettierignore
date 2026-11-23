@@ -14,3 +14,5 @@ _data/citations.yml
 # News items are written by the editing panel. A pasted LinkedIn embed code is saved
 # as "…\"…\"…", which Prettier would rewrite with single quotes, so skip them.
 _news/*.md
+# Generated dotted world map (bin/make_world_dots.cjs): one very long SVG path
+_includes/world_dots.liquid

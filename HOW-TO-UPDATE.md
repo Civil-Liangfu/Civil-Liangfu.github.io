@@ -43,6 +43,7 @@ it on the same GitHub page and create a new one.
 | **Home page**       | Name line, role, photo, affiliation, short bio, selected papers, section switches, contact |
 | **Contact links**   | Email, Google Scholar, ORCID, ResearchGate, LinkedIn, GitHub (buttons on the home page)    |
 | **Research topics** | The research cards and pages. **New** adds a topic; “Position” sets the order              |
+| **Collaborations**  | The world map of my collaborations on the home page (see “Collaboration map” below)        |
 | **News**            | News items, with optional photos, a video and a LinkedIn post (see “News” below)           |
 | **Publications**    | The BibTeX list (see “Adding a publication” below), and where I am corresponding author    |
 | **CV**              | Experience, education, awards, grants, papers, talks, teaching, mentoring                  |
@@ -80,6 +81,28 @@ Good to know:
     honours** in the **CV** section. The text before the first comma is shown in bold.
 - The **CV** page has a **Download PDF** button. The PDF is made automatically from my
   CV a few minutes after I save a CV change (the “Render a CV” step on GitHub).
+
+### Collaboration map
+
+The home page shows a world map with my institution (orange) and my collaborations (blue),
+joined by curved lines. Visitors click a marker, or a name in the list under the map, to
+see that collaboration's card. To edit it, open **Collaborations → Collaboration map**:
+
+- **Add Collaboration** adds a marker. Only the **Institution** is needed (e.g. “University
+  of Sydney”). A few minutes after saving, GitHub finds where it is (the “Place
+  collaborations on the map” step), fills in the city, country and coordinates, and the
+  marker appears. Until then the new collaboration is already in the list under the map.
+- If the marker lands in the wrong place (two universities with the same name, say), add
+  the **City and country**, or set the **Coordinates** myself: on Google Maps, right-click
+  the building, click the two numbers at the top of the menu to copy them, and paste them.
+  Coordinates I enter are never changed.
+- Optional: **People**, **Period**, **Short description**, **Web page**, and **Their names
+  in the Publications list** (e.g. “Dan, Danhui”). With the names, the card lists our joint
+  papers automatically, and keeps doing so when I paste a new Publications list. Papers
+  that shorten the name (“Dan, D”) are found too.
+- Drag items to change the order of the list. **My institution** (at the top of the
+  form) is where the lines start.
+- The section can be switched off under **Home page → Show the collaboration map**.
 
 ### News: photos, videos and LinkedIn posts
 
@@ -204,6 +227,9 @@ Other workflows I may see in the Actions tab:
 - **Render a CV** runs when the CV changes and makes a PDF of it
   (`assets/rendercv/rendercv_output/Liangfu_Ge_CV.pdf`). If it fails, the CV has an entry
   it does not understand; compare it with the templates at the bottom of `_data/cv.yml`.
+- **Place collaborations on the map** runs after I save the Collaborations page and
+  fills in the position of new entries. A yellow warning in its log means a place was not
+  found; add the city and country, or the coordinates.
 - **Update citation counts** runs every Monday (see “Citation counts” above). A red ✗
   means neither Google Scholar nor OpenAlex answered that week; the old counts stay on
   the site and the next run tries again.

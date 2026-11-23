@@ -56,10 +56,11 @@ on:
       - "!docs/INSTALL.md"
       - "!README.md"
   workflow_dispatch:
-  # Commits made by other workflows (the CV PDF, the weekly citation counts) don't
-  # start this workflow by themselves, so publish the site once those finish.
+  # Commits made by other workflows (the CV PDF, the weekly citation counts, the map
+  # positions of new collaborations) don't start this workflow by themselves, so
+  # publish the site once those finish.
   workflow_run:
-    workflows: ["Render a CV", "Update citation counts"]
+    workflows: ["Render a CV", "Update citation counts", "Place collaborations on the map"]
     types: [completed]
     branches: [main]
 

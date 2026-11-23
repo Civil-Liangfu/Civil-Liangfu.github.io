@@ -109,6 +109,25 @@ After upgrading `al_folio_core` / `al_folio_cv`, diff these against the gem vers
   rendered at 192 px from `assets/img/favicon.svg` (arch bridge in the site colours) with
   Playwright; re-render the PNG after editing the SVG.
 - `_pages/404.md` — no auto-redirect; buttons to Home / Publications / Research / CV.
+- Collaboration map (home page section after Selected publications; switch
+  `collaboration_map` in `_pages/about.md`): `_includes/collaboration_map.liquid` + data
+  `_data/collaborations.yml` (`home` + `collaborations[]`: `institution`, `place` "City,
+  Country", `coordinates` "lat, lon", `people`, `coauthors[]` "Surname, Given", `period`,
+  `summary`, `link`; panel: Collaborations; only `institution` is required). Entries
+  without `coordinates` get no marker/line (listed only) until **Place collaborations on
+  the map** fills them in. Land = `_includes/world_dots.liquid`, ~3.5k
+  dots as one SVG path of `M x y h0` segments with round caps, generated once by
+  `bin/make_world_dots.cjs` (Natural Earth 110 m via world-atlas; equirectangular 1000 ×
+  391.67, 84°N–57°S; in `.prettierignore`). `_includes/collab_xy.liquid` projects
+  coordinates with the same formula (Liquid arithmetic, no JS); markers are absolutely
+  positioned `<button>`s in percent (so `.collab-map` must have no padding — it's on
+  `.collab-frame`), labels flip side near the edges (`--east/--west`), curved lines are
+  quadratic Béziers from home bowing upwards. `_includes/collab_card.liquid` finds joint
+  papers with `{% bibliography --query @*[author~=\bSurname\W+G(iven)?\b] --template
+collab_paper --group_by year %}` (initial-tolerant regex; `<h2 class="bibliography">`
+  years rewritten to `<h4 class="collab-year">`) and links to `/publications/#given
+surname` (the bibsearch hash filter). A small inline script shows one card at a time;
+  without JS all cards show. Phones: list in 2 columns, smaller markers.
 - News: `_includes/news.liquid` (local override of the theme's table; used by
   `_pages/news.md`) lists items newest first with anchors `#news-<slug>`, and
   `_includes/news_media.liquid` renders each item's optional front matter: `images`
@@ -157,6 +176,10 @@ After upgrading `al_folio_core` / `al_folio_cv`, diff these against the gem vers
   paper has a `doi` (taken from the owner's CV, Nov 2026); conference papers have none.
 - Research: `_projects/*.md`, one per research theme, written only from paper titles;
   `{% cite key %}` + `related_publications: true`. No images yet (`img:` is optional).
+- Collaborations: `_data/collaborations.yml`, seeded only from facts in the CV and
+  papers.bib (PolyU/Yong Xia, Tongji/Danhui Dan, Western/Ayan Sadhu, Exeter/Brownjohn &
+  Koo; Nov 2026). The panel form reuses one field list via a YAML anchor
+  (`&collab_fields`); coordinates have a pattern check. Round-trip tested in the panel.
 - News: `_news/*.md` (`inline: true`; panel adds a `title` used only for the file name).
   Uploads from the News form go to `assets/news/` (collection `media_folder`); photos are
   converted to WebP ≤ 1800 px on upload (`media_libraries.default.config.transformations`),
@@ -205,6 +228,18 @@ After upgrading `al_folio_core` / `al_folio_cv`, diff these against the gem vers
   workflows, so `deploy.yml` also runs on `workflow_run` of "Render a CV" and "Update
   citation counts" (successful, non-PR runs on main) — this also stops the CV PDF lagging
   one deploy behind.
+- **Place collaborations on the map** (`.github/workflows/collaboration-places.yml`,
+  `bin/locate_collaborations.py`): on pushes to main that change
+  `_data/collaborations.yml`, manually, and as a `--check` test on PRs that change it
+  (re-locates every entry and prints the distance to the saved position). For `home` and
+  each collaboration without `coordinates` it tries OpenAlex institutions (`geo`; when
+  `place` is given, the result's city or country must appear in it) then Nominatim
+  ("institution, place", then "place"; ≤ 1 request/s, identifying User-Agent), writes
+  `coordinates` (and `place` if empty) with ruamel.yaml round-trip (comments, quotes and
+  key order kept; `width 4096`, `indent(mapping=2, sequence=4, offset=2)`; output passes
+  Prettier), commits "Place collaborations on the map", and `deploy.yml` runs after it via
+  `workflow_run`. Never overwrites existing coordinates. Not found → `::warning::` in the
+  log, exit 0 (the entry just has no marker).
 - **Integration tests** (`unit-tests.yml`) and **Visual regression checks** are al-folio's
   developer checks against removed demo pages; they fail regardless of content. Turning
   their automatic triggers off is the owner's decision (proposed, not done).
