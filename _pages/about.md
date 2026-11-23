@@ -25,6 +25,7 @@ selected_publications:
   - "ge2020real"
   - "ge2024benchmark"
   - "ge2026viv"
+collaboration_map: true
 recognition: true
 announcements:
   enabled: true

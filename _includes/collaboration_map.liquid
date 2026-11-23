@@ -1,0 +1,157 @@
+{% comment %}
+  Collaboration network: a world map on the home page with my institution (orange
+  marker) and each collaboration (blue markers), linked by curved lines.
+  Selecting a marker or a name in the list shows that collaboration's card.
+  Content: _data/collaborations.yml (editing panel: Collaborations). Land:
+  _includes/world_dots.liquid. Positions: _includes/collab_xy.liquid. Cards:
+  _includes/collab_card.liquid. Styling: _sass/_design.scss ("Collaboration map").
+  Without JavaScript all cards are shown one after another.
+{% endcomment %}
+{% assign net = site.data.collaborations %}
+{% assign net_items = net.collaborations %}
+{% assign net_countries = '' %}
+{% for c in net_items %}
+  {% assign c_country = c.place | split: ',' | last | strip %}
+  {% assign net_countries = net_countries | append: c_country | append: '|' %}
+{% endfor %}
+{% assign net_country_count = net_countries | split: '|' | uniq | size %}
+
+<div class="collab" data-collab-root>
+  <p class="collab__summary">
+    {% if net_items.size > 0 %}
+      {{ net_items.size }} partner
+      {% if net_items.size == 1 %}institution{% else %}institutions{% endif %}
+      in {{ net_country_count }}
+      {% if net_country_count == 1 %}country{% else %}countries{% endif %} ·
+    {% endif %}
+    Select a marker or a name for details.
+  </p>
+
+  <div class="collab-frame">
+    <div class="collab-map">
+      {% if net.home.coordinates %}
+        {% include collab_xy.liquid coords=net.home.coordinates %}
+        {% assign home_x = xy_x %}
+        {% assign home_y = xy_y %}
+        {% assign home_left = xy_left %}
+        {% assign home_top = xy_top %}
+      {% endif %}
+      <svg class="collab-map__svg" viewBox="0 0 1000 391.67" aria-hidden="true" focusable="false">
+        {% include world_dots.liquid %}
+        {% if net.home.coordinates %}
+          <g class="collab-map__arcs">
+            {% for c in net_items %}
+              {% include collab_xy.liquid coords=c.coordinates %}
+              {% comment %} curved line: control point to the side of the midpoint, bowing upwards {% endcomment %}
+              {% assign a_dx = xy_x | minus: home_x %}
+              {% assign a_dy = xy_y | minus: home_y %}
+              {% assign a_mx = xy_x | plus: home_x | divided_by: 2.0 %}
+              {% assign a_my = xy_y | plus: home_y | divided_by: 2.0 %}
+              {% if a_dx >= 0 %}
+                {% assign a_px = a_dy %}
+                {% assign a_py = 0 | minus: a_dx %}
+              {% else %}
+                {% assign a_px = 0 | minus: a_dy %}
+                {% assign a_py = a_dx %}
+              {% endif %}
+              {% assign a_cx = a_px | times: 0.22 | plus: a_mx | round: 1 %}
+              {% assign a_cy = a_py | times: 0.22 | plus: a_my | round: 1 %}
+              <path
+                class="collab-arc"
+                data-collab="{{ forloop.index }}"
+                d="M{{ home_x | round: 1 }} {{ home_y | round: 1 }}Q{{ a_cx }} {{ a_cy }} {{ xy_x | round: 1 }} {{ xy_y | round: 1 }}"
+              />
+            {% endfor %}
+          </g>
+        {% endif %}
+      </svg>
+
+      {% for c in net_items %}
+        {% include collab_xy.liquid coords=c.coordinates %}
+        <button
+          type="button"
+          class="collab-pin{% if xy_left > 75 %} collab-pin--east{% elsif xy_left < 25 %} collab-pin--west{% endif %}"
+          style="left: {{ xy_left }}%; top: {{ xy_top }}%"
+          data-collab="{{ forloop.index }}"
+          aria-label="{{ c.institution | escape }}, {{ c.place | escape }}"
+        >
+          <span class="collab-pin__label" aria-hidden="true">{{ c.institution }}</span>
+        </button>
+      {% endfor %}
+      {% if net.home.coordinates %}
+        <button
+          type="button"
+          class="collab-pin collab-pin--home{% if home_left > 75 %} collab-pin--east{% elsif home_left < 25 %} collab-pin--west{% endif %}"
+          style="left: {{ home_left }}%; top: {{ home_top }}%"
+          data-collab="0"
+          aria-label="{{ net.home.institution | escape }}, {{ net.home.place | escape }} (my institution)"
+        >
+          <span class="collab-pin__label" aria-hidden="true">{{ net.home.institution }}</span>
+        </button>
+      {% endif %}
+    </div>
+
+    <p class="collab-legend" aria-hidden="true">
+      <span><i class="collab-legend__dot collab-legend__dot--home"></i> My institution</span>
+      <span><i class="collab-legend__dot"></i> Collaboration</span>
+    </p>
+  </div>
+
+  <div class="collab-body">
+    <ul class="collab-list">
+      {% if net.home %}
+        <li>
+          <button type="button" class="collab-list__item collab-list__item--home" data-collab="0">
+            <span class="collab-list__name">{{ net.home.institution }}</span>
+            <span class="collab-list__place">{{ net.home.place }} · My institution</span>
+          </button>
+        </li>
+      {% endif %}
+      {% for c in net_items %}
+        <li>
+          <button type="button" class="collab-list__item" data-collab="{{ forloop.index }}">
+            <span class="collab-list__name">{{ c.institution }}</span>
+            <span class="collab-list__place">{{ c.place }}</span>
+          </button>
+        </li>
+      {% endfor %}
+    </ul>
+
+    <div class="collab-cards">
+      {% if net.home %}
+        {% include collab_card.liquid item=net.home id=0 home=true %}
+      {% endif %}
+      {% for c in net_items %}
+        {% include collab_card.liquid item=c id=forloop.index %}
+      {% endfor %}
+    </div>
+  </div>
+</div>
+
+<script>
+  // Collaboration map: show one card at a time and highlight its marker, line and
+  // list entry. Starts with the first collaboration (or my institution if there is none).
+  (function () {
+    const root = document.querySelector('[data-collab-root]');
+    if (!root) return;
+    root.classList.add('collab--js');
+    const select = function (id, fromMap) {
+      root.querySelectorAll('[data-collab]').forEach(function (el) {
+        const on = el.getAttribute('data-collab') === id;
+        el.classList.toggle('is-active', on);
+        if (el.tagName === 'BUTTON') el.setAttribute('aria-pressed', on ? 'true' : 'false');
+        if (el.classList.contains('collab-card')) el.hidden = !on;
+      });
+      // on phones the card is below the map: bring it into view after a marker click
+      const card = root.querySelector('.collab-card[data-collab="' + id + '"]');
+      if (fromMap && card && card.getBoundingClientRect().top > window.innerHeight * 0.75) {
+        card.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      }
+    };
+    root.addEventListener('click', function (event) {
+      const button = event.target.closest('button[data-collab]');
+      if (button) select(button.getAttribute('data-collab'), button.classList.contains('collab-pin'));
+    });
+    select(root.querySelector('.collab-card[data-collab="1"]') ? '1' : '0', false);
+  })();
+</script>

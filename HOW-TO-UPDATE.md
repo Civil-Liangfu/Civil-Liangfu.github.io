@@ -43,6 +43,7 @@ it on the same GitHub page and create a new one.
 | **Home page**       | Name line, role, photo, affiliation, short bio, selected papers, section switches, contact |
 | **Contact links**   | Email, Google Scholar, ORCID, ResearchGate, LinkedIn, GitHub (buttons on the home page)    |
 | **Research topics** | The research cards and pages. **New** adds a topic; “Position” sets the order              |
+| **Collaborations**  | The world map of my collaborations on the home page (see “Collaboration map” below)        |
 | **News**            | News items, with optional photos, a video and a LinkedIn post (see “News” below)           |
 | **Publications**    | The BibTeX list (see “Adding a publication” below), and where I am corresponding author    |
 | **CV**              | Experience, education, awards, grants, papers, talks, teaching, mentoring                  |
@@ -80,6 +81,24 @@ Good to know:
     honours** in the **CV** section. The text before the first comma is shown in bold.
 - The **CV** page has a **Download PDF** button. The PDF is made automatically from my
   CV a few minutes after I save a CV change (the “Render a CV” step on GitHub).
+
+### Collaboration map
+
+The home page shows a world map with my institution (orange) and my collaborations (blue),
+joined by curved lines. Visitors click a marker, or a name in the list under the map, to
+see that collaboration's card. To edit it, open **Collaborations → Collaboration map**:
+
+- **Add Collaboration** adds a marker. Fill in:
+  - **Institution** and **City and country** (e.g. “Shanghai, China”).
+  - **Coordinates**: on Google Maps, right-click the building. The first line of the menu
+    shows two numbers (latitude, longitude). Click it to copy them, then paste.
+  - **People**, **Period**, **Short description** and **Web page** (all optional).
+  - **Their names in the Publications list**: e.g. “Dan, Danhui”. The card then lists
+    our joint papers automatically, and keeps doing so when I paste a new Publications
+    list. Papers that shorten the name (“Dan, D”) are found too.
+- Drag items to change the order of the list. **My institution** (at the top of the
+  form) is where the lines start.
+- The section can be switched off under **Home page → Show the collaboration map**.
 
 ### News: photos, videos and LinkedIn posts
 

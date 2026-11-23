@@ -5,9 +5,10 @@ layout: default
   HOME PAGE LAYOUT (local override of the al-folio "about" layout).
   The text shown here comes from _pages/about.md (front matter + body),
   the numbers at a glance and the selected papers from _bibliography/papers.bib,
-  the research cards from _projects/*.md, the fellowships & awards from
-  _data/cv.yml, the news from _news/*.md and the contact buttons from
-  _data/socials.yml. Styling: _sass/_design.scss.
+  the research cards from _projects/*.md, the collaboration map from
+  _data/collaborations.yml, the fellowships & awards from _data/cv.yml, the news
+  from _news/*.md and the contact buttons from _data/socials.yml.
+  Styling: _sass/_design.scss.
 {% endcomment %}
 
 {% assign socials = site.data.socials %}
@@ -220,6 +221,25 @@ layout: default
         {{ selected_html }}
       </section>
     {% endif %}
+  {% endif %}
+
+  {% comment %}
+    Collaboration network: world map with my institution and each collaboration
+    (_includes/collaboration_map.liquid, content in _data/collaborations.yml; panel:
+    Collaborations). Switch: `collaboration_map` in _pages/about.md (panel: Home page).
+  {% endcomment %}
+  {% if page.collaboration_map != false and site.data.collaborations.collaborations.size > 0 %}
+    <section class="home-section" id="collaborations">
+      <div class="section-head">
+        {% assign section_no = section_no | plus: 1 -%}
+        <span class="section-index">
+          {%- if section_no < 10 %}0{% endif -%}
+          {{- section_no -}}
+        </span>
+        <h2>Collaboration network</h2>
+      </div>
+      {% include collaboration_map.liquid %}
+    </section>
   {% endif %}
 
   {% comment %}

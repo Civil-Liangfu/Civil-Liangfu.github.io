@@ -1,0 +1,13 @@
+{%- comment -%}
+  Turns "latitude, longitude" (include.coords) into a position on the collaboration
+  map, using the same projection as the dotted land (_includes/world_dots.liquid):
+  equirectangular, 1000 units wide, 84°N at the top, 2.7778 units per degree.
+  Sets xy_x, xy_y (map units) and xy_left, xy_top (percent of the map's width/height).
+{%- endcomment -%}
+{%- assign xy_parts = include.coords | split: ',' -%}
+{%- assign xy_lat = xy_parts[0] | strip | plus: 0.0 -%}
+{%- assign xy_lon = xy_parts[1] | strip | plus: 0.0 -%}
+{%- assign xy_x = xy_lon | plus: 180 | times: 2.7777778 -%}
+{%- assign xy_y = 84 | minus: xy_lat | times: 2.7777778 -%}
+{%- assign xy_left = xy_x | divided_by: 10.0 | round: 3 -%}
+{%- assign xy_top = xy_y | divided_by: 3.9167 | round: 3 -%}
