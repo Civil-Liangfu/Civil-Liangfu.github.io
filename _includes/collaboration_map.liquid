@@ -5,14 +5,18 @@
   Content: _data/collaborations.yml (editing panel: Collaborations). Land:
   _includes/world_dots.liquid. Positions: _includes/collab_xy.liquid. Cards:
   _includes/collab_card.liquid. Styling: _sass/_design.scss ("Collaboration map").
-  Without JavaScript all cards are shown one after another.
+  Without JavaScript all cards are shown one after another. An entry without
+  coordinates gets no marker (the "Place collaborations on the map" workflow fills
+  them in after a save; see bin/locate_collaborations.py) but is still listed.
 {% endcomment %}
 {% assign net = site.data.collaborations %}
 {% assign net_items = net.collaborations %}
 {% assign net_countries = '' %}
 {% for c in net_items %}
-  {% assign c_country = c.place | split: ',' | last | strip %}
-  {% assign net_countries = net_countries | append: c_country | append: '|' %}
+  {% if c.place %}
+    {% assign c_country = c.place | split: ',' | last | strip %}
+    {% assign net_countries = net_countries | append: c_country | append: '|' %}
+  {% endif %}
 {% endfor %}
 {% assign net_country_count = net_countries | split: '|' | uniq | size %}
 
@@ -29,7 +33,7 @@
 
   <div class="collab-frame">
     <div class="collab-map">
-      {% if net.home.coordinates %}
+      {% if net.home.coordinates contains ',' %}
         {% include collab_xy.liquid coords=net.home.coordinates %}
         {% assign home_x = xy_x %}
         {% assign home_y = xy_y %}
@@ -38,9 +42,10 @@
       {% endif %}
       <svg class="collab-map__svg" viewBox="0 0 1000 391.67" aria-hidden="true" focusable="false">
         {% include world_dots.liquid %}
-        {% if net.home.coordinates %}
+        {% if net.home.coordinates contains ',' %}
           <g class="collab-map__arcs">
             {% for c in net_items %}
+              {% unless c.coordinates contains ',' %}{% continue %}{% endunless %}
               {% include collab_xy.liquid coords=c.coordinates %}
               {% comment %} curved line: control point to the side of the midpoint, bowing upwards {% endcomment %}
               {% assign a_dx = xy_x | minus: home_x %}
@@ -67,18 +72,20 @@
       </svg>
 
       {% for c in net_items %}
+        {% comment %} no coordinates yet: listed below, but no marker until they are found {% endcomment %}
+        {% unless c.coordinates contains ',' %}{% continue %}{% endunless %}
         {% include collab_xy.liquid coords=c.coordinates %}
         <button
           type="button"
           class="collab-pin{% if xy_left > 75 %} collab-pin--east{% elsif xy_left < 25 %} collab-pin--west{% endif %}"
           style="left: {{ xy_left }}%; top: {{ xy_top }}%"
           data-collab="{{ forloop.index }}"
-          aria-label="{{ c.institution | escape }}, {{ c.place | escape }}"
+          aria-label="{{ c.institution | escape }}{% if c.place %}, {{ c.place | escape }}{% endif %}"
         >
           <span class="collab-pin__label" aria-hidden="true">{{ c.institution }}</span>
         </button>
       {% endfor %}
-      {% if net.home.coordinates %}
+      {% if net.home.coordinates contains ',' %}
         <button
           type="button"
           class="collab-pin collab-pin--home{% if home_left > 75 %} collab-pin--east{% elsif home_left < 25 %} collab-pin--west{% endif %}"

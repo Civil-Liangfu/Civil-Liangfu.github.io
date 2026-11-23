@@ -245,19 +245,28 @@ collections:
               - label: Institution
                 name: institution
                 widget: string
+                hint: >-
+                  The full name, e.g. “Tongji University”. This is all you need: the city,
+                  country and map position are filled in automatically a few minutes after
+                  you save.
               - label: City and country
                 name: place
                 widget: string
-                hint: For example “Shanghai, China”. The country is used to count countries.
+                required: false
+                hint: >-
+                  Optional, e.g. “Shanghai, China”; filled in automatically when left empty.
+                  Adding it helps find the right place when universities share a name.
               - label: Coordinates (latitude, longitude)
                 name: coordinates
                 widget: string
+                required: false
                 pattern:
                   - '^\s*-?\d{1,2}(\.\d+)?\s*,\s*-?\d{1,3}(\.\d+)?\s*$'
                   - "Two numbers separated by a comma: latitude, longitude, e.g. 31.2836, 121.5018"
                 hint: >-
-                  Where the marker goes. On Google Maps, right-click the building: the first
-                  line of the menu shows two numbers. Click it to copy them, then paste here.
+                  Leave empty: the marker is placed automatically. To place it yourself (or
+                  to correct it), on Google Maps right-click the building, click the two
+                  numbers at the top of the menu to copy them, and paste them here.
               - label: People
                 name: people
                 widget: string

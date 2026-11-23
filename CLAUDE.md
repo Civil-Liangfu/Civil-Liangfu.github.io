@@ -113,7 +113,9 @@ After upgrading `al_folio_core` / `al_folio_cv`, diff these against the gem vers
   `collaboration_map` in `_pages/about.md`): `_includes/collaboration_map.liquid` + data
   `_data/collaborations.yml` (`home` + `collaborations[]`: `institution`, `place` "City,
   Country", `coordinates` "lat, lon", `people`, `coauthors[]` "Surname, Given", `period`,
-  `summary`, `link`; panel: Collaborations). Land = `_includes/world_dots.liquid`, ~3.5k
+  `summary`, `link`; panel: Collaborations; only `institution` is required). Entries
+  without `coordinates` get no marker/line (listed only) until **Place collaborations on
+  the map** fills them in. Land = `_includes/world_dots.liquid`, ~3.5k
   dots as one SVG path of `M x y h0` segments with round caps, generated once by
   `bin/make_world_dots.cjs` (Natural Earth 110 m via world-atlas; equirectangular 1000 ×
   391.67, 84°N–57°S; in `.prettierignore`). `_includes/collab_xy.liquid` projects
@@ -226,6 +228,18 @@ surname` (the bibsearch hash filter). A small inline script shows one card at a 
   workflows, so `deploy.yml` also runs on `workflow_run` of "Render a CV" and "Update
   citation counts" (successful, non-PR runs on main) — this also stops the CV PDF lagging
   one deploy behind.
+- **Place collaborations on the map** (`.github/workflows/collaboration-places.yml`,
+  `bin/locate_collaborations.py`): on pushes to main that change
+  `_data/collaborations.yml`, manually, and as a `--check` test on PRs that change it
+  (re-locates every entry and prints the distance to the saved position). For `home` and
+  each collaboration without `coordinates` it tries OpenAlex institutions (`geo`; when
+  `place` is given, the result's city or country must appear in it) then Nominatim
+  ("institution, place", then "place"; ≤ 1 request/s, identifying User-Agent), writes
+  `coordinates` (and `place` if empty) with ruamel.yaml round-trip (comments, quotes and
+  key order kept; `width 4096`, `indent(mapping=2, sequence=4, offset=2)`; output passes
+  Prettier), commits "Place collaborations on the map", and `deploy.yml` runs after it via
+  `workflow_run`. Never overwrites existing coordinates. Not found → `::warning::` in the
+  log, exit 0 (the entry just has no marker).
 - **Integration tests** (`unit-tests.yml`) and **Visual regression checks** are al-folio's
   developer checks against removed demo pages; they fail regardless of content. Turning
   their automatic triggers off is the owner's decision (proposed, not done).
