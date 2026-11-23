@@ -2,113 +2,110 @@
 # Filled in AUTOMATICALLY every Monday by the "Update citation counts" workflow
 # (bin/update_citations.py). There is no need to edit this file.
 metadata:
-  last_updated: "2026-11-21"
-  source: "Google Scholar"
-  source_url: "https://scholar.google.com/citations?user=Jx-_4dwAAAAJ"
+  last_updated: "2026-11-23"
+  source: "OpenAlex"
+  source_url: "https://orcid.org/0000-0003-0877-1734"
 totals:
-  citations: 925
+  citations: 845
   h_index: 13
-  i10_index: 13
+  i10_index: 14
 papers:
   dan2026marker:
-    citations: 0
-    url: "https://scholar.google.com/citations?view_op=view_citation&user=Jx-_4dwAAAAJ&citation_for_view=Jx-_4dwAAAAJ:Fu2w8maKXqMC"
+    citations: 1
+    url: "https://openalex.org/works/W7196965923"
   dan2026novel:
     citations: 0
-    url: "https://scholar.google.com/citations?view_op=view_citation&user=Jx-_4dwAAAAJ&citation_for_view=Jx-_4dwAAAAJ:35r97b3x0nAC"
+    url: "https://openalex.org/works/W7213459579"
   ge2026end:
     citations: 0
-    url: "https://scholar.google.com/citations?view_op=view_citation&user=Jx-_4dwAAAAJ&citation_for_view=Jx-_4dwAAAAJ:W5xh706n7nkC"
+    url: "https://openalex.org/works/W7167909264"
   liao2026frequency:
     citations: 0
-    url: "https://scholar.google.com/citations?view_op=view_citation&user=Jx-_4dwAAAAJ&citation_for_view=Jx-_4dwAAAAJ:evX43VCCuoAC"
+    url: "https://openalex.org/works/W7203903505"
   ge2026proactive:
     citations: 0
-    url: "https://scholar.google.com/citations?view_op=view_citation&user=Jx-_4dwAAAAJ&citation_for_view=Jx-_4dwAAAAJ:2KloaMYe4IUC"
+    url: "https://openalex.org/works/W7203941814"
   hu2026fusing:
     citations: 0
-    url: "https://scholar.google.com/citations?view_op=view_citation&user=Jx-_4dwAAAAJ&citation_for_view=Jx-_4dwAAAAJ:tzM49s52ZIMC"
+    url: "https://openalex.org/works/W7203947590"
   chen2026stream:
     citations: 0
-    url: "https://scholar.google.com/citations?view_op=view_citation&user=Jx-_4dwAAAAJ&citation_for_view=Jx-_4dwAAAAJ:_Re3VWB3Y0AC"
-  nuraliyev2026bayesian:
-    citations: 0
-    url: "https://scholar.google.com/citations?view_op=view_citation&user=Jx-_4dwAAAAJ&citation_for_view=Jx-_4dwAAAAJ:ZfRJV9d4-WMC"
+    url: "https://openalex.org/works/W7203883858"
   lei2026damage:
     citations: 0
-    url: "https://scholar.google.com/citations?view_op=view_citation&user=Jx-_4dwAAAAJ&citation_for_view=Jx-_4dwAAAAJ:tKAzc9rXhukC"
+    url: "https://openalex.org/works/W7203878529"
   liao2026solving:
     citations: 0
-    url: "https://scholar.google.com/citations?view_op=view_citation&user=Jx-_4dwAAAAJ&citation_for_view=Jx-_4dwAAAAJ:7T2F9Uy0os0C"
+    url: "https://openalex.org/works/W7203881811"
   hu2026vision:
     citations: 0
-    url: "https://scholar.google.com/citations?view_op=view_citation&user=Jx-_4dwAAAAJ&citation_for_view=Jx-_4dwAAAAJ:NJ774b8OgUMC"
+    url: "https://openalex.org/works/W7203930959"
   luleci2026latent:
     citations: 0
-    url: "https://scholar.google.com/citations?view_op=view_citation&user=Jx-_4dwAAAAJ&citation_for_view=Jx-_4dwAAAAJ:_Ybze24A_UAC"
+    url: "https://openalex.org/works/W7165856438"
   singh2026digital:
     citations: 1
-    url: "https://scholar.google.com/citations?view_op=view_citation&user=Jx-_4dwAAAAJ&citation_for_view=Jx-_4dwAAAAJ:JQOojiI6XY0C"
+    url: "https://openalex.org/works/W7160411238"
   luleci2026physics:
     citations: 1
-    url: "https://scholar.google.com/citations?view_op=view_citation&user=Jx-_4dwAAAAJ&citation_for_view=Jx-_4dwAAAAJ:uLbwQdceFCQC"
+    url: "https://openalex.org/works/W7162781493"
   ge2026viv:
     citations: 1
-    url: "https://scholar.google.com/citations?view_op=view_citation&user=Jx-_4dwAAAAJ&citation_for_view=Jx-_4dwAAAAJ:UHK10RUVsp4C"
+    url: "https://openalex.org/works/W7156326375"
   dan2025physics:
-    citations: 8
-    url: "https://scholar.google.com/citations?view_op=view_citation&user=Jx-_4dwAAAAJ&citation_for_view=Jx-_4dwAAAAJ:tkaPQYYpVKoC"
+    citations: 10
+    url: "https://openalex.org/works/W4415913652"
   dan2025gaussian:
-    citations: 5
-    url: "https://scholar.google.com/citations?view_op=view_citation&user=Jx-_4dwAAAAJ&citation_for_view=Jx-_4dwAAAAJ:Mojj43d5GZwC"
+    citations: 3
+    url: "https://openalex.org/works/W4413228521"
   dan2025novel:
     citations: 3
-    url: "https://scholar.google.com/citations?view_op=view_citation&user=Jx-_4dwAAAAJ&citation_for_view=Jx-_4dwAAAAJ:AXPGKjj_ei8C"
+    url: "https://openalex.org/works/W4413963836"
   ge2025advanced:
-    citations: 57
-    url: "https://scholar.google.com/citations?view_op=view_citation&user=Jx-_4dwAAAAJ&citation_for_view=Jx-_4dwAAAAJ:tOudhMTPpwUC"
+    citations: 50
+    url: "https://openalex.org/works/W4393156220"
   ge2025deep:
-    citations: 60
-    url: "https://scholar.google.com/citations?view_op=view_citation&user=Jx-_4dwAAAAJ&citation_for_view=Jx-_4dwAAAAJ:eJXPG6dFmWUC"
+    citations: 57
+    url: "https://openalex.org/works/W4405839419"
   barbosh2024automated:
-    citations: 17
-    url: "https://scholar.google.com/citations?view_op=view_citation&user=Jx-_4dwAAAAJ&citation_for_view=Jx-_4dwAAAAJ:sSrBHYA8nusC"
+    citations: 16
+    url: "https://openalex.org/works/W4401501012"
   ge2024domain:
-    citations: 0
-    url: "https://scholar.google.com/citations?view_op=view_citation&user=Jx-_4dwAAAAJ&citation_for_view=Jx-_4dwAAAAJ:8AbLer7MMksC"
+    citations: 1
+    url: "https://openalex.org/works/W4402480169"
   ge2024structural:
     citations: 0
-    url: "https://scholar.google.com/citations?view_op=view_citation&user=Jx-_4dwAAAAJ&citation_for_view=Jx-_4dwAAAAJ:geHnlv5EZngC"
+    url: "https://openalex.org/works/W4402480166"
   ge2024drone:
     citations: 0
-    url: "https://scholar.google.com/citations?view_op=view_citation&user=Jx-_4dwAAAAJ&citation_for_view=Jx-_4dwAAAAJ:Y5dfb0dijaUC"
+    url: "https://openalex.org/works/W4415184623"
   ge2024domainb:
     citations: 81
-    url: "https://scholar.google.com/citations?view_op=view_citation&user=Jx-_4dwAAAAJ&citation_for_view=Jx-_4dwAAAAJ:1sJd4Hv_s6UC"
+    url: "https://openalex.org/works/W4391938747"
   ge2024benchmark:
-    citations: 15
-    url: "https://scholar.google.com/citations?view_op=view_citation&user=Jx-_4dwAAAAJ&citation_for_view=Jx-_4dwAAAAJ:b0M2c_1WBrUC"
+    citations: 14
+    url: "https://openalex.org/works/W4388829926"
   yu2023time:
-    citations: 24
-    url: "https://scholar.google.com/citations?view_op=view_citation&user=Jx-_4dwAAAAJ&citation_for_view=Jx-_4dwAAAAJ:O3NaXMp0MMsC"
+    citations: 20
+    url: "https://openalex.org/works/W4377157995"
   ge2023improved:
-    citations: 33
-    url: "https://scholar.google.com/citations?view_op=view_citation&user=Jx-_4dwAAAAJ&citation_for_view=Jx-_4dwAAAAJ:RGFaLdJalmkC"
+    citations: 37
+    url: "https://openalex.org/works/W4379191876"
   ge2023bridge:
-    citations: 69
-    url: "https://scholar.google.com/citations?view_op=view_citation&user=Jx-_4dwAAAAJ&citation_for_view=Jx-_4dwAAAAJ:GnPB-g6toBAC"
+    citations: 64
+    url: "https://openalex.org/works/W4372262504"
   ge2022intelligent:
-    citations: 41
-    url: "https://scholar.google.com/citations?view_op=view_citation&user=Jx-_4dwAAAAJ&citation_for_view=Jx-_4dwAAAAJ:RHpTSmoSYBkC"
+    citations: 40
+    url: "https://openalex.org/works/W4210266677"
   dan2021digital:
-    citations: 165
-    url: "https://scholar.google.com/citations?view_op=view_citation&user=Jx-_4dwAAAAJ&citation_for_view=Jx-_4dwAAAAJ:LkGwnXOMwfcC"
+    citations: 140
+    url: "https://openalex.org/works/W4205908782"
   ge2020accurate:
-    citations: 142
-    url: "https://scholar.google.com/citations?view_op=view_citation&user=Jx-_4dwAAAAJ&citation_for_view=Jx-_4dwAAAAJ:d1gkVwhDpl0C"
+    citations: 127
+    url: "https://openalex.org/works/W3088297561"
   ge2020real:
-    citations: 44
-    url: "https://scholar.google.com/citations?view_op=view_citation&user=Jx-_4dwAAAAJ&citation_for_view=Jx-_4dwAAAAJ:u5HHmVD_uO8C"
+    citations: 37
+    url: "https://openalex.org/works/W3008133934"
   dan2019identification:
-    citations: 158
-    url: "https://scholar.google.com/citations?view_op=view_citation&user=Jx-_4dwAAAAJ&citation_for_view=Jx-_4dwAAAAJ:u-x6o8ySG0sC"
+    citations: 141
+    url: "https://openalex.org/works/W2945932553"
