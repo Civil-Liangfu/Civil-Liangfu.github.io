@@ -35,6 +35,7 @@ collaborations:
     summary: "Visiting PhD research on bridge health monitoring and safety assessment based on measured response data and full-bridge traffic load distribution."
   - institution: "University of Central Florida"
     place: "Florida, United State"
+    coordinates: "26.6651, -80.1107"
     people: "Necati Catbas"
     coauthors:
       - "Latent infrastructure sensing: Repurposing existing sensing mechanisms for infrastructure Health monitoring"
