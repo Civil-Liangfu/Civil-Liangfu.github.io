@@ -1,12 +1,16 @@
-name: Update citation counts
+name: Update publications and citations
 
-# Fetches the citation counts of the papers in _bibliography/papers.bib (Google
-# Scholar first, OpenAlex if Scholar blocks the request) and saves them to
-# _data/citations.yml; see bin/update_citations.py. The "Deploy site" workflow
-# then publishes them. Runs every Monday, right after the publication list, the
-# Scholar/ORCID IDs or the updater change on main, and by hand from the Actions tab
-# ("Run workflow"). On a pull request that changes the updater it only tests it:
-# the counts are printed in the log and nothing is saved.
+# 1. bin/update_citations.py: adds papers that are new on my Google Scholar profile
+#    to _bibliography/papers.bib, and saves the citation counts (Google Scholar
+#    first, OpenAlex if Scholar blocks the request and the saved Scholar counts are
+#    older than 60 days) to _data/citations.yml.
+# 2. bin/update_coauthors.py: finds my co-authors' institutions on OpenAlex for the
+#    collaboration map (_data/coauthor_network.yml).
+# The "Deploy site" workflow then publishes the changes. Runs on Mondays and
+# Thursdays, right after the publication list, the Scholar/ORCID IDs or the
+# scripts change on main, and by hand from the Actions tab ("Run workflow"). On a
+# pull request that changes the scripts it only tests them: the results are
+# printed in the log and nothing is saved.
 #
 # The commit made every week also counts as repository activity, so GitHub does
 # not switch this schedule off (it disables scheduled workflows after 60 days
@@ -14,7 +18,7 @@ name: Update citation counts
 
 on:
   schedule:
-    - cron: "23 4 * * 1" # Mondays, 04:23 UTC
+    - cron: "23 4 * * 1,4" # Mondays and Thursdays, 04:23 UTC
   workflow_dispatch:
   push:
     branches: [main]
@@ -22,10 +26,12 @@ on:
       - "_bibliography/papers.bib"
       - "_data/socials.yml"
       - "bin/update_citations.py"
+      - "bin/update_coauthors.py"
       - ".github/workflows/citations.yml"
   pull_request:
     paths:
       - "bin/update_citations.py"
+      - "bin/update_coauthors.py"
       - ".github/workflows/citations.yml"
 
 permissions:
@@ -53,24 +59,32 @@ jobs:
         # httpx 0.28 removed an option that scholarly 1.7.11 still uses
         run: pip install "scholarly==1.7.11" "httpx<0.28" "bibtexparser==1.4.3" pyyaml
 
-      - name: Fetch citation counts (test only, nothing is saved)
+      - name: Test new papers and citation counts (nothing is saved)
         if: github.event_name == 'pull_request'
-        run: python bin/update_citations.py --dry-run
+        run: python bin/update_citations.py --dry-run --preview-new 2
 
-      - name: Fetch citation counts
+      - name: Test co-author institutions (nothing is saved)
+        if: github.event_name == 'pull_request'
+        run: python bin/update_coauthors.py --dry-run
+
+      - name: New papers and citation counts
         if: github.event_name != 'pull_request'
         run: python bin/update_citations.py
 
+      - name: Co-author institutions
+        if: ${{ !cancelled() && github.event_name != 'pull_request' }}
+        run: python bin/update_coauthors.py
+
       - name: Save to the repository
-        if: github.event_name != 'pull_request'
+        if: ${{ !cancelled() && github.event_name != 'pull_request' }}
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add _data/citations.yml
+          git add _bibliography/papers.bib _data/citations.yml _data/scholar_sync.yml _data/coauthor_network.yml
           if git diff --staged --quiet; then
-            echo "No change in the citation counts."
+            echo "Nothing changed."
           else
-            git commit -m "Update citation counts"
+            git commit -m "Update publications and citations"
             git pull --rebase origin "$GITHUB_REF_NAME" # in case something was saved meanwhile
             git push
           fi

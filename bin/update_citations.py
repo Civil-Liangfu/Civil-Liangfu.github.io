@@ -1,7 +1,17 @@
 #!/usr/bin/env python
-"""Update _data/citations.yml with citation counts for the papers in papers.bib.
+"""Update the publication list and citation counts from Google Scholar.
 
-Run by the "Update citation counts" workflow (.github/workflows/citations.yml).
+Run by the "Update publications and citations" workflow
+(.github/workflows/citations.yml), which then runs bin/update_coauthors.py.
+
+New papers: papers on the Google Scholar profile that are not yet in
+_bibliography/papers.bib are added to it (at most MAX_NEW_PAPERS per run), in the
+same BibTeX style as a Scholar export, with the DOI and full author list taken
+from OpenAlex when it has the same title. _data/scholar_sync.yml remembers every
+profile paper already handled, so a paper deleted from papers.bib by hand is not
+added again.
+
+Citation counts (_data/citations.yml), sources in this order:
 
 Sources, in this order:
 1. Google Scholar: the profile whose ID is `scholar_userid` in _data/socials.yml.
@@ -13,8 +23,14 @@ Sources, in this order:
    by title among the works linked to `orcid_id` in _data/socials.yml. The
    totals are then worked out from the matched papers.
 
-If both fail, the existing file is left unchanged and the script exits with an
-error. `--dry-run` prints the result without writing the file.
+When Google Scholar can't be reached but the saved counts came from Google
+Scholar within the last KEEP_SCHOLAR_DAYS days, they are kept as they are rather
+than replaced by (lower) OpenAlex numbers. If no source works, the files are left
+unchanged and the script exits with an error.
+
+--dry-run prints the results without writing any file; --preview-new N (with
+--dry-run) also builds the BibTeX of the N newest profile papers as if they were
+new, to test that part on pull requests.
 """
 
 import argparse
@@ -26,7 +42,7 @@ import time
 import unicodedata
 import urllib.parse
 import urllib.request
-from datetime import datetime, timezone
+from datetime import date, datetime, timezone
 
 import bibtexparser
 import yaml
@@ -34,13 +50,22 @@ import yaml
 BIB_FILE = "_bibliography/papers.bib"
 SOCIALS_FILE = "_data/socials.yml"
 OUTPUT_FILE = "_data/citations.yml"
+SYNC_FILE = "_data/scholar_sync.yml"
+MAX_NEW_PAPERS = 5  # per run: each new paper costs one more Google Scholar request
+KEEP_SCHOLAR_DAYS = 60
 USER_AGENT = "civil-liangfu.github.io citation updater (GitHub Actions)"
 SCHOLAR_TIME_LIMIT = 150  # seconds; Google Scholar can hang when it blocks a request
 
 HEADER = """\
 # Citation counts for the papers in _bibliography/papers.bib.
-# Filled in AUTOMATICALLY every Monday by the "Update citation counts" workflow
-# (bin/update_citations.py). There is no need to edit this file.
+# Filled in AUTOMATICALLY twice a week by the "Update publications and citations"
+# workflow (bin/update_citations.py). There is no need to edit this file.
+"""
+
+SYNC_HEADER = """\
+# Google Scholar papers already handled by the "Update publications and citations"
+# workflow (bin/update_citations.py): each is in papers.bib, or was added and later
+# deleted on purpose, so it is not added again. Filled in automatically.
 """
 
 
@@ -107,19 +132,31 @@ def _on_alarm(signum, frame):
 # --------------------------------------------------------------------------- sources
 
 
-def from_google_scholar(papers, scholar_id):
+def with_time_limit(seconds, fn):
+    signal.signal(signal.SIGALRM, _on_alarm)
+    signal.alarm(seconds)
+    try:
+        return fn()
+    finally:
+        signal.alarm(0)
+
+
+def scholar_profile(scholar_id):
+    """The Google Scholar profile with its totals and list of papers."""
     from scholarly import scholarly  # imported here so OpenAlex still works without it
 
     scholarly.set_timeout(20)
     scholarly.set_retries(2)
-    signal.signal(signal.SIGALRM, _on_alarm)
-    signal.alarm(SCHOLAR_TIME_LIMIT)
-    try:
-        author = scholarly.search_author_id(scholar_id)
-        author = scholarly.fill(author, sections=["basics", "indices", "publications"])
-    finally:
-        signal.alarm(0)
+    author = with_time_limit(SCHOLAR_TIME_LIMIT, lambda: scholarly.search_author_id(scholar_id))
+    author = with_time_limit(
+        SCHOLAR_TIME_LIMIT, lambda: scholarly.fill(author, sections=["basics", "indices", "publications"])
+    )
+    if not author.get("publications"):
+        raise RuntimeError("the Google Scholar profile returned no publications")
+    return author
 
+
+def scholar_counts(papers, author, scholar_id):
     profile_url = f"https://scholar.google.com/citations?user={scholar_id}"
     scholar_pubs = []
     for pub in author.get("publications", []):
@@ -136,8 +173,6 @@ def from_google_scholar(papers, scholar_id):
                 ),
             }
         )
-    if not scholar_pubs:
-        raise RuntimeError("the Google Scholar profile returned no publications")
 
     matched = {}
     for paper in papers:
@@ -152,6 +187,164 @@ def from_google_scholar(papers, scholar_id):
         "i10_index": int(author.get("i10index") or 0),
     }
     return "Google Scholar", profile_url, totals, matched
+
+
+def ascii_word(text):
+    text = unicodedata.normalize("NFKD", text)
+    return re.sub(r"[^a-z0-9]", "", "".join(c for c in text if not unicodedata.combining(c)).lower())
+
+
+def last_first(name):
+    """ "Liangfu Ge" → "Ge, Liangfu" (the form used in papers.bib)."""
+    name = re.sub(r"\s+", " ", name).strip()
+    if "," in name or " " not in name:
+        return name
+    given, surname = name.rsplit(" ", 1)
+    return f"{surname}, {given}"
+
+
+STOPWORDS = {"a", "an", "the", "on", "of", "for", "in", "to", "and", "with", "via", "using", "by", "from", "at", "as", "toward", "towards"}
+
+
+def bib_key(first_author, year, title, taken):
+    """Google Scholar's key style: surname + year + first word of the title, e.g. ge2025deep."""
+    surname = ascii_word(first_author.split(",")[0]) or "paper"
+    words = [ascii_word(w) for w in re.split(r"[\s\-:/]+", title)]
+    word = next((w for w in words if w and w not in STOPWORDS), "")
+    base = f"{surname}{year or ''}{word}"
+    key, n = base, 1
+    while key in taken:
+        key, n = base + "bcdefghijklmnopqrstuvwxyz"[n - 1], n + 1
+    return key
+
+
+def openalex_by_title(title):
+    """The OpenAlex work with the same title, if any."""
+    try:
+        data = openalex_get("works", {"search": title, "per-page": 5})
+    except Exception as e:  # noqa: BLE001
+        print(f"    OpenAlex title search failed: {e}")
+        return None
+    wanted = normalise_title(title)
+    return next((w for w in data.get("results", []) if titles_match(wanted, normalise_title(w.get("title") or ""))), None)
+
+
+def make_bibtex(bib, work, taken):
+    """One BibTeX entry from Google Scholar's fields, completed with OpenAlex's."""
+    work = work or {}
+    source = ((work.get("primary_location") or {}).get("source")) or {}
+    biblio = work.get("biblio") or {}
+    title = (bib.get("title") or work.get("title") or "").strip()
+
+    authors = bib.get("author") or ""
+    if (not authors or "…" in authors or "..." in authors) and work.get("authorships"):
+        authors = " and ".join(a["author"]["display_name"] for a in work["authorships"])  # Scholar shortens long lists
+    authors = " and ".join(last_first(a) for a in authors.split(" and ") if a.strip())
+
+    year = bib.get("pub_year") or work.get("publication_year") or ""
+    journal = bib.get("journal")
+    conference = bib.get("conference")
+    venue = source.get("display_name")
+    if journal or (not conference and source.get("type") == "journal"):
+        kind, fields = "article", [("journal", journal or venue)]
+    elif conference or source.get("type") == "conference" or "proceedings" in (venue or "").lower():
+        kind, fields = "inproceedings", [("booktitle", conference or venue)]
+    elif work.get("type") == "book-chapter":
+        kind, fields = "incollection", [("booktitle", venue)]
+    else:
+        kind, fields = "misc", [("howpublished", venue)]
+
+    pages = bib.get("pages")
+    if not pages and biblio.get("first_page"):
+        pages = biblio["first_page"] + (f"--{biblio['last_page']}" if biblio.get("last_page") not in (None, biblio["first_page"]) else "")
+    doi = normalise_doi(work.get("doi"))
+    fields = [("title", title), ("author", authors)] + fields + [
+        ("volume", bib.get("volume") or biblio.get("volume")),
+        ("number", bib.get("number") or biblio.get("issue")),
+        ("pages", pages),
+        ("year", str(year)),
+        ("doi", doi),
+        ("publisher", bib.get("publisher")),
+    ]
+    key = bib_key(authors.split(" and ")[0] if authors else "", year, title, taken)
+    body = ",\n".join(f"  {name}={{{value}}}" for name, value in fields if value)
+    return key, f"@{kind}{{{key},\n{body}\n}}\n"
+
+
+def load_sync():
+    try:
+        with open(SYNC_FILE, encoding="utf-8") as f:
+            return set((yaml.safe_load(f) or {}).get("known") or [])
+    except FileNotFoundError:
+        return set()
+
+
+def save_sync(known):
+    lines = [SYNC_HEADER.rstrip("\n"), "known:"] + [f"  - {q(k)}" for k in sorted(known)]
+    with open(SYNC_FILE, "w", encoding="utf-8") as f:
+        f.write("\n".join(lines) + "\n")
+
+
+def add_new_papers(author, papers, dry_run, preview_new=0):
+    """Adds profile papers that are missing from papers.bib. Returns the new keys."""
+    from scholarly import scholarly
+
+    known = load_sync()
+    pubs = author.get("publications", [])
+    in_bib = lambda pub: any(titles_match(p["title"], normalise_title(pub["bib"].get("title", ""))) for p in papers)
+    present = [p for p in pubs if in_bib(p)]
+    missing = [p for p in pubs if not in_bib(p) and p.get("author_pub_id") not in known]
+    print(f"  {len(pubs)} papers on the profile: {len(present)} in papers.bib, {len(missing)} new")
+    for pub in missing:
+        print(f"    new: {pub['bib'].get('title', '?')} ({pub['bib'].get('pub_year', 'no year')})")
+    if preview_new:  # test run: pretend the newest profile papers are new
+        missing = sorted(pubs, key=lambda p: int(p["bib"].get("pub_year") or 0), reverse=True)[:preview_new]
+        print(f"  preview: building BibTeX for the {preview_new} newest profile papers as if they were new")
+
+    taken = {p["key"] for p in papers}
+    entries, handled = [], {p.get("author_pub_id") for p in present}
+    for pub in missing[:MAX_NEW_PAPERS]:
+        title = pub["bib"].get("title", "")
+        bib = None
+        try:
+            bib = with_time_limit(60, lambda: scholarly.fill(pub))["bib"]
+        except (Exception, TimeLimit) as e:  # noqa: BLE001 — OpenAlex may still know the paper
+            print(f"  Google Scholar gave no details for '{title}' ({type(e).__name__}: {e}); trying OpenAlex")
+        work = openalex_by_title((bib or {}).get("title") or title)
+        if not bib and not work:
+            print(f"  '{title}' is not on OpenAlex either; trying again next run")
+            continue
+        # without Scholar's details, the authors, venue, volume, pages and DOI come from OpenAlex
+        key, entry = make_bibtex(bib or {"title": title, "pub_year": pub["bib"].get("pub_year")}, work, taken)
+        taken.add(key)
+        entries.append(entry)
+        handled.add(pub.get("author_pub_id"))
+        print(f"  new paper: {key} — {title}")
+    if len(missing) > MAX_NEW_PAPERS:
+        print(f"  {len(missing) - MAX_NEW_PAPERS} more will be added on the next runs")
+
+    if dry_run or preview_new:
+        for entry in entries:
+            print(entry)
+        return []
+    if entries:
+        with open(BIB_FILE, encoding="utf-8") as f:
+            current = f.read()
+        with open(BIB_FILE, "a", encoding="utf-8") as f:
+            f.write(("" if current.endswith("\n") else "\n") + "\n" + "\n".join(entries))
+    save_sync(known | {h for h in handled if h})
+    return [re.match(r"@\w+\{([^,]+),", e).group(1) for e in entries]
+
+
+def recent_scholar_data():
+    """True if citations.yml holds Google Scholar counts from the last KEEP_SCHOLAR_DAYS days."""
+    try:
+        with open(OUTPUT_FILE, encoding="utf-8") as f:
+            meta = (yaml.safe_load(f) or {}).get("metadata") or {}
+        age = (date.today() - date.fromisoformat(str(meta.get("last_updated")))).days
+        return meta.get("source") == "Google Scholar" and age <= KEEP_SCHOLAR_DAYS
+    except (FileNotFoundError, ValueError, TypeError):
+        return False
 
 
 def openalex_get(path, params):
@@ -245,7 +438,8 @@ def render(source, source_url, totals, matched, papers):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__.split("\n")[0])
-    parser.add_argument("--dry-run", action="store_true", help="print the result, don't write the file")
+    parser.add_argument("--dry-run", action="store_true", help="print the results, don't write any file")
+    parser.add_argument("--preview-new", type=int, default=0, help="with --dry-run: treat the N newest papers as new")
     parser.add_argument(
         "--source", choices=["auto", "scholar", "openalex"], default="auto", help="which source to use"
     )
@@ -253,39 +447,53 @@ def main():
 
     papers = load_papers()
     socials = load_socials()
+    scholar_id = str(socials.get("scholar_userid") or "")
     print(f"{len(papers)} papers in {BIB_FILE}")
 
-    attempts = []
-    if args.source in ("auto", "scholar") and socials.get("scholar_userid"):
-        attempts.append(("Google Scholar", lambda: from_google_scholar(papers, str(socials["scholar_userid"]))))
-    if args.source in ("auto", "openalex"):
-        attempts.append(("OpenAlex", lambda: from_openalex(papers, str(socials.get("orcid_id") or ""))))
-
-    for name, fetch in attempts:
-        print(f"Trying {name} …")
+    result = None
+    if args.source in ("auto", "scholar") and scholar_id:
+        print("Trying Google Scholar …")
         try:
-            source, source_url, totals, matched = fetch()
+            author = scholar_profile(scholar_id)
+            added = add_new_papers(author, papers, args.dry_run, args.preview_new)
+            if added:
+                papers = load_papers()  # count the new papers too
+            result = scholar_counts(papers, author, scholar_id)
         except (Exception, TimeLimit) as e:  # noqa: BLE001 — any failure means "try the next source"
-            print(f"  {name} failed: {type(e).__name__}: {e}")
-            continue
-        print(f"  {name}: matched {len(matched)} of {len(papers)} papers; totals {totals}")
-        unmatched = [p["key"] for p in papers if p["key"] not in matched]
-        if unmatched:
-            print("  not found: " + ", ".join(unmatched))
-        if not matched:
-            print(f"  {name} matched no papers, so it is not used.")
-            continue
-        text = render(source, source_url, totals, matched, papers)
-        if args.dry_run:
-            print("--- " + OUTPUT_FILE + " (dry run, not written) ---\n" + text)
-        else:
-            with open(OUTPUT_FILE, "w", encoding="utf-8") as f:
-                f.write(text)
-            print(f"Saved {OUTPUT_FILE}")
-        return 0
+            print(f"  Google Scholar failed: {type(e).__name__}: {e}")
+        if result and not result[3]:
+            print("  Google Scholar matched no papers, so it is not used.")
+            result = None
+        if not result and args.source == "auto" and recent_scholar_data():
+            print(f"Keeping the Google Scholar counts saved within the last {KEEP_SCHOLAR_DAYS} days.")
+            return 0
 
-    print("No source worked; " + OUTPUT_FILE + " was left unchanged.")
-    return 1
+    if not result and args.source in ("auto", "openalex"):
+        print("Trying OpenAlex …")
+        try:
+            result = from_openalex(papers, str(socials.get("orcid_id") or ""))
+        except Exception as e:  # noqa: BLE001
+            print(f"  OpenAlex failed: {type(e).__name__}: {e}")
+        if result and not result[3]:
+            print("  OpenAlex matched no papers, so it is not used.")
+            result = None
+
+    if not result:
+        print("No source worked; " + OUTPUT_FILE + " was left unchanged.")
+        return 1
+    source, source_url, totals, matched = result
+    print(f"  {source}: matched {len(matched)} of {len(papers)} papers; totals {totals}")
+    unmatched = [p["key"] for p in papers if p["key"] not in matched]
+    if unmatched:
+        print("  not found: " + ", ".join(unmatched))
+    text = render(source, source_url, totals, matched, papers)
+    if args.dry_run:
+        print("--- " + OUTPUT_FILE + " (dry run, not written) ---\n" + text)
+    else:
+        with open(OUTPUT_FILE, "w", encoding="utf-8") as f:
+            f.write(text)
+        print(f"Saved {OUTPUT_FILE}")
+    return 0
 
 
 if __name__ == "__main__":

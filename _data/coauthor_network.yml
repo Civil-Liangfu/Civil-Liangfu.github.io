@@ -1,0 +1,10 @@
+# Institutions of my co-authors, found AUTOMATICALLY twice a week from OpenAlex by
+# the "Update publications and citations" workflow (bin/update_coauthors.py). Shown
+# on the home page's collaboration map next to the collaborations entered by hand.
+# Don't edit this file: to hide a wrong institution, add its name under
+# "Hide these co-author institutions" in the editing panel (Collaborations).
+# It is filled in by the first run after this is merged.
+metadata:
+  last_updated: ""
+  source: "OpenAlex"
+institutions: []

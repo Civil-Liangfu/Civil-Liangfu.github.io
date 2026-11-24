@@ -112,8 +112,10 @@ After upgrading `al_folio_core` / `al_folio_cv`, diff these against the gem vers
 - Collaboration map (home page section after Selected publications; switch
   `collaboration_map` in `_pages/about.md`): `_includes/collaboration_map.liquid` + data
   `_data/collaborations.yml` (`home` + `collaborations[]`: `institution`, `place` "City,
-  Country", `coordinates` "lat, lon", `people`, `coauthors[]` "Surname, Given", `period`,
-  `summary`, `link`; panel: Collaborations; only `institution` is required). Entries
+  Country", `coordinates` "lat, lon", `people`, `coauthors[]` "Surname, Given" or "Given
+  Surname" (no comma → last word is the surname), `period`, `summary`, `link`; panel:
+  Collaborations; only `institution` is required; plus top-level
+  `show_coauthor_institutions` (default on) and `hidden_institutions[]`). Entries
   without `coordinates` get no marker/line (listed only) until **Place collaborations on
   the map** fills them in. Land = `_includes/world_dots.liquid`, ~3.5k
   dots as one SVG path of `M x y h0` segments with round caps, generated once by
@@ -128,6 +130,15 @@ collab_paper --group_by year %}` (initial-tolerant regex; `<h2 class="bibliograp
   years rewritten to `<h4 class="collab-year">`) and links to `/publications/#given
 surname` (the bibsearch hash filter). A small inline script shows one card at a time;
   without JS all cards show. Phones: list in 2 columns, smaller markers.
+  Automatic layer: `_data/coauthor_network.yml` (bot-written, see workflows) adds
+  `institutions[]` (same fields + `openalex`, `papers[]` bib keys) as hollow
+  `.collab-pin--auto` markers (z-index 0, no arcs), a `<details>` group "Co-author
+  institutions" at the end of the list (spans both columns on phones; the script opens
+  it when one of its items is selected) and cards with `auto=true` (joint papers queried
+  by `@*[key=…]`, no Publications link). Ids continue after the manual entries
+  (`net_first_auto`). An automatic entry is dropped when its name, normalised by
+  `_includes/collab_norm.liquid` (lowercase, "&"→"and", no punctuation, no leading "the"),
+  equals home's, a manual entry's or one in `hidden_institutions`.
 - News: `_includes/news.liquid` (local override of the theme's table; used by
   `_pages/news.md`) lists items newest first with anchors `#news-<slug>`, and
   `_includes/news_media.liquid` renders each item's optional front matter: `images`
@@ -172,7 +183,10 @@ surname` (the bibsearch hash filter). A small inline script shows one card at a 
   `scholar_userid` from here.
 - Publications: `_bibliography/papers.bib`. The owner replaces it wholesale from Google
   Scholar exports, which carry no `selected`/`abbr` fields, so the home page selection
-  lives in `_pages/about.md` (`selected_publications`), not in the .bib. Every journal
+  lives in `_pages/about.md` (`selected_publications`), not in the .bib. The
+  "Update publications and citations" workflow also appends papers that are new on the
+  Scholar profile (see Workflows); `_data/scholar_sync.yml` remembers handled Scholar ids
+  so a paper deleted by hand is not re-added. Every journal
   paper has a `doi` (taken from the owner's CV, Nov 2026); conference papers have none.
 - Research: `_projects/*.md`, one per research theme, written only from paper titles;
   `{% cite key %}` + `related_publications: true`. No images yet (`img:` is optional).
@@ -207,33 +221,60 @@ surname` (the bibsearch hash filter). A small inline script shows one card at a 
 ## Workflows (GitHub Actions)
 
 - Matter for the site: **Deploy site**, **Check for broken links on site** (after a
-  successful deploy), **Update citation counts**, **Render a CV**, **Prettier**
+  successful deploy), **Update publications and citations**, **Render a CV**, **Prettier**
   (passes if files are formatted: `npm ci && npx prettier --write <files>`). The Prettier
   workflow installs the **latest** `prettier` and `@shopify/prettier-plugin-liquid` on every
   run, and versions disagree on some details (3.8.0 and 3.10.1 want different blank lines
   and Liquid indentation), so keep `devDependencies` at the latest versions before checking.
-- **Update citation counts** (`.github/workflows/citations.yml`, `bin/update_citations.py`):
-  Mondays 04:23 UTC, on pushes to main that change `papers.bib`, `socials.yml` or the
-  updater, manual "Run workflow", and a dry run (`--dry-run`, prints, no commit) on PRs
-  that change it (`concurrency` group; `git pull --rebase` before pushing). First real run
+- **Update publications and citations** (`.github/workflows/citations.yml`; was "Update
+  citation counts" until Nov 2026), `bin/update_citations.py` then `bin/update_coauthors.py`:
+  Mondays and Thursdays 04:23 UTC, on pushes to main that change `papers.bib`,
+  `socials.yml` or either script, manual "Run workflow", and dry runs on PRs that change
+  them (`update_citations.py --dry-run --preview-new 2`, `update_coauthors.py --dry-run`;
+  print, no commit) (`concurrency` group; `git pull --rebase` before pushing).
+  **New papers:** profile papers (`fill(author, sections=[basics, indices, counts,
+publications])`) whose title matches no papers.bib entry and whose `author_pub_id` is
+  not in `_data/scholar_sync.yml` are filled (`scholarly.fill(pub)`, 60 s SIGALRM limit
+  each, ≤ 5 per run), given a DOI/type/full author list from OpenAlex title search when
+  it matches, and appended to papers.bib as `@article`/`@inproceedings`/`@incollection`/
+  `@misc` with key surname+year+first non-stopword title word (suffix b, c… if taken).
+  Every handled id (present or added) goes into scholar_sync.yml, so deleting an entry by
+  hand keeps it deleted. `scholarly.fill(pub)` failed on GitHub in Nov 2026
+  (`AttributeError: 'NoneType' object has no attribute 'text'`, Scholar's paper page); then
+  the entry is built from the OpenAlex title match alone (authors, venue, volume, pages,
+  DOI), and a paper neither source knows is retried next run. First live check (24 Nov
+  2026): profile 34 papers = papers.bib, 931 citations; OpenAlex 33/34 papers, 18
+  co-author institutions (14 shown after removing manual duplicates). **Citations:** First real run
   from GitHub (Nov 2026): Google Scholar answered, 34/34 papers matched. Google Scholar via `scholarly==1.7.11` (needs `httpx<0.28`) for
   profile totals + per-paper counts matched to papers.bib by normalised title (prefix match
   for shortened titles); if Scholar fails or matches nothing, OpenAlex (DOI batches +
-  `author.orcid` works; totals computed from matched papers). Writes `_data/citations.yml`
+  `author.orcid` works; totals computed from matched papers) — except that when Scholar
+  fails and citations.yml already holds Google Scholar data ≤ 60 days old
+  (`KEEP_SCHOLAR_DAYS`), it is kept and the script exits 0. Writes `_data/citations.yml`
   (`metadata{last_updated,source,source_url}`, `totals{citations,h_index,i10_index}`,
   `papers{<bibkey>: {citations, url}}`, double-quoted, Prettier-clean); if both fail it keeps
   the file and exits 1. It replaces the theme's `update-citations.yml`, which GitHub had
   set to `disabled_inactivity` (a new file name = a new, enabled workflow); the weekly bot
   commit keeps the repo active. Commits pushed with `GITHUB_TOKEN` don't trigger `push`
-  workflows, so `deploy.yml` also runs on `workflow_run` of "Render a CV" and "Update
-  citation counts" (successful, non-PR runs on main) — this also stops the CV PDF lagging
-  one deploy behind.
+  workflows, so `deploy.yml` also runs on `workflow_run` of "Render a CV", "Update
+  publications and citations" and "Place collaborations on the map" (successful, non-PR
+  runs on main) — this also stops the CV PDF lagging one deploy behind.
+  **Co-authors** (`bin/update_coauthors.py`, runs even if the first step failed): OpenAlex
+  works for papers.bib (DOI batches + `author.orcid` works matched by title) →
+  authorships minus the owner (ORCID, or surname in `scholar.last_name` with given name
+  equal to a `scholar.first_name` or a single matching initial; "Lei Ge" is not the owner)
+  → institutions with their co-authors and paper keys → `geo` via
+  `institutions?filter=openalex:I1|I2` (no position → left out) → `_data/coauthor_network.yml`
+  (sorted by joint papers; `people` = top 3 + "and N more"; Prettier-clean). OpenAlex
+  down → `::warning::`, file kept, exit 0. Not reachable from the cloud container (proxy
+  403); test it through the PR dry run.
 - **Place collaborations on the map** (`.github/workflows/collaboration-places.yml`,
   `bin/locate_collaborations.py`): on pushes to main that change
   `_data/collaborations.yml`, manually, and as a `--check` test on PRs that change it
   (re-locates every entry and prints the distance to the saved position). For `home` and
   each collaboration without `coordinates` it tries OpenAlex institutions (`geo`; when
-  `place` is given, the result's city or country must appear in it) then Nominatim
+  `place` is given, its city, region, country or country code must appear in it —
+  `place_matches`: aliases such as USA/UK, typo-tolerant 5-letter word prefixes) then Nominatim
   ("institution, place", then "place"; ≤ 1 request/s, identifying User-Agent), writes
   `coordinates` (and `place` if empty) with ruamel.yaml round-trip (comments, quotes and
   key order kept; `width 4096`, `indent(mapping=2, sequence=4, offset=2)`; output passes

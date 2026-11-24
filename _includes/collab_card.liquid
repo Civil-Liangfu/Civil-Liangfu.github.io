@@ -1,10 +1,12 @@
 {%- comment -%}
   One details card of the collaboration map (_includes/collaboration_map.liquid).
   include.item = an entry of _data/collaborations.yml, include.id = its number
-  (0 = home), include.home = true for my own institution.
+  (0 = home), include.home = true for my own institution, include.auto = true for a
+  co-author institution found automatically (_data/coauthor_network.yml).
   Joint papers are found automatically: papers.bib entries whose author list
-  contains one of the item's `coauthors` ("Surname, Given names"; an abbreviated
-  given name such as "Surname, G" in the .bib also counts), grouped by year.
+  contains one of the item's `coauthors` ("Surname, Given names" or "Given names
+  Surname"; an abbreviated given name such as "Surname, G" in the .bib also
+  counts), grouped by year.
   Variables start with cc_ and are reset first, because Liquid keeps them between
   includes.
 {%- endcomment -%}
@@ -16,9 +18,16 @@
     "Koo, Ki Young" → \bKoo\W+K(i\W*Young)?\b: matches "Koo, Ki Young", "Koo, Ki-Young"
     and the abbreviated "Koo, K", but not a different given name such as "Koo, Kim".
   {%- endcomment -%}
-  {%- assign cc_parts = cc_name | split: ',' -%}
-  {%- assign cc_surname = cc_parts[0] | strip -%}
-  {%- assign cc_given = cc_parts[1] | strip -%}
+  {%- if cc_name contains ',' -%}
+    {%- assign cc_parts = cc_name | split: ',' -%}
+    {%- assign cc_surname = cc_parts[0] | strip -%}
+    {%- assign cc_given = cc_parts[1] | strip -%}
+  {%- else -%}
+    {%- comment -%} "F Necati Catbas": the last word is the surname {%- endcomment -%}
+    {%- assign cc_words = cc_name | strip | split: ' ' -%}
+    {%- assign cc_surname = cc_words | last -%}
+    {%- assign cc_given = cc_words | pop | join: ' ' -%}
+  {%- endif -%}
   {%- assign cc_initial = cc_given | slice: 0 -%}
   {%- assign cc_rest = cc_given | slice: 1, 100 | replace: ' ', '\W*' | replace: '-', '\W*' -%}
   {%- assign cc_rx = '\b' | append: cc_surname -%}
@@ -39,6 +48,23 @@
     {%- assign cc_search = cc_given | append: ' ' | append: cc_surname | strip | downcase -%}
   {%- endif -%}
 {%- endfor -%}
+{%- comment -%}
+  Automatic entries (_data/coauthor_network.yml) list their joint papers by BibTeX
+  key, which is exact; use those instead of the names. Their papers are already all
+  listed on the card, so there is no "See them on the Publications page" link.
+{%- endcomment -%}
+{%- if cc.papers and cc.papers.size > 0 -%}
+  {%- assign cc_query = '' -%}
+  {%- assign cc_search = '' -%}
+  {%- for cc_key in cc.papers -%}
+    {%- assign cc_selector = '@*[key=' | append: cc_key | append: ']' -%}
+    {%- if cc_query == '' -%}
+      {%- assign cc_query = cc_selector -%}
+    {%- else -%}
+      {%- assign cc_query = cc_query | append: ', ' | append: cc_selector -%}
+    {%- endif -%}
+  {%- endfor -%}
+{%- endif -%}
 {%- assign cc_count = 0 -%}
 {%- if cc_query != '' -%}
   {%- capture cc_count -%}{% bibliography_count --query {{ cc_query }} %}{%- endcapture -%}
@@ -49,6 +75,7 @@
   <p class="collab-card__eyebrow">
     {{ cc.place }}
     {%- if include.home %} · My institution{% endif -%}
+    {%- if include.auto %} · From co-authored papers{% endif -%}
   </p>
   <h3 class="collab-card__title">{{ cc.institution }}</h3>
   {% if cc.people or cc.period %}
@@ -56,7 +83,7 @@
       {% if cc.people %}
         <div>
           <dt>
-            {% if include.home %}Collaborator{% else %}With{% endif %}
+            {% if include.home %}Collaborator{% elsif include.auto %}Co-authors{% else %}With{% endif %}
           </dt>
           <dd>{{ cc.people }}</dd>
         </div>

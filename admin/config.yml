@@ -278,9 +278,8 @@ collections:
                 widget: list
                 required: false
                 hint: >-
-                  As in the Publications list: Surname, Given names (e.g. Dan, Danhui). Your
-                  joint papers are then listed on the card automatically, including papers
-                  that shorten the name (e.g. Dan, D).
+                  For example “Dan, Danhui” or “Danhui Dan”. Your joint papers are then listed
+                  on the card automatically, including papers that shorten the name (e.g. Dan, D).
                 field:
                   label: Name
                   name: name
@@ -308,6 +307,24 @@ collections:
             summary: "{{institution}} · {{place}}"
             hint: One item per institution. Drag items to change the order of the list under the map.
             fields: *collab_fields
+          - label: Also show my co-authors' institutions
+            name: show_coauthor_institutions
+            widget: boolean
+            default: true
+            hint: >-
+              Found automatically twice a week from the authors of the papers in my
+              Publications list (via OpenAlex), and shown as hollow markers. The
+              collaborations above always come first.
+          - label: Hide these co-author institutions
+            label_singular: Institution
+            name: hidden_institutions
+            widget: list
+            required: false
+            hint: If an automatically found institution is wrong, add its name here exactly as it appears on the map.
+            field:
+              label: Institution
+              name: name
+              widget: string
 
   # ---------------------------------------------------------------------------
   # NEWS
