@@ -245,7 +245,11 @@ surname` (the bibsearch hash filter). A small inline script shows one card at a 
   Mondays and Thursdays 04:23 UTC, on pushes to main that change `papers.bib`,
   `socials.yml` or either script, manual "Run workflow", and dry runs on PRs that change
   them (`update_citations.py --dry-run --preview-new 2`, `update_coauthors.py --dry-run`;
-  print, no commit) (`concurrency` group; `git pull --rebase` before pushing).
+  print, no commit) (`concurrency` group; `git pull --rebase` before pushing). The save
+  step `git add`s only files that exist: on the first run after merging (24 Nov 2026)
+  Scholar timed out, `_data/scholar_sync.yml` did not exist yet, and `git add` of the
+  missing path failed the step, so the co-author data was never committed. The PR dry
+  run does not exercise the save step; test it in a throwaway repo with a bare remote.
   **New papers:** profile papers (`fill(author, sections=[basics, indices, counts,
 publications])`) whose title matches no papers.bib entry and whose `author_pub_id` is
   not in `_data/scholar_sync.yml` are filled (`scholarly.fill(pub)`, 60 s SIGALRM limit
