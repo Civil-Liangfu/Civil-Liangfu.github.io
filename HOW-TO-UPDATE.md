@@ -107,9 +107,10 @@ see that collaboration's card. To edit it, open **Collaborations → Collaborati
 
 **Co-author institutions (automatic).** Twice a week GitHub also looks up the authors of
 every paper in my Publications list on **OpenAlex** (an open database of papers) and
-collects their institutions. These appear on the map as small **hollow** markers, without
-a line, and under the map in a group called **Co-author institutions** that opens on
-click. Each card names the co-authors there and lists our joint papers.
+collects their institutions. These appear on the map as small **hollow** markers, each
+with a fainter moving line, and under the map in a group called **Co-author
+institutions** that opens on click. Each card names the co-authors there and lists our
+joint papers.
 
 - The collaborations I enter myself always come first: an institution that is already
   one of them (or my own) is not shown twice.

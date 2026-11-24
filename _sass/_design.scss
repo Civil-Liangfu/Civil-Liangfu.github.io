@@ -925,6 +925,13 @@ code {
     stroke-width 0.2s ease;
 }
 
+/* lines to co-author institutions found automatically: thinner and fainter, so the
+   collaborations entered by hand stand out; full strength when selected (is-active) */
+.collab-arc--auto {
+  stroke-width: 1.1;
+  opacity: 0.3;
+}
+
 .collab-arc.is-active {
   stroke-width: 2.4;
   opacity: 1;
@@ -982,7 +989,7 @@ code {
     0 1px 4px rgba(20, 32, 46, 0.35);
 }
 
-/* co-author institutions found automatically: smaller, hollow, no line */
+/* co-author institutions found automatically: smaller and hollow */
 .collab-pin--auto {
   z-index: 0; /* under the collaborations entered by hand when they overlap */
   width: 11px;

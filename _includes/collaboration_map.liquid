@@ -10,7 +10,7 @@
   them in after a save; see bin/locate_collaborations.py) but is still listed.
 
   Co-author institutions found automatically (_data/coauthor_network.yml, written by
-  bin/update_coauthors.py from OpenAlex) are added as hollow markers without lines,
+  bin/update_coauthors.py from OpenAlex) are added as hollow markers with fainter lines,
   unless switched off (`show_coauthor_institutions: false`), or they are my
   institution, already entered by hand, or listed in `hidden_institutions`.
   Numbering (data-collab): 0 = my institution, 1… = entries by hand, then the
@@ -89,28 +89,16 @@
         {% include world_dots.liquid %}
         {% if net.home.coordinates contains ',' %}
           <g class="collab-map__arcs">
+            {% comment %} co-author institutions first, so their lines lie under the others {% endcomment %}
+            {% for i in net_auto_idx %}
+              {% assign ai = i | plus: 0 %}
+              {% assign a = net_auto_all[ai] %}
+              {% assign a_id = net_first_auto | plus: forloop.index0 %}
+              {% include collab_arc.liquid coords=a.coordinates id=a_id auto=true %}
+            {% endfor %}
             {% for c in net_items %}
               {% unless c.coordinates contains ',' %}{% continue %}{% endunless %}
-              {% include collab_xy.liquid coords=c.coordinates %}
-              {% comment %} curved line: control point to the side of the midpoint, bowing upwards {% endcomment %}
-              {% assign a_dx = xy_x | minus: home_x %}
-              {% assign a_dy = xy_y | minus: home_y %}
-              {% assign a_mx = xy_x | plus: home_x | divided_by: 2.0 %}
-              {% assign a_my = xy_y | plus: home_y | divided_by: 2.0 %}
-              {% if a_dx >= 0 %}
-                {% assign a_px = a_dy %}
-                {% assign a_py = 0 | minus: a_dx %}
-              {% else %}
-                {% assign a_px = 0 | minus: a_dy %}
-                {% assign a_py = a_dx %}
-              {% endif %}
-              {% assign a_cx = a_px | times: 0.22 | plus: a_mx | round: 1 %}
-              {% assign a_cy = a_py | times: 0.22 | plus: a_my | round: 1 %}
-              <path
-                class="collab-arc"
-                data-collab="{{ forloop.index }}"
-                d="M{{ home_x | round: 1 }} {{ home_y | round: 1 }}Q{{ a_cx }} {{ a_cy }} {{ xy_x | round: 1 }} {{ xy_y | round: 1 }}"
-              />
+              {% include collab_arc.liquid coords=c.coordinates id=forloop.index %}
             {% endfor %}
           </g>
         {% endif %}
