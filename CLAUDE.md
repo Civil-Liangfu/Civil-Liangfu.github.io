@@ -239,7 +239,12 @@ publications])`) whose title matches no papers.bib entry and whose `author_pub_i
   it matches, and appended to papers.bib as `@article`/`@inproceedings`/`@incollection`/
   `@misc` with key surname+year+first non-stopword title word (suffix b, c… if taken).
   Every handled id (present or added) goes into scholar_sync.yml, so deleting an entry by
-  hand keeps it deleted; a failed fill is retried next run. **Citations:** First real run
+  hand keeps it deleted. `scholarly.fill(pub)` failed on GitHub in Nov 2026
+  (`AttributeError: 'NoneType' object has no attribute 'text'`, Scholar's paper page); then
+  the entry is built from the OpenAlex title match alone (authors, venue, volume, pages,
+  DOI), and a paper neither source knows is retried next run. First live check (24 Nov
+  2026): profile 34 papers = papers.bib, 931 citations; OpenAlex 33/34 papers, 18
+  co-author institutions (14 shown after removing manual duplicates). **Citations:** First real run
   from GitHub (Nov 2026): Google Scholar answered, 34/34 papers matched. Google Scholar via `scholarly==1.7.11` (needs `httpx<0.28`) for
   profile totals + per-paper counts matched to papers.bib by normalised title (prefix match
   for shortened titles); if Scholar fails or matches nothing, OpenAlex (DOI batches +

@@ -305,12 +305,17 @@ def add_new_papers(author, papers, dry_run, preview_new=0):
     entries, handled = [], {p.get("author_pub_id") for p in present}
     for pub in missing[:MAX_NEW_PAPERS]:
         title = pub["bib"].get("title", "")
+        bib = None
         try:
-            filled = with_time_limit(60, lambda: scholarly.fill(pub))
-        except (Exception, TimeLimit) as e:  # noqa: BLE001 — try again next run
-            print(f"  could not fetch the details of '{title}': {type(e).__name__}: {e}")
+            bib = with_time_limit(60, lambda: scholarly.fill(pub))["bib"]
+        except (Exception, TimeLimit) as e:  # noqa: BLE001 — OpenAlex may still know the paper
+            print(f"  Google Scholar gave no details for '{title}' ({type(e).__name__}: {e}); trying OpenAlex")
+        work = openalex_by_title((bib or {}).get("title") or title)
+        if not bib and not work:
+            print(f"  '{title}' is not on OpenAlex either; trying again next run")
             continue
-        key, entry = make_bibtex(filled["bib"], openalex_by_title(filled["bib"].get("title") or title), taken)
+        # without Scholar's details, the authors, venue, volume, pages and DOI come from OpenAlex
+        key, entry = make_bibtex(bib or {"title": title, "pub_year": pub["bib"].get("pub_year")}, work, taken)
         taken.add(key)
         entries.append(entry)
         handled.add(pub.get("author_pub_id"))
