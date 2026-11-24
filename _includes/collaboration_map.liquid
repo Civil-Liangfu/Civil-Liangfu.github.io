@@ -8,23 +8,68 @@
   Without JavaScript all cards are shown one after another. An entry without
   coordinates gets no marker (the "Place collaborations on the map" workflow fills
   them in after a save; see bin/locate_collaborations.py) but is still listed.
+
+  Co-author institutions found automatically (_data/coauthor_network.yml, written by
+  bin/update_coauthors.py from OpenAlex) are added as hollow markers without lines,
+  unless switched off (`show_coauthor_institutions: false`), or they are my
+  institution, already entered by hand, or listed in `hidden_institutions`.
+  Numbering (data-collab): 0 = my institution, 1… = entries by hand, then the
+  automatic ones.
 {% endcomment %}
 {% assign net = site.data.collaborations %}
 {% assign net_items = net.collaborations %}
+
+{% comment %} which automatic institutions to show: their positions in net_auto_all {% endcomment %}
+{% assign net_auto_all = site.data.coauthor_network.institutions %}
+{% assign net_auto_keep = '' %}
+{% if net.show_coauthor_institutions != false and net_auto_all.size > 0 %}
+  {% assign net_taken = '|' %}
+  {% include collab_norm.liquid name=net.home.institution %}
+  {% assign net_taken = net_taken | append: norm_name | append: '|' %}
+  {% for c in net_items %}
+    {% include collab_norm.liquid name=c.institution %}
+    {% assign net_taken = net_taken | append: norm_name | append: '|' %}
+  {% endfor %}
+  {% for hidden in net.hidden_institutions %}
+    {% include collab_norm.liquid name=hidden %}
+    {% assign net_taken = net_taken | append: norm_name | append: '|' %}
+  {% endfor %}
+  {% for a in net_auto_all %}
+    {% include collab_norm.liquid name=a.institution %}
+    {% assign norm_key = '|' | append: norm_name | append: '|' %}
+    {% unless net_taken contains norm_key or a.coordinates == null %}
+      {% assign net_auto_keep = net_auto_keep | append: forloop.index0 | append: ',' %}
+    {% endunless %}
+  {% endfor %}
+{% endif %}
+{% assign net_auto_idx = net_auto_keep | split: ',' %}
+{% assign net_first_auto = net_items.size | plus: 1 %}
+
 {% assign net_countries = '' %}
 {% for c in net_items %}
   {% if c.place %}
     {% assign c_country = c.place | split: ',' | last | strip %}
+    {% include collab_country.liquid name=c_country %}
+    {% assign c_country = norm_country %}
     {% assign net_countries = net_countries | append: c_country | append: '|' %}
   {% endif %}
 {% endfor %}
+{% for i in net_auto_idx %}
+  {% assign ai = i | plus: 0 %}
+  {% assign a = net_auto_all[ai] %}
+  {% assign c_country = a.place | split: ',' | last | strip %}
+  {% include collab_country.liquid name=c_country %}
+  {% assign c_country = norm_country %}
+  {% assign net_countries = net_countries | append: c_country | append: '|' %}
+{% endfor %}
 {% assign net_country_count = net_countries | split: '|' | uniq | size %}
+{% assign net_partners = net_items.size | plus: net_auto_idx.size %}
 
 <div class="collab" data-collab-root>
   <p class="collab__summary">
-    {% if net_items.size > 0 %}
-      {{ net_items.size }} partner
-      {% if net_items.size == 1 %}institution{% else %}institutions{% endif %}
+    {% if net_partners > 0 %}
+      {{ net_partners }} partner
+      {% if net_partners == 1 %}institution{% else %}institutions{% endif %}
       in {{ net_country_count }}
       {% if net_country_count == 1 %}country{% else %}countries{% endif %} ·
     {% endif %}
@@ -85,6 +130,20 @@
           <span class="collab-pin__label" aria-hidden="true">{{ c.institution }}</span>
         </button>
       {% endfor %}
+      {% for i in net_auto_idx %}
+        {% assign ai = i | plus: 0 %}
+        {% assign a = net_auto_all[ai] %}
+        {% include collab_xy.liquid coords=a.coordinates %}
+        <button
+          type="button"
+          class="collab-pin collab-pin--auto{% if xy_left > 75 %} collab-pin--east{% elsif xy_left < 25 %} collab-pin--west{% endif %}"
+          style="left: {{ xy_left }}%; top: {{ xy_top }}%"
+          data-collab="{{ net_first_auto | plus: forloop.index0 }}"
+          aria-label="{{ a.institution | escape }}, {{ a.place | escape }} (co-author institution)"
+        >
+          <span class="collab-pin__label" aria-hidden="true">{{ a.institution }}</span>
+        </button>
+      {% endfor %}
       {% if net.home.coordinates contains ',' %}
         <button
           type="button"
@@ -101,6 +160,9 @@
     <p class="collab-legend" aria-hidden="true">
       <span><i class="collab-legend__dot collab-legend__dot--home"></i> My institution</span>
       <span><i class="collab-legend__dot"></i> Collaboration</span>
+      {% if net_auto_idx.size > 0 %}
+        <span><i class="collab-legend__dot collab-legend__dot--auto"></i> Co-author institution (from my papers)</span>
+      {% endif %}
     </p>
   </div>
 
@@ -122,6 +184,34 @@
           </button>
         </li>
       {% endfor %}
+      {% if net_auto_idx.size > 0 %}
+        <li class="collab-list__more">
+          <details>
+            <summary>
+              Co-author institutions <span>{{ net_auto_idx.size }}</span>
+            </summary>
+            <ul class="collab-list collab-list--auto">
+              {% for i in net_auto_idx %}
+                {% assign ai = i | plus: 0 %}
+                {% assign a = net_auto_all[ai] %}
+                <li>
+                  <button
+                    type="button"
+                    class="collab-list__item collab-list__item--auto"
+                    data-collab="{{ net_first_auto | plus: forloop.index0 }}"
+                  >
+                    <span class="collab-list__name">{{ a.institution }}</span>
+                    <span class="collab-list__place">
+                      {{- a.place }} · {{ a.papers.size }} joint
+                      {% if a.papers.size == 1 %}paper{% else %}papers{% endif -%}
+                    </span>
+                  </button>
+                </li>
+              {% endfor %}
+            </ul>
+          </details>
+        </li>
+      {% endif %}
     </ul>
 
     <div class="collab-cards">
@@ -130,6 +220,12 @@
       {% endif %}
       {% for c in net_items %}
         {% include collab_card.liquid item=c id=forloop.index %}
+      {% endfor %}
+      {% for i in net_auto_idx %}
+        {% assign ai = i | plus: 0 %}
+        {% assign a = net_auto_all[ai] %}
+        {% assign a_id = net_first_auto | plus: forloop.index0 %}
+        {% include collab_card.liquid item=a id=a_id auto=true %}
       {% endfor %}
     </div>
   </div>
@@ -148,6 +244,8 @@
         el.classList.toggle('is-active', on);
         if (el.tagName === 'BUTTON') el.setAttribute('aria-pressed', on ? 'true' : 'false');
         if (el.classList.contains('collab-card')) el.hidden = !on;
+        // a co-author institution chosen on the map: open its group in the list
+        if (on && el.tagName === 'BUTTON' && el.closest('details')) el.closest('details').open = true;
       });
       // on phones the card is below the map: bring it into view after a marker click
       const card = root.querySelector('.collab-card[data-collab="' + id + '"]');

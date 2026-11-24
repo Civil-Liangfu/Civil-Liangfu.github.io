@@ -97,12 +97,27 @@ see that collaboration's card. To edit it, open **Collaborations → Collaborati
   the building, click the two numbers at the top of the menu to copy them, and paste them.
   Coordinates I enter are never changed.
 - Optional: **People**, **Period**, **Short description**, **Web page**, and **Their names
-  in the Publications list** (e.g. “Dan, Danhui”). With the names, the card lists our joint
-  papers automatically, and keeps doing so when I paste a new Publications list. Papers
-  that shorten the name (“Dan, D”) are found too.
+  in the Publications list** (e.g. “Dan, Danhui” or “Danhui Dan”). With the names, the card
+  lists our joint papers automatically, and keeps doing so when I paste a new Publications
+  list. Papers that shorten the name (“Dan, D”) are found too.
 - Drag items to change the order of the list. **My institution** (at the top of the
   form) is where the lines start.
 - The section can be switched off under **Home page → Show the collaboration map**.
+
+**Co-author institutions (automatic).** Twice a week GitHub also looks up the authors of
+every paper in my Publications list on **OpenAlex** (an open database of papers) and
+collects their institutions. These appear on the map as small **hollow** markers, without
+a line, and under the map in a group called **Co-author institutions** that opens on
+click. Each card names the co-authors there and lists our joint papers.
+
+- The collaborations I enter myself always come first: an institution that is already
+  one of them (or my own) is not shown twice.
+- A wrong one (OpenAlex sometimes has an author's old or wrong affiliation)? In
+  **Collaborations → Collaboration map**, at the bottom, add its name under **Hide these
+  co-author institutions**, written as on the map.
+- To show only my own entries, turn off **Also show my co-authors' institutions** there.
+- To turn a co-author institution into a full collaboration (blue marker, line, my own
+  description), add it with **Add Collaboration**; the hollow marker then disappears.
 
 ### News: photos, videos and LinkedIn posts
 
@@ -126,17 +141,28 @@ The home page lists the latest news with a small photo and labels such as “Vid
 is filled in under **Contact links → LinkedIn**, the News page also shows a **Follow me
 on LinkedIn** button.
 
-### Citation counts (automatic)
+### New papers and citation counts (automatic)
 
-Every Monday, and right after I change the Publications list, GitHub fetches my
-citation counts from **Google Scholar**. If Google blocks
-the request, it uses **OpenAlex**, an open citation database, instead. Each paper then
-shows **Cited by N** next to its DOI, and the home page shows my total citations and
-h-index with the source and date. Nothing to do on my side.
+Every Monday and Thursday, and right after I change the Publications list, GitHub reads
+my **Google Scholar** profile and does three things. Nothing to do on my side.
 
-- To update now: on GitHub, **Actions → Update citation counts → Run workflow**.
+1. **New papers:** a paper that is on my Scholar profile but not in my Publications list
+   is added to the list, as a journal or conference paper, with its DOI when OpenAlex
+   knows it (at most 5 per run; more follow on the next runs). Check new entries now and
+   then: Google Scholar's details are sometimes incomplete.
+2. **Deleting stays deleted:** if I delete a paper from the list (a duplicate, say), it is
+   **not** added back. To get it back, paste it in again.
+3. **Citation counts:** each paper shows **Cited by N** next to its DOI, and the home page
+   shows my total citations and h-index with the source and date. If Google blocks the
+   request, the last Google Scholar numbers stay for up to 60 days; after that the
+   numbers come from **OpenAlex** (usually a bit lower) until Google Scholar answers again.
+
+- To update now: on GitHub, **Actions → Update publications and citations → Run
+  workflow**.
 - A paper shows no count when it has no citations yet, or when its title in the
   Publications list differs from the title on Google Scholar.
+- A newly added paper is not on the home page's **Selected publications** until I add it
+  there.
 
 ---
 
@@ -173,7 +199,8 @@ Everything below is done in the browser at
 
 ### Adding a publication
 
-Paste the BibTeX entry at the top of the list (in the panel: **Publications**; as a file:
+Papers on my Google Scholar profile are added by themselves (see “New papers and
+citation counts” above). To add one by hand, or to fix an entry: paste the BibTeX entry at the top of the list (in the panel: **Publications**; as a file:
 `_bibliography/papers.bib`). Google Scholar gives it under **Cite → BibTeX**. Useful extra
 lines (each one goes inside the `{ … }` of the entry, with a comma at the end):
 
@@ -230,9 +257,9 @@ Other workflows I may see in the Actions tab:
 - **Place collaborations on the map** runs after I save the Collaborations page and
   fills in the position of new entries. A yellow warning in its log means a place was not
   found; add the city and country, or the coordinates.
-- **Update citation counts** runs every Monday (see “Citation counts” above). A red ✗
-  means neither Google Scholar nor OpenAlex answered that week; the old counts stay on
-  the site and the next run tries again.
+- **Update publications and citations** runs every Monday and Thursday (see “New papers
+  and citation counts” above). A red ✗ means neither Google Scholar nor OpenAlex
+  answered; the old numbers stay on the site and the next run tries again.
 - **Integration tests** and **Visual regression checks** are the theme developers' own
   checks. They test demo pages that are not part of my site, so a red ✗ on them does
   **not** mean my website is broken.

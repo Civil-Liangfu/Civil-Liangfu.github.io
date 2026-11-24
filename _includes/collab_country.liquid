@@ -1,0 +1,13 @@
+{%- comment -%}
+  Sets norm_country: a country name in one spelling, so "UK" and "United Kingdom" (the
+  form OpenAlex uses) count as one country in the collaboration map's summary.
+{%- endcomment -%}
+{%- assign norm_country = include.name | downcase | strip -%}
+{%- case norm_country -%}
+  {%- when 'united kingdom', 'great britain', 'england', 'scotland', 'wales', 'northern ireland' -%}
+    {%- assign norm_country = 'uk' -%}
+  {%- when 'united states', 'united states of america', 'usa', 'u.s.a.', 'u.s.' -%}
+    {%- assign norm_country = 'us' -%}
+  {%- when "people's republic of china", 'pr china', 'p.r. china' -%}
+    {%- assign norm_country = 'china' -%}
+{%- endcase -%}

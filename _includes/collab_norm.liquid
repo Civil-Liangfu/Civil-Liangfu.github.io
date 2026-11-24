@@ -1,0 +1,10 @@
+{%- comment -%}
+  Sets norm_name: include.name compared loosely ("The Hong Kong Polytechnic
+  University" = "hong kong polytechnic university"), to match automatic co-author
+  institutions with the ones entered by hand. Used by collaboration_map.liquid.
+{%- endcomment -%}
+{%- assign norm_name = include.name | downcase | replace: '&', 'and' | remove: ',' | remove: '.' | remove: '(' | remove: ')' | strip -%}
+{%- assign norm_first = norm_name | slice: 0, 4 -%}
+{%- if norm_first == 'the ' -%}
+  {%- assign norm_name = norm_name | remove_first: 'the ' -%}
+{%- endif -%}

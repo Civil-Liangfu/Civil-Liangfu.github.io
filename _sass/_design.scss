@@ -982,6 +982,27 @@ code {
     0 1px 4px rgba(20, 32, 46, 0.35);
 }
 
+/* co-author institutions found automatically: smaller, hollow, no line */
+.collab-pin--auto {
+  z-index: 0; /* under the collaborations entered by hand when they overlap */
+  width: 11px;
+  height: 11px;
+  border: 2.5px solid var(--c-primary);
+  background: var(--c-surface);
+  box-shadow: 0 0 0 1.5px var(--c-surface);
+}
+
+.collab-pin--auto:hover,
+.collab-pin--auto:focus-visible,
+.collab-pin--auto.is-active {
+  width: 15px;
+  height: 15px;
+}
+
+.collab-pin--auto.is-active {
+  background: var(--c-primary);
+}
+
 /* a slow ripple around my institution */
 .collab-pin--home::before {
   content: "";
@@ -1066,6 +1087,11 @@ code {
   background: var(--c-accent);
 }
 
+.collab-legend__dot--auto {
+  border: 2px solid var(--c-primary);
+  background: transparent;
+}
+
 /* list of institutions + the selected card */
 .collab-body {
   display: grid;
@@ -1130,6 +1156,57 @@ code {
 .collab-list__item--home.is-active {
   border-color: var(--c-accent);
   background: var(--c-accent-soft);
+}
+
+/* the automatic co-author institutions: a group that opens */
+.collab-list__more details > summary {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.6rem 0.9rem;
+  border: 1px dashed var(--c-line-strong);
+  border-radius: 10px;
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--c-ink-2);
+  cursor: pointer;
+  list-style: none;
+}
+
+.collab-list__more details > summary::-webkit-details-marker {
+  display: none;
+}
+
+.collab-list__more details > summary::after {
+  content: "+";
+  margin-left: auto;
+  font-family: var(--font-mono);
+  color: var(--c-muted);
+}
+
+.collab-list__more details[open] > summary::after {
+  content: "−";
+}
+
+.collab-list__more summary span {
+  padding: 0.05rem 0.45rem;
+  border-radius: 999px;
+  background: var(--c-line);
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 500;
+}
+
+.collab-list--auto {
+  margin-top: 0.45rem;
+  max-height: 24rem;
+  overflow-y: auto;
+  scrollbar-width: thin;
+}
+
+.collab-list__item--auto::before {
+  border: 2px solid var(--c-primary);
+  background: transparent;
 }
 
 .collab-list__name {
@@ -2035,6 +2112,11 @@ footer a:hover {
   .collab-list {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  /* the co-author group takes a whole row; its own list keeps the 2 columns */
+  .collab-list__more {
+    grid-column: 1 / -1;
   }
 
   .collab-card {
