@@ -1,7 +1,8 @@
 {% comment %}
   Local copy of the al-folio footer: cleaner layout and no stray space before
   the full stop when last_name is empty. The credit text is footer_text in
-  _config.yml. Styling: _sass/_design.scss (section 9).
+  _config.yml. Styling: _sass/_design.scss (section 9). Also loads the GoatCounter
+  script for the visitor counter (see the end of this file).
 {% endcomment %}
 {% capture owner_name %}{{ site.first_name }}{% if site.middle_name %} {{ site.middle_name }}{% endif %}{% if site.last_name %} {{ site.last_name }}{% endif %}{% endcapture %}
 
@@ -30,3 +31,14 @@
     </span>
   </div>
 </footer>
+
+{% comment %}
+  Visitor counting for the home page's visitor counter (GoatCounter: no cookies, no
+  personal data). Loaded on every page so the total covers the whole site; only when a
+  code is set in _data/visitor_counter.yml (panel: Home page → Visitor counter).
+  Visits from localhost and private networks are ignored by count.js.
+{% endcomment %}
+{% include goatcounter_code.liquid %}
+{% if gc_code != '' %}
+  <script data-goatcounter="https://{{ gc_code }}.goatcounter.com/count" async src="https://gc.zgo.at/count.js"></script>
+{% endif %}

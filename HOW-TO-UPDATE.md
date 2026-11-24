@@ -41,6 +41,7 @@ it on the same GitHub page and create a new one.
 | Panel section       | What it changes                                                                            |
 | ------------------- | ------------------------------------------------------------------------------------------ |
 | **Home page**       | Name line, role, photo, affiliation, short bio, selected papers, section switches, contact |
+| (Home page)         | **Visitor counter**: the visitor number at the bottom of the home page (see below)         |
 | **Contact links**   | Email, Google Scholar, ORCID, ResearchGate, LinkedIn, GitHub (buttons on the home page)    |
 | **Research topics** | The research cards and pages. **New** adds a topic; “Position” sets the order              |
 | **Collaborations**  | The world map of my collaborations on the home page (see “Collaboration map” below)        |
@@ -140,6 +141,35 @@ The home page lists the latest news with a small photo and labels such as “Vid
 “LinkedIn post” that lead to the full item on the News page. Once my LinkedIn address
 is filled in under **Contact links → LinkedIn**, the News page also shows a **Follow me
 on LinkedIn** button.
+
+### Visitor counter
+
+A small card at the bottom of the home page shows how many people have visited the
+site (all pages together), for example “12,345 visitors since November 2026”. Visits are
+counted by **GoatCounter** (free for personal sites, supported by donations). It uses no
+cookies and stores no personal data; its makers say a consent banner is probably not
+needed. It needs a one-time setup:
+
+1. Go to **goatcounter.com** and click **Sign up**. Fill in an **Account name**: this is
+   my code, e.g. `liangfu` (my statistics are then at liangfu.goatcounter.com). Under
+   **Site domain** enter `civil-liangfu.github.io`; then my email and a password.
+2. Sign in, open **Settings**, tick **Allow adding visitor counts on your website**, and
+   click **Save**. Without this the number stays hidden.
+3. In the panel: **Home page → Visitor counter**. Type the code under **GoatCounter
+   code** and, if I like, the month under **Counting since** (e.g. “November 2026”).
+   Click **Save**.
+
+A few minutes later the site is rebuilt and starts counting. The number appears after the
+first visits, and is updated at most every 4 hours.
+
+- **Don't count my own visits:** open `https://civil-liangfu.github.io/#toggle-goatcounter`
+  once in each browser I use, and confirm.
+- **Details:** on liangfu.goatcounter.com, I can see which pages are read, from which
+  countries, and from which links.
+- **Hide the number but keep counting:** turn off **Show the number on the home page**.
+  To stop counting completely, empty the code.
+- Visitors whose ad blocker blocks GoatCounter are not counted, and they don't see the
+  number.
 
 ### New papers and citation counts (automatic)
 

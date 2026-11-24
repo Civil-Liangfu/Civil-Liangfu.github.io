@@ -109,6 +109,20 @@ After upgrading `al_folio_core` / `al_folio_cv`, diff these against the gem vers
   rendered at 192 px from `assets/img/favicon.svg` (arch bridge in the site colours) with
   Playwright; re-render the PNG after editing the SVG.
 - `_pages/404.md` — no auto-redirect; buttons to Home / Publications / Research / CV.
+- Visitor counter (Nov 2026, owner's choice of GoatCounter): `_data/visitor_counter.yml`
+  (`goatcounter_code`, `show_on_home_page`, `since`; panel: Home page → Visitor counter;
+  the code field also accepts `x.goatcounter.com` or the full URL, normalised by
+  `_includes/goatcounter_code.liquid` into `gc_code`). `_includes/footer.liquid` loads
+  `https://gc.zgo.at/count.js` with `data-goatcounter="https://<code>.goatcounter.com/count"`
+  on every page; `_includes/visitor_counter.liquid` (after the contact band in
+  `_layouts/about.liquid`) fetches `https://<code>.goatcounter.com/counter/TOTAL.json`
+  (`{"count_unique": "1,234", "count": "1,234"}`, site-wide visitors, CORS `*`, cached ≤ 4 h,
+  403 unless the owner's GoatCounter setting "Allow adding visitor counts on your
+  website" is on) and only then removes `hidden` (`.visitor-counter[hidden]` keeps it
+  hidden, since `.visitor-counter` sets `display: flex`). Empty code → no script, no
+  widget. count.js ignores localhost and private networks. goatcounter.com is not
+  reachable from the cloud container; its docs and source are at github.com/arp242/goatcounter
+  (`tpl/help/visitor-counter.md`, `handlers/vcounter.go`).
 - Collaboration map (home page section after Selected publications; switch
   `collaboration_map` in `_pages/about.md`): `_includes/collaboration_map.liquid` + data
   `_data/collaborations.yml` (`home` + `collaborations[]`: `institution`, `place` "City,
