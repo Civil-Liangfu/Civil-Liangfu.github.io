@@ -1,0 +1,27 @@
+{%- comment -%}
+  One curved, dashed, moving line from my institution to a partner on the collaboration
+  map (_includes/collaboration_map.liquid). include.coords = "lat, lon", include.id =
+  the partner's data-collab number, include.auto = true for a co-author institution found
+  automatically (thinner and fainter until selected). Uses home_x / home_y, set by the
+  map include. The control point lies to the side of the midpoint, so the line bows
+  upwards. Styling: .collab-arc in _sass/_design.scss.
+{%- endcomment -%}
+{% include collab_xy.liquid coords=include.coords %}
+{% assign a_dx = xy_x | minus: home_x %}
+{% assign a_dy = xy_y | minus: home_y %}
+{% assign a_mx = xy_x | plus: home_x | divided_by: 2.0 %}
+{% assign a_my = xy_y | plus: home_y | divided_by: 2.0 %}
+{% if a_dx >= 0 %}
+  {% assign a_px = a_dy %}
+  {% assign a_py = 0 | minus: a_dx %}
+{% else %}
+  {% assign a_px = 0 | minus: a_dy %}
+  {% assign a_py = a_dx %}
+{% endif %}
+{% assign a_cx = a_px | times: 0.22 | plus: a_mx | round: 1 %}
+{% assign a_cy = a_py | times: 0.22 | plus: a_my | round: 1 %}
+<path
+  class="collab-arc{% if include.auto %} collab-arc--auto{% endif %}"
+  data-collab="{{ include.id }}"
+  d="M{{ home_x | round: 1 }} {{ home_y | round: 1 }}Q{{ a_cx }} {{ a_cy }} {{ xy_x | round: 1 }} {{ xy_y | round: 1 }}"
+/>

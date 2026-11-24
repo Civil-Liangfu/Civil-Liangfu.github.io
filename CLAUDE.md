@@ -146,7 +146,7 @@ surname` (the bibsearch hash filter). A small inline script shows one card at a 
   without JS all cards show. Phones: list in 2 columns, smaller markers.
   Automatic layer: `_data/coauthor_network.yml` (bot-written, see workflows) adds
   `institutions[]` (same fields + `openalex`, `papers[]` bib keys) as hollow
-  `.collab-pin--auto` markers (z-index 0, no arcs), a `<details>` group "Co-author
+  `.collab-pin--auto` markers (z-index 0) with arcs `.collab-arc--auto` (thinner, opacity 0.3, drawn before the manual arcs so they lie underneath; full strength when `is-active`; added at the owner's request, Nov 2026; the Bézier maths is in `_includes/collab_arc.liquid`, shared by both kinds), a `<details>` group "Co-author
   institutions" at the end of the list (spans both columns on phones; the script opens
   it when one of its items is selected) and cards with `auto=true` (joint papers queried
   by `@*[key=…]`, no Publications link). Ids continue after the manual entries
