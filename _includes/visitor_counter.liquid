@@ -1,0 +1,40 @@
+{%- comment -%}
+  Small visitor counter at the bottom of the home page (_layouts/about.liquid).
+  The number is the site-wide total from GoatCounter's counter endpoint
+  (https://CODE.goatcounter.com/counter/TOTAL.json → {"count": "1,234"}), which only
+  answers when "Allow adding visitor counts on your website" is on in the GoatCounter
+  settings; GoatCounter caches it for up to 4 hours. The widget stays hidden until the
+  number has arrived, so nothing shows when the code is empty, the setting is off, a
+  browser blocks GoatCounter or JavaScript is off. Styling: _sass/_design.scss
+  ("Visitor counter").
+{%- endcomment -%}
+{% include goatcounter_code.liquid %}
+{% assign vc = site.data.visitor_counter %}
+{% if gc_code != '' and vc.show_on_home_page != false %}
+  <p class="visitor-counter" data-visitor-counter="https://{{ gc_code }}.goatcounter.com/counter/TOTAL.json" hidden>
+    <span class="visitor-counter__icon" aria-hidden="true"><i class="fa-solid fa-eye"></i></span>
+    <span class="visitor-counter__text">
+      <span><strong class="visitor-counter__count"></strong> <span class="visitor-counter__label">visitors</span></span>
+      {% if vc.since and vc.since != '' %}
+        <span class="visitor-counter__since">since {{ vc.since | escape }}</span>
+      {% endif %}
+    </span>
+  </p>
+  <script>
+    (function () {
+      var box = document.querySelector('[data-visitor-counter]');
+      if (!box || !window.fetch) return;
+      fetch(box.getAttribute('data-visitor-counter'))
+        .then(function (r) {
+          return r.ok ? r.json() : null;
+        })
+        .then(function (data) {
+          if (!data || !data.count) return;
+          box.querySelector('.visitor-counter__count').textContent = data.count;
+          if (String(data.count).replace(/\D/g, '') === '1') box.querySelector('.visitor-counter__label').textContent = 'visitor';
+          box.hidden = false;
+        })
+        .catch(function () {});
+    })();
+  </script>
+{% endif %}

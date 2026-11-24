@@ -1,0 +1,8 @@
+{%- comment -%}
+  Sets gc_code: the GoatCounter code from _data/visitor_counter.yml. "liangfu",
+  "liangfu.goatcounter.com" and "https://liangfu.goatcounter.com/" all give "liangfu".
+  Empty = no counting and no counter. Used by footer.liquid (tracking script on every
+  page) and visitor_counter.liquid (the number on the home page).
+{%- endcomment -%}
+{%- assign gc_code = site.data.visitor_counter.goatcounter_code | default: '' | strip | downcase -%}
+{%- assign gc_code = gc_code | remove: 'https://' | remove: 'http://' | remove: '/' | split: '.' | first | default: '' -%}

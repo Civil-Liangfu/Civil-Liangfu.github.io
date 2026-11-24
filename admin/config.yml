@@ -141,6 +141,33 @@ collections:
             widget: text
             required: false
 
+      - name: visitor_counter
+        label: Visitor counter
+        file: _data/visitor_counter.yml
+        format: yml
+        fields:
+          - label: GoatCounter code
+            name: goatcounter_code
+            widget: string
+            required: false
+            pattern:
+              - '^\s*(https?://)?[A-Za-z0-9-]+(\.goatcounter\.com)?/?\s*$'
+              - "Only the account name you chose at goatcounter.com, e.g. liangfu (or liangfu.goatcounter.com)."
+            hint: >-
+              The “Account name” you chose when signing up at goatcounter.com, e.g. “liangfu”
+              if your statistics are at liangfu.goatcounter.com. Visits are counted on every page of the
+              site. Leave empty to switch counting off. Steps: HOW-TO-UPDATE.md, “Visitor counter”.
+          - label: Show the number on the home page
+            name: show_on_home_page
+            widget: boolean
+            default: true
+            hint: When off, visits are still counted (see them on goatcounter.com), but the number is not shown.
+          - label: Counting since
+            name: since
+            widget: string
+            required: false
+            hint: Optional, e.g. “November 2026” (the month you signed up). Shown as “… visitors since November 2026”.
+
   # ---------------------------------------------------------------------------
   # CONTACT LINKS (buttons on the home page)
   # ---------------------------------------------------------------------------
