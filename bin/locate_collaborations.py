@@ -10,8 +10,9 @@ already have coordinates are never changed, so coordinates typed in by hand win.
 
 Lookup, in this order:
 1. OpenAlex institutions (https://openalex.org): research institutions with their
-   location. When `place` is given, the result's city or country must appear in it,
-   so a same-named university elsewhere is skipped.
+   location. When `place` is given, the result's city, region (state/province) or
+   country must appear in it (small typos allowed), so a same-named university
+   elsewhere is skipped.
 2. OpenStreetMap Nominatim (https://nominatim.openstreetmap.org): "institution,
    place", then "place" alone (the city centre). At most one request per second,
    as its usage policy asks; results are saved, so each place is looked up once.
@@ -26,6 +27,7 @@ import argparse
 import json
 import math
 import os
+import re
 import sys
 import time
 import urllib.parse
@@ -55,6 +57,30 @@ def text(value):
     return str(value or "").strip()
 
 
+ALIASES = {"united kingdom": ["uk", "britain", "england", "scotland", "wales"], "united states": ["usa", "us"]}
+
+
+def place_matches(place, *names):
+    """True when one of the names (city, region, country, country code) appears in
+    `place`, allowing small typos such as "United State" for "United States"."""
+    wanted = place.lower()
+    words = re.findall(r"[a-z]+", wanted)
+    for name in names:
+        name = text(name).lower()
+        if not name:
+            continue
+        if len(name) <= 3:  # a country code: only as a whole word
+            if name in words:
+                return True
+            continue
+        if name in wanted or any(alias in words for alias in ALIASES.get(name, [])):
+            return True
+        tokens = [t for t in re.findall(r"[a-z]+", name) if len(t) >= 4]
+        if tokens and all(any(w[:5] == t[:5] for w in words if len(w) >= 4) for t in tokens):
+            return True
+    return False
+
+
 # --------------------------------------------------------------------------- sources
 
 
@@ -66,10 +92,8 @@ def from_openalex(institution, place):
         if lat is None or lon is None:
             continue
         city, country = text(geo.get("city")), text(geo.get("country"))
-        if place:
-            wanted = place.lower()
-            if not ((city and city.lower() in wanted) or (country and country.lower() in wanted)):
-                continue
+        if place and not place_matches(place, city, geo.get("region"), country, geo.get("country_code")):
+            continue
         return float(lat), float(lon), ", ".join(x for x in (city, country) if x), result.get("display_name")
     return None
 
