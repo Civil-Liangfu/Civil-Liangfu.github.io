@@ -3,8 +3,216 @@
 # on the home page's collaboration map next to the collaborations entered by hand.
 # Don't edit this file: to hide a wrong institution, add its name under
 # "Hide these co-author institutions" in the editing panel (Collaborations).
-# It is filled in by the first run after this is merged.
 metadata:
-  last_updated: ""
+  last_updated: "2026-11-24"
   source: "OpenAlex"
-institutions: []
+  papers_found: 33
+  papers_total: 34
+institutions:
+  - institution: "Tongji University"
+    place: "Shanghai, China"
+    coordinates: "31.2222, 121.4581"
+    openalex: "I116953780"
+    people: "Danhui Dan, Chenqi Wang, Xia Liao and 11 more"
+    coauthors:
+      - "Dan, Danhui"
+      - "Wang, Chenqi"
+      - "Liao, Xia"
+      - "Li, Fangyuan"
+      - "Hu, Jinnan"
+      - "Liu, Mengliang"
+      - "Dan, Qiang"
+      - "Ruan, Xin"
+      - "Yu, Xuewen"
+      - "Chen, Yifeng"
+      - "Ying, Yufeng"
+      - "Chen, Yuhang"
+      - "Cai, Zhixiang"
+      - "Liu, Zijia"
+    papers:
+      - "dan2026marker"
+      - "dan2026novel"
+      - "ge2026viv"
+      - "dan2025physics"
+      - "dan2025gaussian"
+      - "dan2025novel"
+      - "ge2024structural"
+      - "ge2024benchmark"
+      - "yu2023time"
+      - "ge2023improved"
+      - "ge2023bridge"
+      - "ge2022intelligent"
+      - "dan2021digital"
+      - "ge2020accurate"
+      - "ge2020real"
+      - "dan2019identification"
+  - institution: "Western University"
+    place: "London, Canada"
+    coordinates: "42.9834, -81.2330"
+    openalex: "I125749732"
+    people: "Ayan Sadhu, Premjeet Singh, Mohamed Barbosh"
+    coauthors:
+      - "Sadhu, Ayan"
+      - "Singh, Premjeet"
+      - "Barbosh, Mohamed"
+    papers:
+      - "dan2026marker"
+      - "ge2026end"
+      - "singh2026digital"
+      - "ge2025advanced"
+      - "ge2025deep"
+      - "barbosh2024automated"
+      - "ge2024domain"
+      - "ge2024structural"
+      - "ge2024drone"
+      - "ge2024domainb"
+      - "ge2024benchmark"
+  - institution: "Louisiana State University"
+    place: "Baton Rouge, United States"
+    coordinates: "30.4433, -91.1875"
+    openalex: "I121820613"
+    people: "Furkan Luleci"
+    coauthors:
+      - "Luleci, Furkan"
+    papers:
+      - "luleci2026latent"
+      - "luleci2026physics"
+  - institution: "Shanghai Urban Construction Design and Research Institute (Group)"
+    place: "Shanghai, China"
+    coordinates: "31.2222, 121.4581"
+    openalex: "I4210086678"
+    people: "Xingfei Yan, Kailong Zhang"
+    coauthors:
+      - "Yan, Xingfei"
+      - "Zhang, Kailong"
+    papers:
+      - "ge2020real"
+      - "dan2019identification"
+  - institution: "University of Exeter"
+    place: "Exeter, United Kingdom"
+    coordinates: "50.7236, -3.5275"
+    openalex: "I23923803"
+    people: "Ki Young Koo, James Brownjohn"
+    coauthors:
+      - "Koo, Ki Young"
+      - "Brownjohn, James"
+    papers:
+      - "ge2023improved"
+      - "ge2023bridge"
+  - institution: "Aalto University"
+    place: "Espoo, Finland"
+    coordinates: "60.2052, 24.6522"
+    openalex: "I9927081"
+    people: "Zhenkun Li"
+    coauthors:
+      - "Li, Zhenkun"
+    papers:
+      - "luleci2026latent"
+  - institution: "Colorado State University"
+    place: "Fort Collins, United States"
+    coordinates: "40.5853, -105.0844"
+    openalex: "I92446798"
+    people: "Debasish Jana"
+    coauthors:
+      - "Jana, Debasish"
+    papers:
+      - "luleci2026physics"
+  - institution: "Dalian University of Technology"
+    place: "Dalian, China"
+    coordinates: "38.9122, 121.6022"
+    openalex: "I27357992"
+    people: "Miaomin Wang"
+    coauthors:
+      - "Wang, Miaomin"
+    papers:
+      - "ge2023bridge"
+  - institution: "Florida International University"
+    place: "Miami, United States"
+    coordinates: "25.7743, -80.1937"
+    openalex: "I19700959"
+    people: "Giulia Marasco"
+    coauthors:
+      - "Marasco, Giulia"
+    papers:
+      - "luleci2026physics"
+  - institution: "Harbin Institute of Technology"
+    place: "Harbin, China"
+    coordinates: "45.7500, 126.6500"
+    openalex: "I204983213"
+    people: "Hui Li"
+    coauthors:
+      - "Li, Hui"
+    papers:
+      - "ge2020accurate"
+  - institution: "Massachusetts Institute of Technology"
+    place: "Cambridge, United States"
+    coordinates: "42.3751, -71.1056"
+    openalex: "I63966007"
+    people: "Jingxiao Liu"
+    coauthors:
+      - "Liu, Jingxiao"
+    papers:
+      - "luleci2026latent"
+  - institution: "Northwestern Polytechnical University"
+    place: "Xi'an, China"
+    coordinates: "34.2583, 108.9286"
+    openalex: "I17145004"
+    people: "Fei Han"
+    coauthors:
+      - "Han, Fei"
+    papers:
+      - "dan2025physics"
+  - institution: "Politecnico di Milano"
+    place: "Milan, Italy"
+    coordinates: "45.4643, 9.1895"
+    openalex: "I93860229"
+    people: "Maria Pina Limongelli"
+    coauthors:
+      - "Limongelli, Maria Pina"
+    papers:
+      - "luleci2026latent"
+  - institution: "Purdue University West Lafayette"
+    place: "West Lafayette, United States"
+    coordinates: "40.4259, -86.9081"
+    openalex: "I219193219"
+    people: "Mohammad R. Jahanshahi"
+    coauthors:
+      - "Jahanshahi, Mohammad R."
+    papers:
+      - "luleci2026latent"
+  - institution: "Stanford University"
+    place: "Stanford, United States"
+    coordinates: "37.4241, -122.1661"
+    openalex: "I97018004"
+    people: "Hae Young Noh"
+    coauthors:
+      - "Noh, Hae Young"
+    papers:
+      - "luleci2026latent"
+  - institution: "Stevens Institute of Technology"
+    place: "Hoboken, United States"
+    coordinates: "40.7440, -74.0324"
+    openalex: "I108468826"
+    people: "Yi Bao"
+    coauthors:
+      - "Bao, Yi"
+    papers:
+      - "dan2026marker"
+  - institution: "University College Dublin"
+    place: "Dublin, Ireland"
+    coordinates: "53.3331, -6.2489"
+    openalex: "I100930933"
+    people: "Abdollah Malekjafarian"
+    coauthors:
+      - "Malekjafarian, Abdollah"
+    papers:
+      - "luleci2026latent"
+  - institution: "University of Central Florida"
+    place: "Orlando, United States"
+    coordinates: "28.5383, -81.3792"
+    openalex: "I106165777"
+    people: "F. Necati Çatbaş"
+    coauthors:
+      - "Çatbaş, F. Necati"
+    papers:
+      - "luleci2026latent"

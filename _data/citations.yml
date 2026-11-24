@@ -1,8 +1,8 @@
 # Citation counts for the papers in _bibliography/papers.bib.
-# Filled in AUTOMATICALLY every Monday by the "Update citation counts" workflow
-# (bin/update_citations.py). There is no need to edit this file.
+# Filled in AUTOMATICALLY twice a week by the "Update publications and citations"
+# workflow (bin/update_citations.py). There is no need to edit this file.
 metadata:
-  last_updated: "2026-11-23"
+  last_updated: "2026-11-24"
   source: "OpenAlex"
   source_url: "https://orcid.org/0000-0003-0877-1734"
 totals:
