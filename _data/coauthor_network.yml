@@ -4,7 +4,7 @@
 # Don't edit this file: to hide a wrong institution, add its name under
 # "Hide these co-author institutions" in the editing panel (Collaborations).
 metadata:
-  last_updated: "2026-11-24"
+  last_updated: "2026-11-26"
   source: "OpenAlex"
   papers_found: 33
   papers_total: 34
@@ -117,6 +117,15 @@ institutions:
       - "Jana, Debasish"
     papers:
       - "luleci2026physics"
+  - institution: "Credit Valley Conservation"
+    place: "Mississauga, Canada"
+    coordinates: "43.5789, -79.6583"
+    openalex: "I4405288277"
+    people: "Girish Sankar"
+    coauthors:
+      - "Sankar, Girish"
+    papers:
+      - "singh2026digital"
   - institution: "Dalian University of Technology"
     place: "Dalian, China"
     coordinates: "38.9122, 121.6022"

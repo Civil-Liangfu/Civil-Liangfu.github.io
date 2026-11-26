@@ -2,11 +2,11 @@
 # Filled in AUTOMATICALLY twice a week by the "Update publications and citations"
 # workflow (bin/update_citations.py). There is no need to edit this file.
 metadata:
-  last_updated: "2026-11-24"
+  last_updated: "2026-11-26"
   source: "OpenAlex"
   source_url: "https://orcid.org/0000-0003-0877-1734"
 totals:
-  citations: 845
+  citations: 849
   h_index: 13
   i10_index: 14
 papers:
@@ -80,7 +80,7 @@ papers:
     citations: 0
     url: "https://openalex.org/works/W4415184623"
   ge2024domainb:
-    citations: 81
+    citations: 82
     url: "https://openalex.org/works/W4391938747"
   ge2024benchmark:
     citations: 14
@@ -104,8 +104,8 @@ papers:
     citations: 127
     url: "https://openalex.org/works/W3088297561"
   ge2020real:
-    citations: 37
+    citations: 38
     url: "https://openalex.org/works/W3008133934"
   dan2019identification:
-    citations: 141
+    citations: 143
     url: "https://openalex.org/works/W2945932553"
